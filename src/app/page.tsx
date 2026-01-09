@@ -241,6 +241,11 @@ export default function LandingPage() {
 
         <div className="max-w-4xl mx-auto px-6 py-8 text-center text-slate-500 text-sm">
           <p>Questions? <a href="mailto:pasha@barbash.in" className="underline">pasha@barbash.in</a></p>
+          <p className="mt-2">
+            <a href="/terms" className="underline hover:text-slate-400">Terms of Service</a>
+            {' · '}
+            <a href="/privacy" className="underline hover:text-slate-400">Privacy Policy</a>
+          </p>
         </div>
       </div>
     );
