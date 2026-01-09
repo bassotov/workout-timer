@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 
-// Polar product checkout URL - replace with your actual product
-const POLAR_CHECKOUT_URL = 'https://polar.sh/checkout?productId=YOUR_PRODUCT_ID';
+// Polar product ID - replace with your actual product ID from Polar dashboard
+const POLAR_PRODUCT_ID = '88d2bef6-adad-48a6-aabf-68466a8969ca';
 
 // Timer URL - update this when you have a custom domain
-const TIMER_BASE_URL = 'https://YOUR_DOMAIN/timer';
+const TIMER_BASE_URL = 'https://workout-timer.app/timer';
 
 type Step = 'landing' | 'poll' | 'payment' | 'success';
 type Lang = 'en' | 'ru';
@@ -75,8 +75,7 @@ export default function LandingPage() {
 
   const handlePayment = () => {
     localStorage.setItem('workout-poll-answers', JSON.stringify(answers));
-    const successUrl = encodeURIComponent(`${window.location.origin}/?success=true`);
-    const checkoutUrl = `${POLAR_CHECKOUT_URL}&successUrl=${successUrl}&customerEmail=${encodeURIComponent(answers.email)}`;
+    const checkoutUrl = `/api/checkout?productId=${POLAR_PRODUCT_ID}&customerEmail=${encodeURIComponent(answers.email)}`;
     window.location.href = checkoutUrl;
   };
 
