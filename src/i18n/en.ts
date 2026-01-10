@@ -36,6 +36,12 @@ export const en = {
     includes: 'Includes: tracker popup, equipment preview, video links',
     urlFormat: 'URL format:',
   },
+  error: {
+    title: 'Invalid Workout Link',
+    description: 'The workout link appears to be incorrectly formatted. This can happen when the AI uses wrong encoding.',
+    hint: 'What to do:',
+    suggestion: 'Ask your AI to regenerate the workout link. Make sure it uses base64 encoding.',
+  },
   controls: {
     pause: 'PAUSE',
     resume: 'CONTINUE',

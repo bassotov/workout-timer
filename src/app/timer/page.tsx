@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import {
   TimerDisplay, PhaseIndicator, ExerciseInfo, ControlButtons,
   RoundProgress, ExerciseProgress, TrackerPopup, CompletionScreen,
-  LoadingScreen, DemoScreen, ReadyScreen,
+  LoadingScreen, DemoScreen, ErrorScreen, ReadyScreen,
 } from '@/components/timer';
 import { useTimer } from '@/hooks';
 import { useTranslations } from '@/i18n';
@@ -18,10 +18,13 @@ function TimerContent() {
   const searchParams = useSearchParams();
   const [demoWorkout, setDemoWorkout] = useState<Workout | null>(null);
 
+  const workoutParam = searchParams.get('w');
   const parsedWorkout = useMemo(() => {
-    const w = searchParams.get('w');
-    return w ? safeDecodeWorkoutUrl(w) : null;
-  }, [searchParams]);
+    return workoutParam ? safeDecodeWorkoutUrl(workoutParam) : null;
+  }, [workoutParam]);
+
+  // Track if we have a malformed URL (param exists but couldn't decode)
+  const hasInvalidUrl = workoutParam && !parsedWorkout;
 
   const workout = demoWorkout || parsedWorkout;
   const t = useTranslations(workout?.lang || 'en');
@@ -64,6 +67,12 @@ function TimerContent() {
     return Math.round((total + cooldownTime) / 60);
   }, [workout, cooldownStretches]);
 
+  // Show error screen if URL param exists but failed to decode
+  if (!workout && hasInvalidUrl) {
+    return <ErrorScreen onLoadDemo={() => setDemoWorkout(DEMO_WORKOUT)} />;
+  }
+
+  // Show demo screen if no workout URL provided
   if (!workout) return <DemoScreen onLoadDemo={() => setDemoWorkout(DEMO_WORKOUT)} />;
 
   const trackerTranslations = { trackerTitle: t.tracker.title, trackerReady: t.tracker.ready, trackerWhoop: t.tracker.whoop, trackerApple: t.tracker.apple, trackerGarmin: t.tracker.garmin, reset: t.controls.reset };

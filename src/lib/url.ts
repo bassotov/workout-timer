@@ -48,20 +48,55 @@ export function decodeWorkoutUrl(encoded: string): unknown {
 
 /**
  * Safely decodes and validates a workout URL parameter
+ * Supports multiple encoding formats for better AI compatibility:
+ * - Standard URL-safe base64 (preferred)
+ * - URL-encoded JSON (ChatGPT fallback)
+ * - Multi-level URL-encoded JSON (edge cases)
  *
- * @param encoded - The URL-safe base64 encoded string
+ * @param encoded - The encoded workout string
  * @returns The validated Workout object or null if invalid
  */
 export function safeDecodeWorkoutUrl(encoded: string): Workout | null {
+  // Try standard base64 first (preferred format)
   try {
     const data = decodeWorkoutUrl(encoded);
     if (isValidWorkout(data)) {
       return data;
     }
-    return null;
   } catch {
-    return null;
+    // Continue to fallbacks
   }
+
+  // Fallback: try URL-encoded JSON (ChatGPT sometimes does this)
+  try {
+    const urlDecoded = decodeURIComponent(encoded);
+    const data = JSON.parse(urlDecoded);
+    if (isValidWorkout(data)) {
+      return data;
+    }
+  } catch {
+    // Continue to next fallback
+  }
+
+  // Fallback: try multi-level URL-encoded (edge cases)
+  try {
+    let decoded = encoded;
+    for (let i = 0; i < 3; i++) {
+      decoded = decodeURIComponent(decoded);
+      try {
+        const data = JSON.parse(decoded);
+        if (isValidWorkout(data)) {
+          return data;
+        }
+      } catch {
+        // Not valid JSON yet, continue decoding
+      }
+    }
+  } catch {
+    // Ignore
+  }
+
+  return null;
 }
 
 /**

@@ -8,4 +8,5 @@ export { TrackerPopup } from './TrackerPopup';
 export { CompletionScreen } from './CompletionScreen';
 export { LoadingScreen } from './LoadingScreen';
 export { DemoScreen } from './DemoScreen';
+export { ErrorScreen } from './ErrorScreen';
 export { ReadyScreen } from './ReadyScreen';
