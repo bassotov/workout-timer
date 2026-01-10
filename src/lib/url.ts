@@ -33,10 +33,12 @@ export function encodeWorkoutUrl(workout: Workout): string {
 export function decodeWorkoutUrl(encoded: string): unknown {
   // First, URL-decode any %XX sequences (e.g., %20 for space)
   let base64 = decodeURIComponent(encoded);
-  // Strip all whitespace (GPT sometimes inserts line breaks in long strings)
-  base64 = base64.replace(/\s/g, '');
-  // Restore standard base64 from URL-safe format
-  base64 = base64.replace(/-/g, '+').replace(/_/g, '/');
+  // Convert spaces to + (browsers convert + to space in query strings)
+  // Also convert - to + (URL-safe base64 format)
+  // Both should become + in standard base64
+  base64 = base64.replace(/[\s-]/g, '+');
+  // Convert _ to / (URL-safe base64 format)
+  base64 = base64.replace(/_/g, '/');
   // Add padding if needed
   while (base64.length % 4) {
     base64 += '=';
