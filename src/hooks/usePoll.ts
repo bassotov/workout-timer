@@ -13,6 +13,7 @@ const DEFAULT_ANSWERS: PollAnswers = {
   aiPlatform: '',
   trainingType: '',
   equipment: '',
+  weightPreference: '',
   goals: '',
   tracker: '',
   coachingStyle: '',
@@ -66,17 +67,35 @@ export function usePoll() {
   const goToPayment = useCallback(() => setPage('payment'), []);
   const goToSuccess = useCallback(() => setPage('success'), []);
 
+  // Find next step, skipping conditional steps that don't apply
   const nextStep = useCallback(() => {
-    if (pollStep < POLL_STEPS.length - 1) {
-      setPollStep(prev => prev + 1);
+    let next = pollStep + 1;
+    while (next < POLL_STEPS.length) {
+      const step = POLL_STEPS[next];
+      // If step has no conditional, or conditional returns true, use it
+      if (!step.conditional || step.conditional(answers)) {
+        setPollStep(next);
+        return;
+      }
+      next++;
     }
-  }, [pollStep]);
+    // If we've gone through all steps, stay at current (shouldn't happen)
+  }, [pollStep, answers]);
 
+  // Find previous step, skipping conditional steps that don't apply
   const prevStep = useCallback(() => {
-    if (pollStep > 0) {
-      setPollStep(prev => prev - 1);
+    let prev = pollStep - 1;
+    while (prev >= 0) {
+      const step = POLL_STEPS[prev];
+      // If step has no conditional, or conditional returns true, use it
+      if (!step.conditional || step.conditional(answers)) {
+        setPollStep(prev);
+        return;
+      }
+      prev--;
     }
-  }, [pollStep]);
+    // If we've gone through all steps, stay at current (shouldn't happen)
+  }, [pollStep, answers]);
 
   const currentStepConfig: PollStep = POLL_STEPS[pollStep];
 

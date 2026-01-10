@@ -10,7 +10,7 @@ import {
 } from '@/components/timer';
 import { useTimer } from '@/hooks';
 import { useTranslations } from '@/i18n';
-import { safeDecodeWorkoutUrl } from '@/lib/url';
+import { decodeWorkoutUrlWithDiagnostics } from '@/lib/url';
 import { PHASE_COLORS, COOLDOWN_STRETCHES, BEEP_FREQUENCY, BEEP_GAIN, BEEP_DURATION, BEEP_THRESHOLD, DEMO_WORKOUT } from '@/config';
 import type { Workout, TimerPhase } from '@/types';
 
@@ -19,8 +19,15 @@ function TimerContent() {
   const [demoWorkout, setDemoWorkout] = useState<Workout | null>(null);
 
   const workoutParam = searchParams.get('w');
-  const parsedWorkout = useMemo(() => {
-    return workoutParam ? safeDecodeWorkoutUrl(workoutParam) : null;
+
+  // Decode workout with diagnostic error detection
+  const { parsedWorkout, decodeError } = useMemo(() => {
+    if (!workoutParam) return { parsedWorkout: null, decodeError: null };
+
+    const result = decodeWorkoutUrlWithDiagnostics(workoutParam);
+    return result.success
+      ? { parsedWorkout: result.workout ?? null, decodeError: null }
+      : { parsedWorkout: null, decodeError: result.error ?? null };
   }, [workoutParam]);
 
   // Track if we have a malformed URL (param exists but couldn't decode)
@@ -69,7 +76,7 @@ function TimerContent() {
 
   // Show error screen if URL param exists but failed to decode
   if (!workout && hasInvalidUrl) {
-    return <ErrorScreen onLoadDemo={() => setDemoWorkout(DEMO_WORKOUT)} />;
+    return <ErrorScreen onLoadDemo={() => setDemoWorkout(DEMO_WORKOUT)} errorType={decodeError?.type} />;
   }
 
   // Show demo screen if no workout URL provided
@@ -111,12 +118,23 @@ function TimerContent() {
       <div className="flex-1 flex flex-col items-center justify-center p-6">
         {phase === 'countdown' && <h1 className="text-5xl font-bold mb-6 text-center">{t.workout.prepareRound} {currentRound}</h1>}
         {phase === 'work' && <ExerciseInfo exercise={timer.derived.currentExercise} translations={{ video: t.workout.video, next: t.workout.next }} />}
-        {phase === 'rest' && <ExerciseInfo exercise={nextExercise} translations={{ video: t.workout.video, next: t.workout.next }} showAsNext showEquipment />}
+        {phase === 'rest' && <ExerciseInfo exercise={nextExercise} translations={{ video: t.workout.video, next: t.workout.next, restGetReady: t.workout.restGetReady }} showAsNext showEquipment />}
         {phase === 'roundRest' && (
           <div className="text-center">
             <h1 className="text-5xl font-bold mb-2">{t.workout.roundComplete} {currentRound} ✓</h1>
             <p className="text-2xl opacity-80 mb-4">{t.workout.prepareRound} {currentRound + 1}</p>
-            {workout.exercises[0]?.equipment && <Badge variant="secondary" className="bg-black/20 text-white border-0 text-xl px-6 py-3">{workout.exercises[0].equipment}</Badge>}
+            <div className="flex flex-col gap-2 items-center">
+              {workout.exercises[0]?.weight && workout.exercises[0].weight !== '—' && (
+                <Badge variant="secondary" className="bg-black/20 text-white border-0 text-xl px-6 py-3">
+                  ⚖️ {workout.exercises[0].weight}
+                </Badge>
+              )}
+              {workout.exercises[0]?.equipment && (
+                <Badge variant="secondary" className="bg-black/20 text-white border-0 text-xl px-6 py-3">
+                  🏋️ {workout.exercises[0].equipment}
+                </Badge>
+              )}
+            </div>
           </div>
         )}
         {phase === 'cooldown' && timer.derived.currentStretch && (

@@ -19,6 +19,7 @@ const mockAnswers: PollAnswers = {
   language: 'ru',
   aiPlatform: platform,
   equipment: 'home',
+  weightPreference: 'medium',
   goals: 'muscle',
   trainingType: 'hiit',
   tracker: 'apple',

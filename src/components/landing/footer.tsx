@@ -100,7 +100,7 @@ export function Footer() {
         {/* Copyright */}
         <div className="pt-6 border-t border-white/10">
           <p className="text-sm text-muted-foreground text-center">
-            {t.footer?.copyright ?? '© 2025 Workout Timer. All rights reserved.'}
+            {t.footer?.copyright ?? '© 2026 Workout Timer. All rights reserved.'}
           </p>
         </div>
       </div>

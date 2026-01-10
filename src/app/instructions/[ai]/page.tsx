@@ -15,7 +15,6 @@ export default function InstructionPage({ params }: PageProps) {
   const { ai } = use(params);
   const { t } = useLanguage();
 
-  // Validate AI param
   if (!AI_CONFIG_KEYS.includes(ai as AIConfigKey)) {
     notFound();
   }
@@ -28,34 +27,97 @@ export default function InstructionPage({ params }: PageProps) {
     <main className="min-h-dvh bg-background text-foreground">
       <Header showNav={false} />
 
-      <div className="pt-20 pb-12 px-4 max-w-2xl mx-auto">
-        {/* Hero */}
-        <div className="text-center mb-8">
+      <div className="pt-20 pb-12 px-4 max-w-3xl mx-auto">
+        {/* Hero - One liner */}
+        <div className="flex items-center gap-3 mb-1">
           <div
-            className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br ${config.color} mb-4`}
+            className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${config.color} flex items-center justify-center`}
           >
-            <span className="text-4xl">{config.icon}</span>
+            <span className="text-2xl">{config.icon}</span>
           </div>
-          <h1 className="text-3xl font-bold mb-3">
+          <h1 className="text-2xl font-bold">
             {t.aiInstructions.howToUse} {config.name}
           </h1>
-          <p className="text-muted-foreground">{aiTranslations.description}</p>
+        </div>
+        <p className="text-muted-foreground mb-8 ml-15">{aiTranslations.subtitle}</p>
+
+        {/* Model Recommendation - with icon, reduced padding */}
+        <Card className="mb-8 bg-primary/5 border-primary/20">
+          <CardContent className="py-3">
+            <div className="flex items-start gap-3">
+              <span className="text-lg">💡</span>
+              <div>
+                <p className="font-semibold">{aiTranslations.modelTip.title}</p>
+                <p className="text-sm text-muted-foreground">{aiTranslations.modelTip.subtitle}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Timeline Steps with connecting lines between steps */}
+        <div className="mb-8">
+          {aiTranslations.steps.map((step, index) => (
+            <div key={index} className="flex gap-4">
+              {/* Step number + line column */}
+              <div className="flex flex-col items-center w-8 flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-semibold text-sm">
+                  {index + 1}
+                </div>
+                {/* Line connecting to next step */}
+                {index < aiTranslations.steps.length - 1 && (
+                  <div className="w-px bg-border flex-grow my-2" />
+                )}
+              </div>
+              {/* Step content */}
+              <div className="flex-1 min-w-0 pb-6">
+                <p className="font-medium mb-2 pt-1">{step}</p>
+                <div className="bg-muted rounded-lg h-40 flex items-center justify-center text-muted-foreground text-sm">
+                  {t.aiInstructions.screenshotAlt} {index + 1}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Steps */}
-        <Card className="mb-8">
-          <CardContent className="pt-6">
-            <h2 className="font-semibold mb-4">{t.aiInstructions.setupSteps}</h2>
-            <ol className="space-y-3">
-              {aiTranslations.steps.map((step, index) => (
-                <li key={index} className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 text-primary text-sm flex items-center justify-center font-medium">
-                    {index + 1}
-                  </span>
-                  <span className="text-sm pt-0.5">{step}</span>
+        {/* Troubleshooting - equal padding, icon */}
+        <Card className="mb-4">
+          <CardContent className="py-4">
+            <h2 className="font-semibold mb-3 flex items-center gap-2">
+              <span>🔧</span>
+              {t.aiInstructions.troubleshooting.title}
+            </h2>
+            <ul className="space-y-2 text-sm">
+              {t.aiInstructions.troubleshooting.tips.map((tip, index) => (
+                <li key={index} className="flex gap-2 text-muted-foreground">
+                  <span>•</span>
+                  <span>{tip}</span>
                 </li>
               ))}
-            </ol>
+            </ul>
+          </CardContent>
+        </Card>
+
+        {/* Common Issues - equal padding, icon */}
+        <Card className="mb-8">
+          <CardContent className="py-4">
+            <h2 className="font-semibold mb-3 flex items-center gap-2">
+              <span>❓</span>
+              {t.aiInstructions.commonIssues.title}
+            </h2>
+            <div className="space-y-3">
+              <div>
+                <h3 className="font-medium text-sm">{t.aiInstructions.commonIssues.encoding.title}</h3>
+                <p className="text-sm text-muted-foreground">{t.aiInstructions.commonIssues.encoding.description}</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-sm">{t.aiInstructions.commonIssues.truncation.title}</h3>
+                <p className="text-sm text-muted-foreground">{t.aiInstructions.commonIssues.truncation.description}</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-sm">{t.aiInstructions.commonIssues.cyrillic.title}</h3>
+                <p className="text-sm text-muted-foreground">{t.aiInstructions.commonIssues.cyrillic.description}</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 

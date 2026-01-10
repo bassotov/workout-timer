@@ -2,7 +2,7 @@
  * URL encoding/decoding utilities for workout timer
  */
 
-import type { Workout } from '@/types';
+import type { Workout, DecodeResult, UrlCorruptionType } from '@/types';
 import { isValidWorkout } from './validation';
 
 /**
@@ -186,4 +186,211 @@ export function extractWorkoutParam(url: string): string | null {
   } catch {
     return null;
   }
+}
+
+// ============================================================================
+// Diagnostic Decoder - Enhanced error detection for corrupted URLs
+// ============================================================================
+
+/**
+ * Detects control characters in a string (except valid whitespace)
+ * Common with Gemini's corrupted base64 output
+ */
+function detectControlCharacters(str: string): boolean {
+  for (let i = 0; i < str.length; i++) {
+    const code = str.charCodeAt(i);
+    // Control chars 0x00-0x1F except tab (0x09), newline (0x0A), carriage return (0x0D)
+    if (code < 0x20 && code !== 0x09 && code !== 0x0A && code !== 0x0D) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Attempts to strip control characters for recovery
+ */
+function stripControlCharacters(str: string): string {
+  return str.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
+}
+
+/**
+ * Detects invalid UTF-8 sequences (replacement characters, lone surrogates)
+ */
+function detectInvalidUtf8(str: string): boolean {
+  // Check for Unicode replacement character (appears when UTF-8 is corrupted)
+  if (str.includes('\uFFFD')) return true;
+
+  // Check for lone surrogates (invalid in well-formed UTF-8)
+  for (let i = 0; i < str.length; i++) {
+    const code = str.charCodeAt(i);
+    // High surrogate without low surrogate
+    if (code >= 0xd800 && code <= 0xdbff) {
+      const next = str.charCodeAt(i + 1);
+      if (isNaN(next) || next < 0xdc00 || next > 0xdfff) return true;
+    }
+    // Low surrogate without preceding high surrogate
+    if (code >= 0xdc00 && code <= 0xdfff) {
+      const prev = str.charCodeAt(i - 1);
+      if (isNaN(prev) || prev < 0xd800 || prev > 0xdbff) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Checks if base64 appears truncated
+ */
+function detectTruncation(encoded: string): boolean {
+  // Very short strings are likely truncated (minimum valid workout would be longer)
+  if (encoded.length < 50) return true;
+
+  // Base64 without padding should have length % 4 of 0, 2, or 3
+  // Length % 4 === 1 is always invalid and indicates truncation
+  const withoutPadding = encoded.replace(/=+$/, '');
+  return withoutPadding.length % 4 === 1;
+}
+
+/**
+ * Attempts to decode base64 with proper error reporting
+ * Returns decoded JSON string or error type
+ */
+function tryDecodeBase64(encoded: string): { json: string } | { errorType: UrlCorruptionType } {
+  try {
+    let base64 = decodeURIComponent(encoded);
+    base64 = base64.replace(/[\s-]/g, '+').replace(/_/g, '/');
+    while (base64.length % 4) base64 += '=';
+    const binaryString = atob(base64);
+    const bytes = Uint8Array.from(binaryString, (c) => c.charCodeAt(0));
+    const json = new TextDecoder().decode(bytes);
+    return { json };
+  } catch {
+    return { errorType: 'invalid_base64' };
+  }
+}
+
+/**
+ * Attempts to parse and validate workout JSON
+ * Returns workout or error type
+ */
+function tryParseWorkout(
+  json: string
+): { workout: Workout } | { errorType: UrlCorruptionType; details?: string } {
+  let data: unknown;
+  try {
+    data = JSON.parse(json);
+  } catch (e) {
+    return {
+      errorType: 'malformed_json',
+      details: e instanceof Error ? e.message : undefined,
+    };
+  }
+
+  const normalized = normalizeWorkout(data);
+  if (!isValidWorkout(normalized)) {
+    return { errorType: 'schema_mismatch' };
+  }
+
+  return { workout: normalized };
+}
+
+/**
+ * Error messages for each corruption type
+ */
+const ERROR_MESSAGES: Record<UrlCorruptionType, string> = {
+  control_characters: 'Link contains corrupted data',
+  invalid_utf8: 'Text encoding is corrupted',
+  malformed_json: 'Workout data is malformed',
+  invalid_base64: 'Could not decode link',
+  schema_mismatch: 'Workout structure is incorrect',
+  truncated: 'Link appears incomplete',
+  unknown: 'Could not process link',
+};
+
+/**
+ * Decodes a workout URL with detailed error diagnostics
+ * Provides specific error types to help users understand what went wrong
+ *
+ * @param encoded - The encoded workout string
+ * @returns DecodeResult with success/workout or error details
+ */
+export function decodeWorkoutUrlWithDiagnostics(encoded: string): DecodeResult {
+  // Check for truncation first
+  if (detectTruncation(encoded)) {
+    return {
+      success: false,
+      error: {
+        type: 'truncated',
+        message: ERROR_MESSAGES.truncated,
+      },
+    };
+  }
+
+  // Step 1: Decode base64
+  const decodeResult = tryDecodeBase64(encoded);
+  if ('errorType' in decodeResult) {
+    return {
+      success: false,
+      error: {
+        type: decodeResult.errorType,
+        message: ERROR_MESSAGES[decodeResult.errorType],
+      },
+    };
+  }
+
+  const { json } = decodeResult;
+
+  // Step 2: Check for control characters (common Gemini issue)
+  if (detectControlCharacters(json)) {
+    // Attempt recovery by stripping control characters
+    const cleanedJson = stripControlCharacters(json);
+    const recoveryResult = tryParseWorkout(cleanedJson);
+
+    if ('workout' in recoveryResult) {
+      return {
+        success: true,
+        workout: recoveryResult.workout,
+        recovered: true,
+      };
+    }
+
+    return {
+      success: false,
+      error: {
+        type: 'control_characters',
+        message: ERROR_MESSAGES.control_characters,
+        details: 'Gemini encoding issue - invalid characters in data',
+      },
+    };
+  }
+
+  // Step 3: Check for UTF-8 corruption
+  if (detectInvalidUtf8(json)) {
+    return {
+      success: false,
+      error: {
+        type: 'invalid_utf8',
+        message: ERROR_MESSAGES.invalid_utf8,
+        details: 'Cyrillic encoding issue - likely from Gemini',
+      },
+    };
+  }
+
+  // Step 4: Parse and validate
+  const parseResult = tryParseWorkout(json);
+  if ('errorType' in parseResult) {
+    return {
+      success: false,
+      error: {
+        type: parseResult.errorType,
+        message: ERROR_MESSAGES[parseResult.errorType],
+        details: parseResult.details,
+      },
+    };
+  }
+
+  return {
+    success: true,
+    workout: parseResult.workout,
+  };
 }

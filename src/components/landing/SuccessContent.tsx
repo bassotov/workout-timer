@@ -1,9 +1,14 @@
 'use client';
 
+import { useEffect } from 'react';
+import Link from 'next/link';
+import confetti from 'canvas-confetti';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ModelRecommendations } from '@/components/landing';
 import { useLanguage } from '@/i18n';
 import { generateInstructions } from '@/lib/instruction-generator';
+import { AI_CONFIG_KEYS } from '@/config';
 import type { PollAnswers } from '@/types';
 
 const TIMER_BASE_URL = 'https://workout-timer.app/timer';
@@ -15,6 +20,23 @@ interface SuccessContentProps {
 export function SuccessContent({ answers }: SuccessContentProps) {
   const { t } = useLanguage();
   const platform = answers.aiPlatform || 'chatgpt';
+  const hasInstructionPage = AI_CONFIG_KEYS.includes(platform as typeof AI_CONFIG_KEYS[number]);
+
+  // Confetti burst on mount
+  useEffect(() => {
+    // Left burst
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { x: 0, y: 0.6 },
+    });
+    // Right burst
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { x: 1, y: 0.6 },
+    });
+  }, []);
 
   const downloadInstructions = () => {
     const content = generateInstructions(answers, TIMER_BASE_URL);
@@ -31,7 +53,6 @@ export function SuccessContent({ answers }: SuccessContentProps) {
     localStorage.removeItem('workout-poll-answers');
   };
 
-  // Get platform steps from translations
   const getPlatformSteps = (): string[] => {
     const platformKey = platform as keyof typeof t.success.platformSteps;
     return t.success.platformSteps[platformKey] || t.success.platformSteps.other;
@@ -50,7 +71,8 @@ export function SuccessContent({ answers }: SuccessContentProps) {
         <Button onClick={downloadInstructions} className="w-full text-lg py-6 h-auto mb-4">
           📥 {t.success.downloadFile}
         </Button>
-        <Card className="text-left mb-6">
+        <ModelRecommendations platform={platform as 'chatgpt' | 'claude' | 'gemini' | 'other'} />
+        <Card className="text-left mb-4">
           <CardHeader>
             <CardTitle className="text-base">{t.success.nextSteps}</CardTitle>
           </CardHeader>
@@ -61,6 +83,13 @@ export function SuccessContent({ answers }: SuccessContentProps) {
             </ol>
           </CardContent>
         </Card>
+        {hasInstructionPage && (
+          <Button variant="secondary" asChild className="w-full mb-6">
+            <Link href={`/instructions/${platform}`}>
+              {t.success.detailedInstructions}
+            </Link>
+          </Button>
+        )}
         <Button variant="link" asChild>
           <a href="/timer">→ {t.success.openTimer}</a>
         </Button>

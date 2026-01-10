@@ -17,7 +17,7 @@ ALWAYS respond in {{LANGUAGE_NAME}}.
 <user_profile>
 name: {{USER_NAME}}
 {{GENDER_LINE}}{{WEIGHT_LINE}}{{HEIGHT_LINE}}{{BIRTH_YEAR_LINE}}equipment: {{EQUIPMENT}}
-goals: {{GOALS}}
+{{WEIGHT_PREFERENCE_LINE}}goals: {{GOALS}}
 training_type: {{TRAINING_TYPE}}
 limitations: {{LIMITATIONS}}
 tracker: {{TRACKER}}
@@ -78,6 +78,10 @@ CRITICAL - EVERY EXERCISE MUST HAVE EXACTLY THESE 3 FIELDS:
 The timer field MUST be called "duration" (integer, seconds).
 NEVER use: "time", "seconds", "dumbbells", "length", or ANY other name.
 If you use the wrong field name, the timer WILL NOT WORK.
+
+FOR WEIGHTED EXERCISES: Always include "weight" field with recommended weight.
+Example: "weight": "12kg" or "weight": "8kg each hand"
+{{WEIGHT_SCALING_GUIDE}}
 </schema_rules>
 
 <constraints>
@@ -159,6 +163,17 @@ const TRACKER_MAP: Record<Tracker, string> = {
   none: '',
 };
 
+type WeightPreference = 'light' | 'moderate' | 'medium' | 'heavy' | 'veryHeavy' | 'unknown';
+
+const WEIGHT_PREFERENCE_MAP: Record<WeightPreference, string> = {
+  light: '2kg/4lb for bicep curls (start light, can increase)',
+  moderate: '7kg/15lb for bicep curls',
+  medium: '12kg/25lb for bicep curls',
+  heavy: '15kg/35lb for bicep curls',
+  veryHeavy: '20kg+/45lb+ for bicep curls (experienced lifter)',
+  unknown: 'unknown (start with lighter weights, user can request heavier)',
+};
+
 function interpolate(template: string, variables: Record<string, string>): string {
   return template.replace(/\{\{(\w+)\}\}/g, (_, key) => variables[key] ?? '');
 }
@@ -189,8 +204,27 @@ const GENDER_MAP: Record<string, string> = {
 function getLinkFormatInstructions(platform: string): string {
   if (platform === 'gemini') {
     return `<link_format>
-IMPORTANT: Gemini cannot create clickable links that work properly.
+CRITICAL GEMINI ENCODING WARNING:
+Gemini's base64 encoding frequently produces CORRUPTED links with Russian text.
+Many users report broken links when using Cyrillic characters.
 
+REQUIRED STEPS TO AVOID CORRUPTION:
+1. Use ENGLISH exercise names only (not Russian/Cyrillic)
+2. Use this EXACT encoding method:
+   btoa(unescape(encodeURIComponent(JSON.stringify(workout))))
+3. VERIFY the resulting base64 contains ONLY: A-Z, a-z, 0-9, +, /, =
+4. If you see \\u0000 or other escape sequences, START OVER
+
+VALIDATION CHECKLIST before sharing link:
+- All exercise names are in English
+- Base64 string has no % symbols
+- Base64 string has no \\u escape sequences
+- Link does not exceed 2000 characters
+
+If encoding continues to fail, tell user:
+"I'm having trouble generating a reliable link. Please try asking ChatGPT or Claude instead, as they handle encoding better."
+
+OUTPUT FORMAT:
 Output the timer URL as PLAIN TEXT on its own line:
 https://workout-timer.app/timer?w=eyJuYW1l...
 
@@ -238,6 +272,29 @@ export function generateInstructions(answers: PollAnswers, timerUrl: string): st
   const birthYearLine = answers.birthYear ? `birth_year: ${answers.birthYear}\n` : '';
   const customGuidelinesLine = answers.customGuidelines ? `custom_guidelines: ${answers.customGuidelines}\n` : '';
 
+  // Weight preference for dumbbell exercises
+  const weightPrefRaw = answers.weightPreference || '';
+  const hasWeightPref = weightPrefRaw !== '';
+  const weightPref = weightPrefRaw as WeightPreference;
+  const weightPreferenceLine = hasWeightPref
+    ? `weight_preference: ${WEIGHT_PREFERENCE_MAP[weightPref] || weightPref}\n`
+    : '';
+
+  // Weight scaling guide (only if user has weight preference)
+  const weightScalingGuide = hasWeightPref && weightPref !== 'unknown'
+    ? `
+WEIGHT SCALING GUIDE (based on user's bicep curl preference):
+- Bicep curls: use user's preference as baseline
+- Goblet squats / lunges: ~1.5x bicep weight
+- Rows: ~1.2x bicep weight
+- Shoulder press: ~0.8x bicep weight
+- Lateral raises: ~0.5x bicep weight`
+    : hasWeightPref && weightPref === 'unknown'
+    ? `
+WEIGHT GUIDANCE: User is unsure of their weights.
+Start with LIGHTER weights and note "increase if too easy" in workout.`
+    : '';
+
   const platform = answers.aiPlatform || 'chatgpt';
 
   const variables: Record<string, string> = {
@@ -263,6 +320,8 @@ export function generateInstructions(answers: PollAnswers, timerUrl: string): st
     HEIGHT_LINE: heightLine,
     BIRTH_YEAR_LINE: birthYearLine,
     CUSTOM_GUIDELINES_LINE: customGuidelinesLine,
+    WEIGHT_PREFERENCE_LINE: weightPreferenceLine,
+    WEIGHT_SCALING_GUIDE: weightScalingGuide,
   };
 
   return interpolate(INSTRUCTION_TEMPLATE, variables);

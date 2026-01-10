@@ -7,3 +7,4 @@ export { PollStep } from './PollStep';
 export { PersonalDetailsForm } from './PersonalDetailsForm';
 export { PaymentSummary } from './PaymentSummary';
 export { SuccessContent } from './SuccessContent';
+export { ModelRecommendations } from './ModelRecommendations';

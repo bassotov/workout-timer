@@ -30,6 +30,18 @@ export const POLL_STEPS: PollStep[] = [
     ],
   },
   {
+    id: 'weightPreference',
+    options: [
+      { id: 'light' },      // 2kg / 4lb
+      { id: 'moderate' },   // 7kg / 15lb
+      { id: 'medium' },     // 12kg / 25lb
+      { id: 'heavy' },      // 15kg / 35lb
+      { id: 'veryHeavy' },  // 20kg+ / 45lb+
+      { id: 'unknown' },    // I don't know
+    ],
+    conditional: (answers) => ['home', 'fullgym'].includes(answers.equipment),
+  },
+  {
     id: 'goals',
     options: [{ id: 'muscle' }, { id: 'weight' }, { id: 'endurance' }, { id: 'general' }],
   },

@@ -7,6 +7,7 @@ export interface PollAnswers {
   aiPlatform: string;
   trainingType: string;
   equipment: string;
+  weightPreference: string;
   goals: string;
   tracker: string;
   coachingStyle: CoachingStyleId | '';
@@ -29,7 +30,7 @@ export interface PollAnswers {
   customTracker?: string;
 }
 
-export type PollStepId = 'language' | 'aiPlatform' | 'trainingType' | 'equipment' | 'goals' | 'tracker' | 'coachingStyle';
+export type PollStepId = 'language' | 'aiPlatform' | 'trainingType' | 'equipment' | 'weightPreference' | 'goals' | 'tracker' | 'coachingStyle';
 
 export interface PollOption {
   id: string;
@@ -40,4 +41,6 @@ export interface PollStep {
   id: PollStepId;
   multiSelect?: boolean;
   options: PollOption[];
+  /** Conditional function - step only shows if returns true */
+  conditional?: (answers: PollAnswers) => boolean;
 }

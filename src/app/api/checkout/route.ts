@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
       aiPlatform: answers.aiPlatform || '',
       trainingType: answers.trainingType || '',
       equipment: answers.equipment || '',
+      weightPreference: answers.weightPreference || '',
       goals: answers.goals || '',
       tracker: answers.tracker || '',
       coachingStyle: answers.coachingStyle || '',

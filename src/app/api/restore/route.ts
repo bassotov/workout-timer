@@ -66,6 +66,7 @@ export async function GET(request: NextRequest) {
       aiPlatform: order.metadata.aiPlatform || '',
       trainingType: order.metadata.trainingType || '',
       equipment: order.metadata.equipment || '',
+      weightPreference: order.metadata.weightPreference || '',
       goals: order.metadata.goals || '',
       tracker: order.metadata.tracker || '',
       coachingStyle: order.metadata.coachingStyle || '',

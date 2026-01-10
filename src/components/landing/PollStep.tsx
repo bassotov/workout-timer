@@ -101,9 +101,15 @@ export function PollStep({
             className="mb-8"
           />
 
-          <h2 className="text-2xl font-bold mb-6 text-center">
+          <h2 className="text-2xl font-bold mb-2 text-center">
             {stepTranslations.title}
           </h2>
+          {'subtitle' in stepTranslations && stepTranslations.subtitle && (
+            <p className="text-sm text-muted-foreground mb-6 text-center">
+              {stepTranslations.subtitle as string}
+            </p>
+          )}
+          {!('subtitle' in stepTranslations) && <div className="mb-4" />}
 
           <div className="grid grid-cols-2 gap-3">
             {step.options.map((option) => {

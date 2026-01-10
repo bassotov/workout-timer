@@ -15,7 +15,7 @@ export const en = {
     legal: 'Legal',
     privacy: 'Privacy',
     terms: 'Terms',
-    copyright: '© 2025 Workout Timer. All rights reserved.',
+    copyright: '© 2026 Workout Timer. All rights reserved.',
   },
 
   // Timer translations
@@ -25,14 +25,15 @@ export const en = {
     roundRest: 'REST',
     cooldown: 'COOLDOWN',
     complete: 'DONE',
+    countdown: 'GET READY',
     loading: 'Loading workout...',
   },
   demo: {
-    title: 'Workout Timer',
+    title: 'Workout Timer Demo',
     description: 'This timer loads workouts from URL parameters. Ask your AI to generate a workout link!',
     examplePrompt: 'Example prompt for your AI:',
     exampleText: 'Create a 20-minute upper body workout with dumbbells and give me a timer link',
-    tryDemo: 'Try Full Feature Demo',
+    tryDemo: 'Start Demo',
     includes: 'Includes: tracker popup, equipment preview, video links',
     urlFormat: 'URL format:',
   },
@@ -57,6 +58,44 @@ export const en = {
       checkLink: 'Make sure the full link was copied (should not end with "...")',
     },
     viewInstructions: 'View detailed instructions',
+    specific: {
+      control_characters: {
+        title: 'Corrupted Link Data',
+        description: 'The AI generated invalid characters in the workout data.',
+        fix: 'Try Gemini Thinking mode, or switch to ChatGPT/Claude.',
+      },
+      invalid_utf8: {
+        title: 'Encoding Error',
+        description: 'Russian/Cyrillic text was not encoded correctly.',
+        fix: 'Ask AI to use English exercise names, or try a thinking model.',
+      },
+      malformed_json: {
+        title: 'Malformed Data',
+        description: 'The workout data structure is broken.',
+        fix: 'Ask AI to regenerate the link carefully.',
+      },
+      invalid_base64: {
+        title: 'Invalid Link Format',
+        description: 'The link encoding is incorrect.',
+        fix: 'Ensure the entire link was copied. Ask AI to regenerate.',
+      },
+      schema_mismatch: {
+        title: 'Missing Workout Fields',
+        description: 'The workout is missing required information.',
+        fix: 'Ask AI to include all required fields (name, rounds, exercises with duration).',
+      },
+      truncated: {
+        title: 'Incomplete Link',
+        description: 'The link appears to be cut off.',
+        fix: 'Make sure you copied the entire link. Should not end with "..."',
+      },
+      unknown: {
+        title: 'Unknown Error',
+        description: 'Could not process the workout link.',
+        fix: 'Try regenerating the link or use a different AI model.',
+      },
+    },
+    geminiWarning: 'Gemini has known encoding issues. Consider using ChatGPT or Claude for more reliable links.',
   },
   controls: {
     pause: 'PAUSE',
@@ -69,6 +108,7 @@ export const en = {
   },
   workout: {
     next: 'Next:',
+    restGetReady: 'Rest. Get ready!',
     roundComplete: 'Round',
     prepareRound: 'Prepare for round',
     greatWork: 'Great Work!',
@@ -159,6 +199,18 @@ export const en = {
           home: 'Home gym (dumbbells, bands)',
           fullgym: 'Full gym access',
           custom: 'Let me specify...',
+        },
+      },
+      weightPreference: {
+        title: 'What weight for dumbbell bicep curls?',
+        subtitle: 'Helps AI suggest appropriate weights for all exercises',
+        options: {
+          light: '2kg / 4lb',
+          moderate: '7kg / 15lb',
+          medium: '12kg / 25lb',
+          heavy: '15kg / 35lb',
+          veryHeavy: '20kg+ / 45lb+',
+          unknown: "I don't know yet",
         },
       },
       goals: {
@@ -282,6 +334,7 @@ export const en = {
     nextSteps: 'Next steps:',
     askWorkout: 'Ask for a workout!',
     openTimer: 'Open timer',
+    detailedInstructions: 'Detailed instructions',
     modelTip: 'Pro tip',
     modelRecommendations: {
       chatgpt: 'GPT-5.2 works well. If you experience encoding issues, try the thinking or pro model.',
@@ -315,7 +368,7 @@ export const en = {
         'Make sure you copied the entire link',
         'Ask AI to regenerate with proper base64 encoding',
         'Switch to a thinking/reasoning model',
-        'For Cyrillic issues, try English exercise names first',
+        'If errors persist, ask AI to translate workout to English',
       ],
     },
     commonIssues: {
@@ -336,34 +389,43 @@ export const en = {
     screenshotAlt: 'Setup step screenshot',
     stepByStep: 'Step-by-step guide',
     chatgpt: {
-      description: 'Learn how to set up your personalized workout instructions in ChatGPT using GPTs or Projects.',
+      subtitle: 'Log in. Create GPT. Add file. Ask for a workout.',
       steps: [
         'Open chatgpt.com and sign in',
         'Create a new GPT or start a Project',
-        'Paste your instructions file contents into the instructions',
-        'Ask ChatGPT to create a workout for you!',
+        'Paste your instructions file contents',
+        'Ask for a workout!',
       ],
-      modelTip: 'GPT-5.2 works best. For encoding issues, try the thinking or pro model.',
+      modelTip: {
+        title: 'Works best with GPT-5.2',
+        subtitle: 'If it glitches, try the thinking or pro model.',
+      },
     },
     claude: {
-      description: 'Set up Claude as your personal trainer using Projects for persistent workout context.',
+      subtitle: 'Log in. Create project. Add file. Ask for a workout.',
       steps: [
         'Open claude.ai and sign in',
         'Create a new Project',
-        'Add your instructions file to Project Instructions',
-        'Start chatting and ask for workouts!',
+        'Add your instructions to Project Instructions',
+        'Ask for a workout!',
       ],
-      modelTip: 'Sonnet or Opus recommended. Use Projects for the best experience.',
+      modelTip: {
+        title: 'Works best with Sonnet 4.5 or Opus 4.5',
+        subtitle: 'If Sonnet glitches, try Opus. But Claude is very stable.',
+      },
     },
     gemini: {
-      description: 'Configure Google Gemini with custom Gems for AI-powered workout generation.',
+      subtitle: 'Log in. Create Gem. Add file. Ask for a workout.',
       steps: [
         'Open Gemini and sign in with Google',
         'Create a new Gem',
-        'Paste your instructions file into system instructions',
-        'Use your Gem to generate workouts!',
+        'Paste your instructions into system instructions',
+        'Ask for a workout!',
       ],
-      modelTip: 'Select the thinking model for reliable link generation.',
+      modelTip: {
+        title: 'Works best with Thinking model',
+        subtitle: 'Flash 3.0 or "Fast" mode makes mistakes often.',
+      },
     },
   },
 };

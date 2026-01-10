@@ -1,4 +1,3 @@
-import { Badge } from '@/components/ui/badge';
 import type { TimerPhase } from '@/types';
 
 interface Translations {
@@ -7,12 +6,23 @@ interface Translations {
   roundRest: string;
   cooldown: string;
   complete: string;
+  countdown: string;
 }
 
 interface PhaseIndicatorProps {
   phase: TimerPhase;
   translations: Translations;
 }
+
+const PHASE_EMOJIS: Record<string, string> = {
+  work: '💪',
+  exercise: '💪',
+  countdown: '🔥',
+  rest: '😮‍💨',
+  roundRest: '😮‍💨',
+  cooldown: '🧘',
+  complete: '🎉',
+};
 
 const phaseToTranslationKey: Record<string, keyof Translations | null> = {
   work: 'work',
@@ -21,14 +31,14 @@ const phaseToTranslationKey: Record<string, keyof Translations | null> = {
   roundRest: 'roundRest',
   cooldown: 'cooldown',
   complete: 'complete',
+  countdown: 'countdown',
   idle: null,
   tracker: null,
-  countdown: null,
 };
 
 /**
- * Displays the current phase name as a badge.
- * Shows GET READY, WORK, REST, ROUND REST, COOLDOWN, or COMPLETE.
+ * Displays the current phase name with emoji.
+ * Shows GET READY, WORK, REST, COOLDOWN, or COMPLETE with contextual emoji.
  */
 export function PhaseIndicator({ phase, translations }: PhaseIndicatorProps) {
   const translationKey = phaseToTranslationKey[phase];
@@ -38,13 +48,12 @@ export function PhaseIndicator({ phase, translations }: PhaseIndicatorProps) {
   }
 
   const phaseLabel = translations[translationKey];
+  const emoji = PHASE_EMOJIS[phase] || '';
 
   return (
-    <Badge
-      variant="secondary"
-      className="bg-white/20 text-white border-0"
-    >
-      {phaseLabel}
-    </Badge>
+    <div className="flex items-center gap-2 text-white">
+      <span className="text-2xl">{emoji}</span>
+      <span className="text-xl font-bold tracking-wide">{phaseLabel}</span>
+    </div>
   );
 }

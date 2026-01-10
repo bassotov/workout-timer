@@ -88,14 +88,14 @@ function createReducer(workout: Workout | null) {
           return { ...state, phase: 'work', exerciseIndex: nextIndex, timeLeft: exercises[nextIndex].duration };
         }
 
-        // roundRest -> countdown (next round)
+        // roundRest -> work (next round, skip countdown)
         if (phase === 'roundRest') {
           return {
             ...state,
-            phase: 'countdown',
+            phase: 'work',
             currentRound: currentRound + 1,
             exerciseIndex: 0,
-            timeLeft: COUNTDOWN_DURATION,
+            timeLeft: exercises[0].duration,
           };
         }
 

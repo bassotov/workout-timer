@@ -19,6 +19,7 @@ export {
   encodeWorkoutUrl,
   decodeWorkoutUrl,
   safeDecodeWorkoutUrl,
+  decodeWorkoutUrlWithDiagnostics,
   generateTimerUrl,
   extractWorkoutParam,
 } from './url';
