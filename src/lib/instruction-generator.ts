@@ -101,18 +101,7 @@ Provide as clickable markdown link.
 4. Offer to adjust if needed
 </response_format>
 
-<link_format>
-IMPORTANT: Present the timer URL as a clickable link, NOT as a search query.
-
-Correct format:
-**[Start Workout](https://workout-timer.app/timer?w=eyJuYW1l...)**
-
-Or as a raw URL on its own line:
-https://workout-timer.app/timer?w=eyJuYW1l...
-
-NEVER wrap the URL in a Google search or any other search engine.
-NEVER output: google.com/search?q=https://workout-timer.app/...
-</link_format>
+{{LINK_FORMAT}}
 
 <example_response>
 {{EXAMPLE_RESPONSE}}
@@ -181,6 +170,30 @@ const GENDER_MAP: Record<string, string> = {
   prefer_not_to_say: 'Not specified',
 };
 
+function getLinkFormatInstructions(platform: string): string {
+  if (platform === 'gemini') {
+    return `<link_format>
+IMPORTANT: Gemini cannot create clickable links that work properly.
+
+Output the timer URL as PLAIN TEXT on its own line:
+https://workout-timer.app/timer?w=eyJuYW1l...
+
+Then tell the user: "Copy this link and paste it into your browser address bar."
+
+Do NOT use markdown link format - it will redirect to Google Search.
+</link_format>`;
+  }
+
+  // Default for ChatGPT, Claude, and others
+  return `<link_format>
+Present the timer URL as a clickable markdown link:
+**[Start Workout](https://workout-timer.app/timer?w=eyJuYW1l...)**
+
+Or as a raw URL on its own line:
+https://workout-timer.app/timer?w=eyJuYW1l...
+</link_format>`;
+}
+
 export function generateInstructions(answers: PollAnswers, timerUrl: string): string {
   const lang = answers.language || 'en';
   const equipment = (Array.isArray(answers.equipment) ? answers.equipment[0] : answers.equipment) as Equipment || 'home';
@@ -209,6 +222,8 @@ export function generateInstructions(answers: PollAnswers, timerUrl: string): st
   const birthYearLine = answers.birthYear ? `birth_year: ${answers.birthYear}\n` : '';
   const customGuidelinesLine = answers.customGuidelines ? `custom_guidelines: ${answers.customGuidelines}\n` : '';
 
+  const platform = answers.aiPlatform || 'chatgpt';
+
   const variables: Record<string, string> = {
     USER_NAME: answers.name || 'User',
     LANGUAGE_NAME: lang === 'ru' ? 'Russian' : 'English',
@@ -224,6 +239,7 @@ export function generateInstructions(answers: PollAnswers, timerUrl: string): st
     TIMER_BASE_URL: timerUrl,
     COACHING_STYLE_DESCRIPTION: buildCoachingStyleDescription(coachingStyle, lang),
     EXAMPLE_RESPONSE: getExampleResponse(coachingStyle, lang),
+    LINK_FORMAT: getLinkFormatInstructions(platform),
 
     // Optional profile fields
     GENDER_LINE: genderLine,
