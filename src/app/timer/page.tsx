@@ -9,9 +9,9 @@ import {
   LoadingScreen, DemoScreen, ErrorScreen, ReadyScreen,
 } from '@/components/timer';
 import { useTimer } from '@/hooks';
-import { useTranslations } from '@/i18n';
+import { useTranslations, detectBrowserLanguage } from '@/i18n';
 import { decodeWorkoutUrlWithDiagnostics } from '@/lib/url';
-import { PHASE_COLORS, COOLDOWN_STRETCHES, BEEP_FREQUENCY, BEEP_GAIN, BEEP_DURATION, BEEP_THRESHOLD, DEMO_WORKOUT } from '@/config';
+import { PHASE_COLORS, COOLDOWN_STRETCHES, BEEP_FREQUENCY, BEEP_GAIN, BEEP_DURATION, BEEP_THRESHOLD, getDemoWorkout } from '@/config';
 import type { Workout, TimerPhase } from '@/types';
 
 function TimerContent() {
@@ -19,6 +19,7 @@ function TimerContent() {
   const [demoWorkout, setDemoWorkout] = useState<Workout | null>(null);
 
   const workoutParam = searchParams.get('w');
+  const langParam = searchParams.get('lang') as 'en' | 'ru' | null;
 
   // Decode workout with diagnostic error detection
   const { parsedWorkout, decodeError } = useMemo(() => {
@@ -34,9 +35,10 @@ function TimerContent() {
   const hasInvalidUrl = workoutParam && !parsedWorkout;
 
   const workout = demoWorkout || parsedWorkout;
-  const t = useTranslations(workout?.lang || 'en');
+  const effectiveLang = workout?.lang || langParam || 'en';
+  const t = useTranslations(effectiveLang);
   const timer = useTimer(workout);
-  const cooldownStretches = COOLDOWN_STRETCHES[workout?.lang || 'en'];
+  const cooldownStretches = COOLDOWN_STRETCHES[effectiveLang];
 
   const playBeep = useCallback(() => {
     try {
@@ -76,11 +78,11 @@ function TimerContent() {
 
   // Show error screen if URL param exists but failed to decode
   if (!workout && hasInvalidUrl) {
-    return <ErrorScreen onLoadDemo={() => setDemoWorkout(DEMO_WORKOUT)} errorType={decodeError?.type} />;
+    return <ErrorScreen onLoadDemo={() => setDemoWorkout(getDemoWorkout(langParam || detectBrowserLanguage()))} errorType={decodeError?.type} />;
   }
 
   // Show demo screen if no workout URL provided
-  if (!workout) return <DemoScreen onLoadDemo={() => setDemoWorkout(DEMO_WORKOUT)} />;
+  if (!workout) return <DemoScreen onLoadDemo={() => setDemoWorkout(getDemoWorkout(langParam || detectBrowserLanguage()))} lang={langParam || undefined} />;
 
   const trackerTranslations = { trackerTitle: t.tracker.title, trackerReady: t.tracker.ready, trackerWhoop: t.tracker.whoop, trackerApple: t.tracker.apple, trackerGarmin: t.tracker.garmin, reset: t.controls.reset };
 

@@ -169,7 +169,7 @@ export default function LandingPage() {
   // Landing page (default)
   return (
     <main className="min-h-dvh bg-background text-foreground">
-      <Header />
+      <Header onCtaClick={goToPoll} />
       <div className="pt-14 md:pt-28">
         <section id="hero">
           <Hero onStart={goToPoll} />

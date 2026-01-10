@@ -3,12 +3,14 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { LanguageSwitcher } from './language-switcher';
+import { Button } from './button';
 import { useLanguage } from '@/i18n';
 
 interface HeaderProps {
   showLanguageSwitcher?: boolean;
   showNav?: boolean;
   className?: string;
+  onCtaClick?: () => void;
 }
 
 const NAV_ITEMS = [
@@ -20,6 +22,7 @@ export function Header({
   showLanguageSwitcher = true,
   showNav = true,
   className,
+  onCtaClick,
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -83,6 +86,13 @@ export function Header({
           {/* Language switcher - always visible */}
           {showLanguageSwitcher && <LanguageSwitcher />}
 
+          {/* CTA button - desktop */}
+          {showNav && onCtaClick && (
+            <Button size="sm" className="hidden md:inline-flex" onClick={onCtaClick}>
+              {t.footer?.getStarted ?? 'Get Started'}
+            </Button>
+          )}
+
           {/* Hamburger button - mobile */}
           {showNav && (
             <button
@@ -131,6 +141,11 @@ export function Header({
                   {navLabels[item.labelKey]}
                 </a>
               ))}
+              {onCtaClick && (
+                <Button size="sm" className="mt-2" onClick={() => { handleNavClick(); onCtaClick(); }}>
+                  {t.footer?.getStarted ?? 'Get Started'}
+                </Button>
+              )}
             </nav>
           </div>
         )}

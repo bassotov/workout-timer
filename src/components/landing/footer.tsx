@@ -10,7 +10,7 @@ const AI_PLATFORMS = [
 ] as const;
 
 export function Footer() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <footer className="border-t border-white/10 bg-muted/30">
@@ -35,7 +35,7 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/timer"
+                  href={`/timer?lang=${language}`}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {t.footer?.timerDemo ?? 'Timer Demo'}
@@ -48,6 +48,14 @@ export function Footer() {
                 >
                   {t.footer?.getStarted ?? 'Get Started'}
                 </a>
+              </li>
+              <li>
+                <Link
+                  href="/restore"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {t.footer?.restoreFile ?? 'Restore File'}
+                </Link>
               </li>
             </ul>
           </div>

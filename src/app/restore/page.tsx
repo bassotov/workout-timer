@@ -8,23 +8,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
 export default function RestorePage() {
-  const [orderId, setOrderId] = useState('');
+  const [email, setEmail] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!orderId.trim()) {
-      setError('Please enter your order ID');
-      return;
-    }
-
+  const downloadFile = async () => {
     setStatus('loading');
     setError('');
 
     try {
-      const response = await fetch(`/api/restore?order_id=${encodeURIComponent(orderId.trim())}`);
+      const response = await fetch(`/api/restore?email=${encodeURIComponent(email.trim())}`);
 
       if (!response.ok) {
         const data = await response.json();
@@ -54,6 +47,23 @@ export default function RestorePage() {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email.trim()) {
+      setError('Please enter your email address');
+      return;
+    }
+
+    // Basic email validation
+    if (!email.includes('@') || !email.includes('.')) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    downloadFile();
+  };
+
   return (
     <main className="min-h-dvh bg-background text-foreground flex items-center justify-center p-6">
       <div className="w-full max-w-md">
@@ -61,7 +71,7 @@ export default function RestorePage() {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Restore Your File</CardTitle>
             <CardDescription>
-              Enter your order ID to download your personalized SKILL.md file
+              Enter your e-mail to re-download your file
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -69,24 +79,34 @@ export default function RestorePage() {
               <div className="text-center space-y-4">
                 <div className="text-4xl">🎉</div>
                 <p className="text-green-500 font-medium">File downloaded successfully!</p>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setStatus('idle');
-                    setOrderId('');
-                  }}
-                >
-                  Download Again
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => {
+                      setStatus('idle');
+                      setEmail('');
+                    }}
+                  >
+                    ← Back
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={downloadFile}
+                  >
+                    Download Again
+                  </Button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <Input
-                    type="text"
-                    value={orderId}
-                    onChange={(e) => setOrderId(e.target.value)}
-                    placeholder="Enter your order ID"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Use the e-mail linked to your order"
                     disabled={status === 'loading'}
                     className={error ? 'border-destructive' : ''}
                   />
@@ -99,11 +119,8 @@ export default function RestorePage() {
                   className="w-full"
                   disabled={status === 'loading'}
                 >
-                  {status === 'loading' ? 'Generating...' : 'Download File'}
+                  {status === 'loading' ? 'Looking up...' : 'Download File'}
                 </Button>
-                <p className="text-sm text-muted-foreground text-center">
-                  Find your order ID in your Polar purchase confirmation email
-                </p>
               </form>
             )}
           </CardContent>

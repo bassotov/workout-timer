@@ -44,10 +44,9 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
         variant="ghost"
         size="sm"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-2 py-1 h-auto text-sm"
+        className="flex items-center gap-1 px-2 py-1 h-auto text-sm"
       >
-        <span>{LANGUAGE_FLAGS[language]}</span>
-        <span>{LANGUAGE_NAMES[language]}</span>
+        <span>{language.toUpperCase()}</span>
         <HugeiconsIcon icon={ArrowDown01Icon} size={12} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </Button>
 

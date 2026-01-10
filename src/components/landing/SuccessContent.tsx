@@ -44,7 +44,7 @@ export function SuccessContent({ answers }: SuccessContentProps) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    const safeName = answers.name?.replace(/[^a-zA-ZА-Яа-яЁё0-9]/g, '_').toUpperCase() || 'USER';
+    const safeName = answers.name?.replace(/[<>:"/\\|?*]/g, '_').trim() || 'USER';
     a.download = `${safeName}_WORKOUT_INSTRUCTIONS.md`;
     document.body.appendChild(a);
     a.click();
@@ -91,8 +91,14 @@ export function SuccessContent({ answers }: SuccessContentProps) {
           </Button>
         )}
         <Button variant="link" asChild>
-          <a href="/timer">→ {t.success.openTimer}</a>
+          <a href={`/timer?lang=${answers.language || 'en'}`}>→ {t.success.openTimer}</a>
         </Button>
+        <p className="text-xs text-muted-foreground mt-6">
+          {t.success.restoreNote}{' '}
+          <Link href="/restore" className="underline hover:text-foreground">
+            {t.success.restoreLink}
+          </Link>
+        </p>
       </div>
     </div>
   );

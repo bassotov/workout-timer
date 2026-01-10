@@ -14,6 +14,7 @@ export const ru: TranslationKeys = {
     timerDemo: 'Демо таймера',
     getStarted: 'Начать',
     resources: 'Ресурсы',
+    restoreFile: 'Восстановить файл',
     legal: 'Правовая информация',
     privacy: 'Конфиденциальность',
     terms: 'Условия',
@@ -135,6 +136,15 @@ export const ru: TranslationKeys = {
     { name: 'Лежачий твист', duration: 40, desc: 'На спине, колени в сторону, 20 сек на сторону' },
     { name: 'Растяжка бёдер', duration: 60, desc: 'Полуголубь, 30 сек на ногу' },
   ],
+  demoWorkout: {
+    name: 'Полное демо',
+    exercises: [
+      { name: 'Гоблет-приседания', reps: 'x12', weight: '16кг', equipment: 'гантель' },
+      { name: 'Отжимания', reps: 'x10', equipment: 'свой вес' },
+      { name: 'Тяга гантели в наклоне', reps: 'x10 на руку', weight: '12кг', equipment: 'гантель + скамья' },
+      { name: 'Планка', reps: '30 сек', equipment: 'коврик' },
+    ],
+  },
   coachingStyles: {
     motivator: {
       description:
@@ -348,6 +358,8 @@ export const ru: TranslationKeys = {
       gemini: ['Откройте Gemini', 'Создайте новый Gem', 'Вставьте содержимое в системные инструкции'],
       other: ['Откройте ваш AI-ассистент', 'Начните новый чат', 'Вставьте содержимое файла как первое сообщение'],
     },
+    restoreNote: 'Потеряли файл? Вы можете скачать его повторно, используя email.',
+    restoreLink: 'Восстановить файл',
   },
 
   // Common

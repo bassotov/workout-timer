@@ -12,6 +12,7 @@ export const en = {
     timerDemo: 'Timer Demo',
     getStarted: 'Get Started',
     resources: 'Resources',
+    restoreFile: 'Restore File',
     legal: 'Legal',
     privacy: 'Privacy',
     terms: 'Terms',
@@ -133,6 +134,15 @@ export const en = {
     { name: 'Lying Twist', duration: 40, desc: 'On back, knees to side, 20s per side' },
     { name: 'Hip Stretch', duration: 60, desc: 'Half pigeon, 30s per leg' },
   ],
+  demoWorkout: {
+    name: 'Full Feature Demo',
+    exercises: [
+      { name: 'Goblet Squats', reps: 'x12', weight: '16kg', equipment: 'dumbbell' },
+      { name: 'Push-ups', reps: 'x10', equipment: 'bodyweight' },
+      { name: 'Dumbbell Rows', reps: 'x10 each', weight: '12kg', equipment: 'dumbbell + bench' },
+      { name: 'Plank', reps: '30 sec', equipment: 'mat' },
+    ],
+  },
   coachingStyles: {
     motivator: {
       description:
@@ -348,6 +358,8 @@ export const en = {
       gemini: ['Open Gemini', 'Create a new Gem', 'Paste contents into system instructions'],
       other: ['Open your AI assistant', 'Start a new chat', 'Paste file contents as your first message'],
     },
+    restoreNote: 'Lost your file? You can re-download it anytime using your email.',
+    restoreLink: 'Restore file',
   },
 
   // Common

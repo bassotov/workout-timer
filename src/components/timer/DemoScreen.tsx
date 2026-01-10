@@ -6,11 +6,12 @@ import { useTranslations, detectBrowserLanguage } from '@/i18n';
 
 interface DemoScreenProps {
   onLoadDemo: () => void;
+  lang?: 'en' | 'ru';
 }
 
-export function DemoScreen({ onLoadDemo }: DemoScreenProps) {
-  const lang = detectBrowserLanguage();
-  const t = useTranslations(lang);
+export function DemoScreen({ onLoadDemo, lang }: DemoScreenProps) {
+  const effectiveLang = lang || detectBrowserLanguage();
+  const t = useTranslations(effectiveLang);
 
   return (
     <div className="min-h-dvh bg-background flex flex-col items-center justify-center p-6 safe-area-inset text-foreground">

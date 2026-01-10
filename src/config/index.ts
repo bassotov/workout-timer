@@ -19,7 +19,7 @@ export { PHASE_COLORS } from './phase-colors';
 export { COOLDOWN_STRETCHES } from './cooldown';
 export type { CooldownStretch, Lang } from './cooldown';
 
-export { DEMO_WORKOUT } from './demo-workout';
+export { DEMO_WORKOUT, getDemoWorkout } from './demo-workout';
 
 export { COACHING_STYLES } from './coaching-styles';
 export type { CoachingStyle, CoachingStyleId } from './coaching-styles';
