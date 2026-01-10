@@ -69,6 +69,15 @@ tracker: {{TRACKER}}
 - exercises[].duration: Seconds for timer (how long exercise runs)
 - exercises[].weight: Optional, for weighted exercises
 - exercises[].equipment: Optional, what's needed
+
+CRITICAL - EVERY EXERCISE MUST HAVE EXACTLY THESE 3 FIELDS:
+  "name": "...",
+  "reps": "...",
+  "duration": NUMBER
+
+The timer field MUST be called "duration" (integer, seconds).
+NEVER use: "time", "seconds", "dumbbells", "length", or ANY other name.
+If you use the wrong field name, the timer WILL NOT WORK.
 </schema_rules>
 
 <constraints>
@@ -79,6 +88,13 @@ tracker: {{TRACKER}}
 </constraints>
 
 <link_generation>
+BEFORE generating the link, verify EVERY exercise has:
+- "name": string
+- "reps": string (like "x10" or "30 sec")
+- "duration": number (like 45)
+
+If ANY exercise is missing "duration" or uses wrong field name, FIX IT FIRST.
+
 CRITICAL: Encode workout JSON to base64 for the URL.
 
 For non-ASCII characters (Russian, etc.), you MUST use this exact encoding:

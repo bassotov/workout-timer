@@ -6,6 +6,60 @@ import type { Workout } from '@/types';
 import { isValidWorkout } from './validation';
 
 /**
+ * Common field name typos/alternatives that LLMs generate
+ */
+const DURATION_ALIASES = ['time', 'durbation', 'duraction', 'seconds', 'length', 'sec', 'secs'];
+const REPS_ALIASES = ['ress', 'rep', 'repetitions', 'reps_count'];
+
+/**
+ * Normalizes exercise fields to handle common LLM typos
+ */
+function normalizeExercise(ex: Record<string, unknown>): Record<string, unknown> {
+  const normalized = { ...ex };
+
+  // Fix duration field typos
+  if (!('duration' in normalized)) {
+    for (const alias of DURATION_ALIASES) {
+      if (alias in normalized && typeof normalized[alias] === 'number') {
+        normalized.duration = normalized[alias];
+        delete normalized[alias];
+        break;
+      }
+    }
+  }
+
+  // Fix reps field typos
+  if (!('reps' in normalized)) {
+    for (const alias of REPS_ALIASES) {
+      if (alias in normalized && typeof normalized[alias] === 'string') {
+        normalized.reps = normalized[alias];
+        delete normalized[alias];
+        break;
+      }
+    }
+  }
+
+  return normalized;
+}
+
+/**
+ * Normalizes workout data to fix common LLM generation errors
+ */
+function normalizeWorkout(data: unknown): unknown {
+  if (!data || typeof data !== 'object') return data;
+
+  const workout = data as Record<string, unknown>;
+  if (!Array.isArray(workout.exercises)) return data;
+
+  return {
+    ...workout,
+    exercises: workout.exercises.map((ex) =>
+      typeof ex === 'object' && ex !== null ? normalizeExercise(ex as Record<string, unknown>) : ex
+    ),
+  };
+}
+
+/**
  * Encodes a workout object to a URL-safe base64 string
  * Uses URL-safe base64 encoding: + -> -, / -> _, padding removed
  *
@@ -64,8 +118,9 @@ export function safeDecodeWorkoutUrl(encoded: string): Workout | null {
   // Try standard base64 first (preferred format)
   try {
     const data = decodeWorkoutUrl(encoded);
-    if (isValidWorkout(data)) {
-      return data;
+    const normalized = normalizeWorkout(data);
+    if (isValidWorkout(normalized)) {
+      return normalized;
     }
   } catch {
     // Continue to fallbacks
@@ -75,8 +130,9 @@ export function safeDecodeWorkoutUrl(encoded: string): Workout | null {
   try {
     const urlDecoded = decodeURIComponent(encoded);
     const data = JSON.parse(urlDecoded);
-    if (isValidWorkout(data)) {
-      return data;
+    const normalized = normalizeWorkout(data);
+    if (isValidWorkout(normalized)) {
+      return normalized;
     }
   } catch {
     // Continue to next fallback
@@ -89,8 +145,9 @@ export function safeDecodeWorkoutUrl(encoded: string): Workout | null {
       decoded = decodeURIComponent(decoded);
       try {
         const data = JSON.parse(decoded);
-        if (isValidWorkout(data)) {
-          return data;
+        const normalized = normalizeWorkout(data);
+        if (isValidWorkout(normalized)) {
+          return normalized;
         }
       } catch {
         // Not valid JSON yet, continue decoding

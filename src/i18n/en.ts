@@ -38,9 +38,25 @@ export const en = {
   },
   error: {
     title: 'Invalid Workout Link',
-    description: 'The workout link appears to be incorrectly formatted. This can happen when the AI uses wrong encoding.',
+    description: 'The workout link appears to be incorrectly formatted.',
+    apology: "We're sorry for this experience. This usually happens due to AI encoding issues, not something you did wrong.",
     hint: 'What to do:',
     suggestion: 'Ask your AI to regenerate the workout link. Make sure it uses base64 encoding.',
+    commonReasons: {
+      title: 'Common causes',
+      badEncoding: 'AI used incorrect URL encoding',
+      wrongModel: 'Model not following instructions properly',
+      cyrillicIssue: 'Cyrillic characters not encoded correctly',
+      truncatedLink: 'Link was cut off or truncated',
+    },
+    solutions: {
+      title: 'Try these fixes',
+      regenerate: 'Ask AI to regenerate the link with proper base64 encoding',
+      switchModel: 'Try a thinking/reasoning model (GPT-5.2, Claude Opus, Gemini thinking)',
+      useEnglish: 'If using Russian, try English exercise names first',
+      checkLink: 'Make sure the full link was copied (should not end with "...")',
+    },
+    viewInstructions: 'View detailed instructions',
   },
   controls: {
     pause: 'PAUSE',
@@ -266,6 +282,13 @@ export const en = {
     nextSteps: 'Next steps:',
     askWorkout: 'Ask for a workout!',
     openTimer: 'Open timer',
+    modelTip: 'Pro tip',
+    modelRecommendations: {
+      chatgpt: 'GPT-5.2 works well. If you experience encoding issues, try the thinking or pro model.',
+      claude: 'Sonnet or Opus recommended. Projects feature works best for persistent context.',
+      gemini: 'Select the thinking model for more reliable link generation.',
+      other: 'Use the most capable model available. Thinking models produce better formatted links.',
+    },
     platformSteps: {
       chatgpt: ['Open chatgpt.com', 'Create a new GPT or project', 'Paste the file contents into instructions'],
       claude: ['Open claude.ai', 'Create a new project', 'Paste contents into Project Instructions'],
@@ -285,6 +308,33 @@ export const en = {
     noFileYet: "Don't have your instructions file yet?",
     getFile: 'Get Your Setup File',
     howToUse: 'How to use with',
+    modelRecommendation: 'Recommended Model',
+    troubleshooting: {
+      title: 'Troubleshooting',
+      tips: [
+        'Make sure you copied the entire link',
+        'Ask AI to regenerate with proper base64 encoding',
+        'Switch to a thinking/reasoning model',
+        'For Cyrillic issues, try English exercise names first',
+      ],
+    },
+    commonIssues: {
+      title: 'Common Issues',
+      encoding: {
+        title: 'Encoding Problems',
+        description: 'If links contain broken characters or don\'t work, ask AI to use URL-safe base64 encoding.',
+      },
+      truncation: {
+        title: 'Truncated Links',
+        description: 'Long workout links may get cut off. Ask AI to shorten exercise names or reduce exercises.',
+      },
+      cyrillic: {
+        title: 'Cyrillic Text Issues',
+        description: 'Russian text needs special handling. Use thinking models or ask for English exercise names.',
+      },
+    },
+    screenshotAlt: 'Setup step screenshot',
+    stepByStep: 'Step-by-step guide',
     chatgpt: {
       description: 'Learn how to set up your personalized workout instructions in ChatGPT using GPTs or Projects.',
       steps: [
@@ -293,6 +343,7 @@ export const en = {
         'Paste your instructions file contents into the instructions',
         'Ask ChatGPT to create a workout for you!',
       ],
+      modelTip: 'GPT-5.2 works best. For encoding issues, try the thinking or pro model.',
     },
     claude: {
       description: 'Set up Claude as your personal trainer using Projects for persistent workout context.',
@@ -302,6 +353,7 @@ export const en = {
         'Add your instructions file to Project Instructions',
         'Start chatting and ask for workouts!',
       ],
+      modelTip: 'Sonnet or Opus recommended. Use Projects for the best experience.',
     },
     gemini: {
       description: 'Configure Google Gemini with custom Gems for AI-powered workout generation.',
@@ -311,6 +363,7 @@ export const en = {
         'Paste your instructions file into system instructions',
         'Use your Gem to generate workouts!',
       ],
+      modelTip: 'Select the thinking model for reliable link generation.',
     },
   },
 };
