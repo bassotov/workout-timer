@@ -47,6 +47,7 @@ export default function LandingPage() {
   const [pollStep, setPollStep] = useState(0);
   const [answers, setAnswers] = useState<PollAnswers>(defaultAnswers);
   const [isLoading, setIsLoading] = useState(true);
+  const [emailTouched, setEmailTouched] = useState(false);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -82,6 +83,10 @@ export default function LandingPage() {
   const updateAnswer = <K extends keyof PollAnswers>(key: K, value: PollAnswers[K]) => {
     const newAnswers = { ...answers, [key]: value };
     saveAnswers(newAnswers);
+  };
+
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   if (isLoading) {
@@ -182,10 +187,10 @@ export default function LandingPage() {
             onClick={() => setStep('poll')}
             className="bg-emerald-500 hover:bg-emerald-400 font-bold py-4 px-10 rounded-xl text-xl transition-all transform hover:scale-105"
           >
-            Get Started — $10
+            Supercharge AI Workouts
           </button>
 
-          <p className="mt-4 text-slate-500 text-sm">One-time purchase • Instant delivery</p>
+          <p className="mt-4 text-slate-500 text-sm">Lifetime access • No subscription</p>
         </div>
 
         <div className="max-w-4xl mx-auto px-6 py-12">
@@ -234,7 +239,7 @@ export default function LandingPage() {
             onClick={() => setStep('poll')}
             className="bg-emerald-500 hover:bg-emerald-400 font-bold py-4 px-10 rounded-xl text-xl transition-all transform hover:scale-105"
           >
-            Get Started — $10
+            Supercharge AI Workouts
           </button>
         </div>
 
@@ -279,6 +284,32 @@ export default function LandingPage() {
                 {isRu ? 'Почти готово!' : 'Almost there!'}
               </h2>
 
+              <div className="mb-6">
+                <label className="block text-sm text-emerald-400 font-medium mb-2">
+                  {isRu ? 'Email (обязательно)' : 'Email (required)'}
+                </label>
+                <input
+                  type="email"
+                  value={answers.email}
+                  onChange={(e) => updateAnswer('email', e.target.value)}
+                  onBlur={() => setEmailTouched(true)}
+                  placeholder="you@example.com"
+                  className={`w-full bg-slate-800 rounded-xl p-4 text-white placeholder-slate-500 border-2 outline-none transition-colors ${
+                    !emailTouched || answers.email === ''
+                      ? 'border-emerald-500/50 focus:border-emerald-500'
+                      : isValidEmail(answers.email)
+                        ? 'border-emerald-500'
+                        : 'border-red-500'
+                  }`}
+                  required
+                />
+                {emailTouched && answers.email && !isValidEmail(answers.email) && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {isRu ? 'Введите корректный email' : 'Please enter a valid email'}
+                  </p>
+                )}
+              </div>
+
               {answers.equipment === 'custom' && (
                 <div className="mb-6">
                   <label className="block text-sm text-slate-400 mb-2">
@@ -296,19 +327,6 @@ export default function LandingPage() {
 
               <div className="mb-6">
                 <label className="block text-sm text-slate-400 mb-2">
-                  {isRu ? 'Ограничения (необязательно)' : 'Any limitations? (optional)'}
-                </label>
-                <textarea
-                  value={answers.limitations}
-                  onChange={(e) => updateAnswer('limitations', e.target.value)}
-                  placeholder={isRu ? 'Травмы, ограничения пространства...' : 'Injuries, space constraints...'}
-                  className="w-full bg-slate-800 rounded-xl p-4 text-white placeholder-slate-500 resize-none"
-                  rows={2}
-                />
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-sm text-slate-400 mb-2">
                   {isRu ? 'Как вас зовут? (необязательно)' : 'Your name (optional)'}
                 </label>
                 <input
@@ -322,24 +340,23 @@ export default function LandingPage() {
 
               <div className="mb-8">
                 <label className="block text-sm text-slate-400 mb-2">
-                  {isRu ? 'Email (для доставки)' : 'Email (for delivery)'}
+                  {isRu ? 'Ограничения (необязательно)' : 'Any limitations? (optional)'}
                 </label>
-                <input
-                  type="email"
-                  value={answers.email}
-                  onChange={(e) => updateAnswer('email', e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full bg-slate-800 rounded-xl p-4 text-white placeholder-slate-500"
-                  required
+                <textarea
+                  value={answers.limitations}
+                  onChange={(e) => updateAnswer('limitations', e.target.value)}
+                  placeholder={isRu ? 'Травмы, ограничения пространства...' : 'Injuries, space constraints...'}
+                  className="w-full bg-slate-800 rounded-xl p-4 text-white placeholder-slate-500 resize-none"
+                  rows={2}
                 />
               </div>
 
               <button
                 onClick={() => setStep('payment')}
-                disabled={!answers.email}
+                disabled={!isValidEmail(answers.email)}
                 className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-slate-700 disabled:cursor-not-allowed font-bold py-4 rounded-xl text-xl transition-all"
               >
-                {isRu ? 'Продолжить к оплате — $10' : 'Continue to Payment — $10'}
+                {isRu ? 'Прокачать AI Тренировки' : 'Supercharge AI Workouts'}
               </button>
             </div>
           </div>
@@ -373,7 +390,7 @@ export default function LandingPage() {
               {isRu ? currentPollStep.titleRu : currentPollStep.title}
             </h2>
 
-            <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               {currentPollStep.options.map((option) => (
                 <button
                   key={option.value}
@@ -381,11 +398,7 @@ export default function LandingPage() {
                     updateAnswer(currentPollStep.field, option.value as never);
                     setPollStep(pollStep + 1);
                   }}
-                  className={`w-full p-4 rounded-xl text-left transition-all ${
-                    answers[currentPollStep.field] === option.value
-                      ? 'bg-emerald-600 border-2 border-emerald-400'
-                      : 'bg-slate-800 hover:bg-slate-700 border-2 border-transparent'
-                  }`}
+                  className="p-4 rounded-xl text-left transition-all bg-slate-800 hover:bg-emerald-600 hover:border-emerald-400 border-2 border-transparent"
                 >
                   {isRu ? option.labelRu : option.label}
                 </button>
@@ -399,47 +412,120 @@ export default function LandingPage() {
 
   // PAYMENT
   if (step === 'payment') {
+    const equipmentLabels: Record<Equipment, { en: string; ru: string }> = {
+      bodyweight: { en: 'Bodyweight', ru: 'Свой вес' },
+      home: { en: 'Home Gym', ru: 'Дом' },
+      fullgym: { en: 'Full Gym', ru: 'Зал' },
+      custom: { en: 'Custom', ru: 'Своё' },
+    };
+
+    const trainingLabels: Record<TrainingType, { en: string; ru: string }> = {
+      strength: { en: 'Strength', ru: 'Сила' },
+      hiit: { en: 'HIIT', ru: 'HIIT' },
+      yoga: { en: 'Yoga', ru: 'Йога' },
+      mixed: { en: 'Mixed', ru: 'Микс' },
+    };
+
+    const goalLabels: Record<Goal, { en: string; ru: string }> = {
+      muscle: { en: 'Muscle', ru: 'Мышцы' },
+      weight: { en: 'Weight Loss', ru: 'Похудение' },
+      endurance: { en: 'Endurance', ru: 'Выносливость' },
+      general: { en: 'Fitness', ru: 'Форма' },
+    };
+
+    const trackerLabels: Record<Tracker, string> = {
+      whoop: 'WHOOP',
+      apple: 'Apple Watch',
+      garmin: 'Garmin',
+      other: isRu ? 'Трекер' : 'Tracker',
+      none: '',
+    };
+
+    const platformLabels: Record<Platform, string> = {
+      chatgpt: 'ChatGPT',
+      claude: 'Claude',
+      gemini: 'Gemini',
+      other: isRu ? 'AI' : 'AI',
+    };
+
+    const tags = [
+      { label: platformLabels[answers.platform], icon: '🤖' },
+      { label: equipmentLabels[answers.equipment][isRu ? 'ru' : 'en'], icon: '🏠' },
+      { label: trainingLabels[answers.trainingType][isRu ? 'ru' : 'en'], icon: '💪' },
+      { label: goalLabels[answers.goals][isRu ? 'ru' : 'en'], icon: '🎯' },
+      answers.tracker !== 'none' && { label: trackerLabels[answers.tracker], icon: '⌚' },
+      { label: answers.language === 'ru' ? 'Русский' : 'English', icon: '🌐' },
+    ].filter(Boolean) as { label: string; icon: string }[];
+
     return (
       <div className="min-h-dvh bg-slate-900 text-white flex flex-col items-center justify-center p-6">
-        <div className="w-full max-w-md text-center">
-          <div className="text-4xl mb-4">💳</div>
-          <h2 className="text-2xl font-bold mb-4">
-            {isRu ? 'Оплата' : 'Payment'}
+        <div className="w-full max-w-md">
+          <h2 className="text-2xl font-bold mb-6 text-center">
+            {isRu ? 'Собрали для вас заказ' : 'Your order is ready'}
           </h2>
 
-          <div className="bg-slate-800 rounded-xl p-4 mb-6 text-left">
-            <h3 className="font-bold mb-3">{isRu ? 'Ваш заказ:' : 'Your order:'}</h3>
-            <div className="space-y-2 text-sm text-slate-400">
-              <p>• {isRu ? 'Язык:' : 'Language:'} {answers.language === 'en' ? 'English' : 'Русский'}</p>
-              <p>• {isRu ? 'Платформа:' : 'Platform:'} {answers.platform}</p>
-              <p>• {isRu ? 'Тренировки:' : 'Training:'} {answers.trainingType}</p>
-              <p>• {isRu ? 'Оборудование:' : 'Equipment:'} {answers.equipment}</p>
-              <p>• {isRu ? 'Цель:' : 'Goal:'} {answers.goals}</p>
-              {answers.tracker !== 'none' && <p>• Tracker: {answers.tracker}</p>}
+          <div className="space-y-4 mb-8">
+            {/* 1. Personalized Timer */}
+            <div className="bg-slate-800 rounded-xl p-4">
+              <h3 className="font-bold mb-3 flex items-center gap-2">
+                <span className="bg-emerald-500 text-white text-sm w-6 h-6 rounded-full flex items-center justify-center">1</span>
+                {isRu ? 'Персонализированный таймер' : 'Personalized Timer'}
+              </h3>
+              <div className="grid grid-cols-3 gap-2">
+                {tags.map((tag, i) => (
+                  <div key={i} className="bg-slate-700 rounded-lg p-2 text-center">
+                    <div className="text-lg">{tag.icon}</div>
+                    <div className="text-xs text-slate-300">{tag.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-slate-700 flex justify-between font-bold">
-              <span>{isRu ? 'Итого:' : 'Total:'}</span>
-              <span>$10</span>
+
+            {/* 2. Step-by-step instruction */}
+            <div className="bg-slate-800 rounded-xl p-4">
+              <h3 className="font-bold mb-2 flex items-center gap-2">
+                <span className="bg-emerald-500 text-white text-sm w-6 h-6 rounded-full flex items-center justify-center">2</span>
+                {isRu ? 'Пошаговая инструкция' : 'Step-by-Step Guide'}
+              </h3>
+              <p className="text-sm text-slate-400 ml-8">
+                {isRu
+                  ? 'Покажем как прокачать вашего AI-тренера, чтобы он запускал таймер за вас'
+                  : "We'll show you how to supercharge your AI coach to run the timer for you"}
+              </p>
             </div>
+
+            {/* 3. More Value */}
+            <div className="bg-slate-800 rounded-xl p-4">
+              <h3 className="font-bold mb-2 flex items-center gap-2">
+                <span className="bg-emerald-500 text-white text-sm w-6 h-6 rounded-full flex items-center justify-center">3</span>
+                {isRu ? 'Дополнительная ценность' : 'More Value'}
+              </h3>
+              <ul className="text-sm text-slate-400 space-y-1 ml-8">
+                <li>• {isRu ? 'Пожизненный доступ ко всем новым функциям Workout Timer' : 'Lifetime access to all new Workout Timer features'}</li>
+                <li>• {isRu ? 'Скидки на другие health-tech сервисы, которые мы скоро запустим' : 'Discounts on other health-tech services we are launching soon'}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="text-center mb-6">
+            <p className="text-lg">
+              <span className="text-slate-500 line-through">$25</span>
+              {' '}
+              <span className="text-2xl font-bold text-emerald-400">$10</span>
+            </p>
+            <p className="text-sm text-slate-400">
+              {isRu ? 'Пожизненный доступ. Без подписки. Без BS.' : 'Lifetime access. No subscription. No BS.'}
+            </p>
           </div>
 
           <button
             onClick={handlePayment}
             className="w-full bg-emerald-500 hover:bg-emerald-400 font-bold py-4 rounded-xl text-xl transition-all mb-4"
           >
-            {isRu ? 'Оплатить $10' : 'Pay $10'}
+            {isRu ? 'Оформить заказ' : 'Checkout'}
           </button>
 
-          {process.env.NODE_ENV === 'development' && (
-            <button
-              onClick={() => setStep('success')}
-              className="w-full bg-slate-700 hover:bg-slate-600 text-sm py-2 rounded-xl transition-all mb-4"
-            >
-              [DEV] Skip to success
-            </button>
-          )}
-
-          <p className="text-slate-500 text-sm">
+          <p className="text-slate-500 text-sm text-center">
             {isRu ? 'Безопасная оплата через Polar' : 'Secure payment via Polar'}
           </p>
 
@@ -448,7 +534,7 @@ export default function LandingPage() {
               setPollStep(pollSteps.length);
               setStep('poll');
             }}
-            className="mt-4 text-slate-400 hover:text-white transition-colors text-sm"
+            className="mt-4 text-slate-400 hover:text-white transition-colors text-sm w-full text-center"
           >
             ← {isRu ? 'Изменить данные' : 'Edit details'}
           </button>
