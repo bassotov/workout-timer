@@ -91,7 +91,7 @@ The resulting base64 should ONLY contain: A-Z, a-z, 0-9, +, /, =
 No % symbols, no corrupted characters.
 
 Build URL: {{TIMER_BASE_URL}}?w={base64}
-Provide as clickable markdown link.
+See <link_format> for how to present the link.
 </link_generation>
 
 <response_format>
