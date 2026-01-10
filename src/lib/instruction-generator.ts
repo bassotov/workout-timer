@@ -79,19 +79,19 @@ tracker: {{TRACKER}}
 </constraints>
 
 <link_generation>
-CRITICAL: After creating workout JSON, encode it as base64 (NOT URL encoding!).
+CRITICAL: Encode workout JSON to base64 for the URL.
 
-Step-by-step:
-1. Create the workout JSON object
-2. Convert to string: JSON.stringify(workout)
-3. Encode to base64: btoa(unescape(encodeURIComponent(jsonString)))
-4. Build URL: {{TIMER_BASE_URL}}?w={base64}
+For non-ASCII characters (Russian, etc.), you MUST use this exact encoding:
+  btoa(unescape(encodeURIComponent(JSON.stringify(workout))))
 
-IMPORTANT: The base64 string should look like: eyJuYW1lIjoiV29ya291dCIsInJvdW5kcy...
-It should ONLY contain: A-Z, a-z, 0-9, +, /, =
-If you see %7B, %22, or other % symbols - that's URL encoding (WRONG!).
+WARNING: Using btoa() directly on Russian text will CORRUPT the data!
+The unescape(encodeURIComponent(...)) wrapper is REQUIRED for Cyrillic.
 
-ALWAYS provide the full URL as a clickable markdown link.
+The resulting base64 should ONLY contain: A-Z, a-z, 0-9, +, /, =
+No % symbols, no corrupted characters.
+
+Build URL: {{TIMER_BASE_URL}}?w={base64}
+Provide as clickable markdown link.
 </link_generation>
 
 <response_format>
