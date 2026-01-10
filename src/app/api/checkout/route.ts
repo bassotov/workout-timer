@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Checkout } from "@polar-sh/nextjs";
+import { Polar } from "@polar-sh/sdk";
 import type { PollAnswers } from '@/types';
 import { isValidEmail } from '@/lib';
 
@@ -73,8 +73,8 @@ export async function POST(request: NextRequest) {
       customTracker: answers.customTracker || '',
     };
 
-    // Construct checkout URL with email and metadata
-    const checkoutUrl = `/api/checkout?products=${productId}&customerEmail=${encodeURIComponent(answers.email.trim())}&metadata=${encodeURIComponent(JSON.stringify(metadata))}`;
+    // Construct checkout URL with email, name, and metadata
+    const checkoutUrl = `/api/checkout?products=${productId}&customerEmail=${encodeURIComponent(answers.email.trim())}&customerName=${encodeURIComponent(answers.name?.trim() || '')}&metadata=${encodeURIComponent(JSON.stringify(metadata))}`;
 
     return NextResponse.json({ checkoutUrl });
   } catch {
@@ -87,7 +87,72 @@ export async function POST(request: NextRequest) {
 }
 
 // GET handler - redirects to Polar checkout (used after POST returns URL)
-export const GET = Checkout({
-  accessToken: process.env.POLAR_ACCESS_TOKEN!,
-  successUrl: process.env.POLAR_SUCCESS_URL!,
-});
+export async function GET(request: NextRequest) {
+  const url = new URL(request.url);
+  const products = url.searchParams.getAll('products');
+
+  if (products.length === 0) {
+    return NextResponse.json(
+      { error: 'Missing products in query params' },
+      { status: 400 }
+    );
+  }
+
+  const accessToken = process.env.POLAR_ACCESS_TOKEN;
+  const successUrl = process.env.POLAR_SUCCESS_URL;
+
+  if (!accessToken || !successUrl) {
+    console.error('Missing POLAR_ACCESS_TOKEN or POLAR_SUCCESS_URL');
+    return NextResponse.json(
+      { error: 'Checkout configuration error' },
+      { status: 500 }
+    );
+  }
+
+  const polar = new Polar({ accessToken });
+
+  // Parse metadata from query param
+  let metadata: Record<string, string> | undefined;
+  const metadataParam = url.searchParams.get('metadata');
+  if (metadataParam) {
+    try {
+      metadata = JSON.parse(metadataParam);
+    } catch (e) {
+      console.error('Failed to parse metadata:', e);
+      return NextResponse.json(
+        { error: 'Invalid metadata format' },
+        { status: 400 }
+      );
+    }
+  }
+
+  try {
+    const result = await polar.checkouts.create({
+      products,
+      successUrl: successUrl.replace('{CHECKOUT_ID}', '{CHECKOUT_ID}'),
+      customerEmail: url.searchParams.get('customerEmail') ?? undefined,
+      customerName: url.searchParams.get('customerName') ?? undefined,
+      metadata,
+    });
+
+    return NextResponse.redirect(result.url);
+  } catch (error) {
+    // Log the full error for debugging
+    console.error('Polar checkout error:', error);
+
+    // Return detailed error info
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorDetails = error instanceof Error && 'body' in error
+      ? JSON.stringify((error as Error & { body?: unknown }).body)
+      : undefined;
+
+    return NextResponse.json(
+      {
+        error: 'Failed to create checkout',
+        message: errorMessage,
+        details: errorDetails,
+      },
+      { status: 500 }
+    );
+  }
+}
