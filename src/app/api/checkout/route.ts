@@ -111,12 +111,17 @@ export async function GET(request: NextRequest) {
 
   const polar = new Polar({ accessToken });
 
-  // Parse metadata from query param
+  // Parse metadata from query param and filter out empty strings
+  // (Polar requires string values to have at least 1 character)
   let metadata: Record<string, string> | undefined;
   const metadataParam = url.searchParams.get('metadata');
   if (metadataParam) {
     try {
-      metadata = JSON.parse(metadataParam);
+      const parsed = JSON.parse(metadataParam) as Record<string, string>;
+      // Remove empty string values - Polar rejects them
+      metadata = Object.fromEntries(
+        Object.entries(parsed).filter(([, value]) => value !== '')
+      );
     } catch (e) {
       console.error('Failed to parse metadata:', e);
       return NextResponse.json(
