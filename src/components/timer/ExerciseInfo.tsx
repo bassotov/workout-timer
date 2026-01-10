@@ -63,16 +63,14 @@ export function ExerciseInfo({
           {exercise.reps}
         </Badge>
       </div>
-      {exercise.video && (
-        <a
-          href={exercise.video}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="opacity-60 hover:opacity-100 underline transition-opacity mb-4"
-        >
-          {translations.video}
-        </a>
-      )}
+      <a
+        href={exercise.video || `https://www.youtube.com/results?search_query=${encodeURIComponent(exercise.name)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="opacity-60 hover:opacity-100 underline transition-opacity mb-4"
+      >
+        {translations.video}
+      </a>
     </div>
   );
 }

@@ -50,8 +50,7 @@ tracker: {{TRACKER}}
       "reps": "x10",
       "duration": 60,
       "weight": "12kg",
-      "equipment": "dumbbells",
-      "video": "https://youtube.com/..."
+      "equipment": "dumbbells"
     }
   ]
 }
@@ -70,7 +69,6 @@ tracker: {{TRACKER}}
 - exercises[].duration: Seconds for timer (how long exercise runs)
 - exercises[].weight: Optional, for weighted exercises
 - exercises[].equipment: Optional, what's needed
-- exercises[].video: Optional, YouTube search link for form
 </schema_rules>
 
 <constraints>
