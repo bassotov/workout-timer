@@ -12,3 +12,5 @@ export * from './textarea';
 export * from './header';
 export * from '../landing/footer';
 export * from './language-switcher';
+export * from './copyable-prompt';
+export * from './ai-logo-flipper';

@@ -26,3 +26,6 @@ export type { CoachingStyle, CoachingStyleId } from './coaching-styles';
 
 export { AI_CONFIGS, AI_CONFIG_KEYS } from './ai-instructions';
 export type { AIConfigKey } from './ai-instructions';
+
+export { TESTIMONIALS } from './testimonials';
+export type { Testimonial } from './testimonials';

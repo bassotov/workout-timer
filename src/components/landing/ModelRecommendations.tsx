@@ -11,7 +11,7 @@ export function ModelRecommendations({ platform }: ModelRecommendationsProps) {
   const { t } = useLanguage();
 
   return (
-    <Card className="bg-primary/5 border-primary/20 mb-6 text-left">
+    <Card className="bg-primary/5 border-primary/20 mb-4 text-left">
       <CardContent className="pt-4">
         <div className="flex items-start gap-3">
           <span className="text-xl">💡</span>

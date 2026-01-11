@@ -1,13 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePoll } from '@/hooks';
 import { validateEnv, POLL_STEPS } from '@/config';
+import { getVisibleSteps, getVisibleStepIndex, getStoredValue, removeStoredValue, STORAGE_KEYS } from '@/lib';
 import { Header, Footer } from '@/components/ui';
 import {
   Hero,
-  Features,
-  WhyItWorks,
+  HowItWorks,
+  Benefits,
+  ForWhom,
+  Pricing,
+  Testimonials,
+  FinalCTA,
   PollStep,
   PersonalDetailsForm,
   PaymentSummary,
@@ -30,15 +35,40 @@ export default function LandingPage() {
     currentStepConfig,
   } = usePoll();
 
+  const [isPurchaseVerified, setIsPurchaseVerified] = useState(false);
+
   useEffect(() => {
     validateEnv();
 
-    // Check for success redirect from Polar
     const urlParams = new URLSearchParams(window.location.search);
+
+    // Check for start=poll parameter to go directly to poll
+    if (urlParams.get('start') === 'poll') {
+      goToPoll();
+      // Clean up URL
+      window.history.replaceState({}, '', '/');
+    }
+
+    // Check for success redirect from Polar
     if (urlParams.get('success') === 'true') {
+      // Check if purchase was verified (set by /success page with checkout_id)
+      const verification = getStoredValue<{ timestamp: number; checkoutId: string } | null>(
+        STORAGE_KEYS.PURCHASE_VERIFIED,
+        null
+      );
+
+      // Verification is valid if it exists and was set within the last hour
+      const isValid = verification && Date.now() - verification.timestamp < 60 * 60 * 1000;
+      setIsPurchaseVerified(!!isValid);
+
+      // Clear the verification flag after use (one-time use)
+      if (isValid) {
+        removeStoredValue(STORAGE_KEYS.PURCHASE_VERIFIED);
+      }
+
       goToSuccess();
     }
-  }, [goToSuccess]);
+  }, [goToSuccess, goToPoll]);
 
   const handlePayment = async () => {
     try {
@@ -69,6 +99,15 @@ export default function LandingPage() {
     const field = currentStepConfig.id;
     setAnswer(field, value);
 
+    // Build updated answers for nextStep (state won't be updated yet)
+    const updatedAnswers: Record<string, string> = { [field]: value };
+
+    // When equipment changes to a different value, clear weightPreference
+    if (field === 'equipment' && value !== answers.equipment) {
+      setAnswer('weightPreference', '');
+      updatedAnswers.weightPreference = '';
+    }
+
     // Check if this option has allowCustom - if so, don't auto-advance
     const selectedOption = currentStepConfig.options.find((opt) => opt.id === value);
     if (selectedOption?.allowCustom) {
@@ -80,7 +119,7 @@ export default function LandingPage() {
       if (pollStep === POLL_STEPS.length - 1) {
         goToDetails();
       } else {
-        nextStep();
+        nextStep(updatedAnswers);
       }
     }, 200);
   };
@@ -96,6 +135,10 @@ export default function LandingPage() {
       setAnswer('customAiPlatform', customValue);
     } else if (field === 'tracker') {
       setAnswer('customTracker', customValue);
+    } else if (field === 'trainingType') {
+      setAnswer('customTrainingType', customValue);
+    } else if (field === 'goals') {
+      setAnswer('customGoals', customValue);
     }
 
     // Advance to next step or details
@@ -112,7 +155,7 @@ export default function LandingPage() {
   if (page === 'success') {
     return (
       <main className="min-h-dvh bg-background">
-        <SuccessContent answers={answers} />
+        <SuccessContent answers={answers} verified={isPurchaseVerified} />
       </main>
     );
   }
@@ -150,6 +193,8 @@ export default function LandingPage() {
       equipment: answers.customEquipment,
       aiPlatform: answers.customAiPlatform,
       tracker: answers.customTracker,
+      trainingType: answers.customTrainingType,
+      goals: answers.customGoals,
     };
 
     return (
@@ -160,8 +205,8 @@ export default function LandingPage() {
         onSelect={handlePollSelect}
         onCustomChange={handleCustomContinue}
         onBack={pollStep === 0 ? goToLanding : prevStep}
-        currentStep={pollStep}
-        totalSteps={POLL_STEPS.length}
+        currentStep={getVisibleStepIndex(pollStep, answers)}
+        totalSteps={getVisibleSteps(answers)}
       />
     );
   }
@@ -174,8 +219,12 @@ export default function LandingPage() {
         <section id="hero">
           <Hero onStart={goToPoll} />
         </section>
-        <Features />
-        <WhyItWorks />
+        <HowItWorks />
+        <Benefits />
+        <ForWhom />
+        <Pricing />
+        <Testimonials />
+        <FinalCTA onStart={goToPoll} />
       </div>
       <Footer />
     </main>

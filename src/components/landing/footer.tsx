@@ -3,12 +3,6 @@
 import Link from 'next/link';
 import { useLanguage } from '@/i18n';
 
-const AI_PLATFORMS = [
-  { name: 'ChatGPT', href: '/instructions/chatgpt' },
-  { name: 'Claude', href: '/instructions/claude' },
-  { name: 'Gemini', href: '/instructions/gemini' },
-] as const;
-
 export function Footer() {
   const { t, language } = useLanguage();
 
@@ -34,14 +28,6 @@ export function Footer() {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href={`/timer?lang=${language}`}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {t.footer?.timerDemo ?? 'Timer Demo'}
-                </Link>
-              </li>
-              <li>
                 <a
                   href="#hero"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -51,31 +37,53 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href={`/timer?lang=${language}`}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {t.footer?.timerDemo ?? 'Timer Demo'}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Help */}
+          <div>
+            <h3 className="font-semibold text-sm mb-3">
+              {t.footer?.help ?? 'Help'}
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/getting-started"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {t.footer?.gettingStartedGuide ?? 'Get Started Guide'}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/restore"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {t.footer?.restoreFile ?? 'Restore File'}
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div>
-            <h3 className="font-semibold text-sm mb-3">
-              {t.footer?.resources ?? 'Resources'}
-            </h3>
-            <ul className="space-y-2">
-              {AI_PLATFORMS.map((platform) => (
-                <li key={platform.href}>
-                  <Link
-                    href={platform.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {platform.name}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link
+                  href="/troubleshooting"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {t.footer?.troubleshooting ?? 'Troubleshooting'}
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="mailto:support@workout-timer.app"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {t.footer?.getHelp ?? 'Get Help'}
+                </a>
+              </li>
             </ul>
           </div>
 

@@ -78,7 +78,7 @@ function TimerContent() {
 
   // Show error screen if URL param exists but failed to decode
   if (!workout && hasInvalidUrl) {
-    return <ErrorScreen onLoadDemo={() => setDemoWorkout(getDemoWorkout(langParam || detectBrowserLanguage()))} errorType={decodeError?.type} />;
+    return <ErrorScreen errorType={decodeError?.type} />;
   }
 
   // Show demo screen if no workout URL provided

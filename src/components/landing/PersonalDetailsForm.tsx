@@ -1,13 +1,12 @@
 'use client';
 
 import { useState, type KeyboardEvent } from 'react';
-import { HugeiconsIcon } from '@hugeicons/react';
-import { SquareLock01Icon } from '@hugeicons/core-free-icons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { EmailInput } from './EmailInput';
+import { DataConsentSelector } from './DataConsentSelector';
 import { BackButton } from '@/components/ui/back-button';
 import { useLanguage } from '@/i18n';
 import { isValidEmail } from '@/lib/validation';
@@ -81,7 +80,7 @@ export function PersonalDetailsForm({
   const [weightUnit, setWeightUnit] = useState<'kg' | 'lbs'>('kg');
   const [heightUnit, setHeightUnit] = useState<'cm' | 'in'>('cm');
 
-  const isValid = answers.name.trim().length > 0 && isValidEmail(answers.email);
+  const isValid = answers.name.trim().length > 0 && isValidEmail(answers.email) && answers.dataConsent !== undefined;
 
   const handleWeightChange = (value: string) => {
     if (value) {
@@ -109,12 +108,6 @@ export function PersonalDetailsForm({
         <BackButton onClick={onBack} className="mb-6" />
         <h2 className="text-2xl font-bold mb-2">{t.details.title}</h2>
         <p className="text-muted-foreground mb-4">{t.details.subtitle}</p>
-
-        {/* Privacy notice */}
-        <div className="bg-muted/50 rounded-lg p-3 mb-6 flex items-start gap-2">
-          <HugeiconsIcon icon={SquareLock01Icon} size={16} className="mt-0.5 shrink-0 text-muted-foreground" />
-          <p className="text-xs text-muted-foreground">{t.details.privacyNotice}</p>
-        </div>
 
         <div className="space-y-5 flex-1">
           {/* Required: Name */}
@@ -269,10 +262,18 @@ export function PersonalDetailsForm({
           </div>
         </div>
 
+        {/* Data consent - required, right above continue */}
+        <div className="mt-6">
+          <DataConsentSelector
+            value={answers.dataConsent}
+            onChange={(value) => setAnswer('dataConsent', value)}
+          />
+        </div>
+
         <Button
           onClick={onContinue}
           disabled={!isValid}
-          className="w-full mt-6 py-6 text-lg"
+          className="w-full mt-4 py-6 text-lg"
         >
           {t.poll.continue}
         </Button>

@@ -1,5 +1,6 @@
 export type CoachingStyleId = 'motivator' | 'drill' | 'friendly' | 'analytical';
 export type GenderId = 'male' | 'female' | 'other' | 'prefer_not_to_say';
+export type DataConsentChoice = 'save' | 'discard';
 
 export interface PollAnswers {
   // Core poll answers
@@ -15,6 +16,7 @@ export interface PollAnswers {
   // Personal details (collected on details form)
   name: string;
   email: string;
+  dataConsent?: DataConsentChoice;
   limitations: string;
 
   // Optional personalization fields
@@ -28,6 +30,8 @@ export interface PollAnswers {
   customEquipment?: string;
   customAiPlatform?: string;
   customTracker?: string;
+  customTrainingType?: string;
+  customGoals?: string;
 }
 
 export type PollStepId = 'language' | 'aiPlatform' | 'trainingType' | 'equipment' | 'weightPreference' | 'goals' | 'tracker' | 'coachingStyle';

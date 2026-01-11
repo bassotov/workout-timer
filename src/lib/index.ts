@@ -12,7 +12,14 @@ export {
   isNonEmptyString,
   isPositiveNumber,
   isNonNegativeNumber,
+  validateCustomInput,
+  MAX_CUSTOM_INPUT_LENGTH,
+  type CustomInputError,
+  type CustomInputValidation,
 } from './validation';
+
+// Poll utilities
+export { getVisibleSteps, getVisibleStepIndex } from './poll-utils';
 
 // URL utilities
 export {
@@ -41,7 +48,11 @@ export {
   removeStoredValue,
   hasStoredValue,
   clearAllStoredValues,
+  getStoredValueWithTTL,
+  setStoredValueWithTTL,
+  getRemainingTTL,
   STORAGE_KEYS,
+  STORAGE_TTL,
 } from './storage';
 
 // Workout instruction generator

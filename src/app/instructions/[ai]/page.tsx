@@ -3,6 +3,7 @@
 import { notFound } from 'next/navigation';
 import { use } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Header, Footer, Button, Card, CardContent } from '@/components/ui';
 import { AI_CONFIGS, AI_CONFIG_KEYS, type AIConfigKey } from '@/config';
 import { useLanguage } from '@/i18n';
@@ -28,12 +29,45 @@ export default function InstructionPage({ params }: PageProps) {
       <Header showNav={false} />
 
       <div className="pt-20 pb-12 px-4 max-w-3xl mx-auto">
+        {/* Platform Navigation */}
+        <nav className="flex gap-2 mb-8">
+          {AI_CONFIG_KEYS.map((key) => {
+            const platform = AI_CONFIGS[key];
+            const isActive = key === aiKey;
+            return (
+              <Link
+                key={key}
+                href={`/instructions/${key}`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted hover:bg-muted/70 text-muted-foreground'
+                }`}
+              >
+                <Image
+                  src={platform.logo}
+                  alt={platform.name}
+                  width={20}
+                  height={20}
+                  className="rounded"
+                />
+                {platform.name}
+              </Link>
+            );
+          })}
+        </nav>
         {/* Hero - One liner */}
         <div className="flex items-center gap-3 mb-1">
           <div
             className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${config.color} flex items-center justify-center`}
           >
-            <span className="text-2xl">{config.icon}</span>
+            <Image
+              src={config.logo}
+              alt={config.name}
+              width={32}
+              height={32}
+              className="rounded-lg"
+            />
           </div>
           <h1 className="text-2xl font-bold">
             {t.aiInstructions.howToUse} {config.name}
@@ -71,64 +105,40 @@ export default function InstructionPage({ params }: PageProps) {
               {/* Step content */}
               <div className="flex-1 min-w-0 pb-6">
                 <p className="font-medium mb-2 pt-1">{step}</p>
-                <div className="bg-muted rounded-lg h-40 flex items-center justify-center text-muted-foreground text-sm">
-                  {t.aiInstructions.screenshotAlt} {index + 1}
-                </div>
+                {config.screenshots[index] ? (
+                  <Image
+                    src={config.screenshots[index]}
+                    alt={`${t.aiInstructions.screenshotAlt} ${index + 1}`}
+                    width={800}
+                    height={450}
+                    className="rounded-lg border border-border"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="bg-muted rounded-lg h-40 flex items-center justify-center text-muted-foreground text-sm">
+                    {t.aiInstructions.screenshotAlt} {index + 1}
+                  </div>
+                )}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Troubleshooting - equal padding, icon */}
-        <Card className="mb-4">
-          <CardContent className="py-4">
-            <h2 className="font-semibold mb-3 flex items-center gap-2">
-              <span>🔧</span>
-              {t.aiInstructions.troubleshooting.title}
-            </h2>
-            <ul className="space-y-2 text-sm">
-              {t.aiInstructions.troubleshooting.tips.map((tip, index) => (
-                <li key={index} className="flex gap-2 text-muted-foreground">
-                  <span>•</span>
-                  <span>{tip}</span>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-
-        {/* Common Issues - equal padding, icon */}
-        <Card className="mb-8">
-          <CardContent className="py-4">
-            <h2 className="font-semibold mb-3 flex items-center gap-2">
-              <span>❓</span>
-              {t.aiInstructions.commonIssues.title}
-            </h2>
-            <div className="space-y-3">
-              <div>
-                <h3 className="font-medium text-sm">{t.aiInstructions.commonIssues.encoding.title}</h3>
-                <p className="text-sm text-muted-foreground">{t.aiInstructions.commonIssues.encoding.description}</p>
-              </div>
-              <div>
-                <h3 className="font-medium text-sm">{t.aiInstructions.commonIssues.truncation.title}</h3>
-                <p className="text-sm text-muted-foreground">{t.aiInstructions.commonIssues.truncation.description}</p>
-              </div>
-              <div>
-                <h3 className="font-medium text-sm">{t.aiInstructions.commonIssues.cyrillic.title}</h3>
-                <p className="text-sm text-muted-foreground">{t.aiInstructions.commonIssues.cyrillic.description}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* CTA */}
+        {/* CTA buttons */}
         <div className="text-center space-y-4">
           <p className="text-sm text-muted-foreground">
             {t.aiInstructions.noFileYet}
           </p>
-          <Link href="/">
-            <Button size="lg">{t.aiInstructions.getFile}</Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/?start=poll">
+              <Button size="lg">{t.aiInstructions.getFile}</Button>
+            </Link>
+            <Link href="/troubleshooting">
+              <Button size="lg" variant="outline">
+                🔧 {t.aiInstructions.troubleshooting.title}
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
 

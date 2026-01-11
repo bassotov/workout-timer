@@ -3,6 +3,7 @@ export const en = {
   nav: {
     howItWorks: 'How It Works',
     benefits: 'Benefits',
+    pricing: 'Pricing',
   },
 
   // Footer
@@ -11,8 +12,11 @@ export const en = {
     product: 'Product',
     timerDemo: 'Timer Demo',
     getStarted: 'Get Started',
-    resources: 'Resources',
+    help: 'Help',
+    gettingStartedGuide: 'Get Started Guide',
     restoreFile: 'Restore File',
+    troubleshooting: 'Troubleshooting',
+    getHelp: 'Get Help',
     legal: 'Legal',
     privacy: 'Privacy',
     terms: 'Terms',
@@ -40,63 +44,58 @@ export const en = {
   },
   error: {
     title: 'Invalid Workout Link',
-    description: 'The workout link appears to be incorrectly formatted.',
-    apology: "We're sorry for this experience. This usually happens due to AI encoding issues, not something you did wrong.",
-    hint: 'What to do:',
-    suggestion: 'Ask your AI to regenerate the workout link. Make sure it uses base64 encoding.',
-    commonReasons: {
-      title: 'Common causes',
-      badEncoding: 'AI used incorrect URL encoding',
-      wrongModel: 'Model not following instructions properly',
-      cyrillicIssue: 'Cyrillic characters not encoded correctly',
-      truncatedLink: 'Link was cut off or truncated',
+    troubleshootingTitle: 'Common Errors You Might Face',
+    whyTitle: 'Why this happened?',
+    whyGeneric: 'AI sometimes generates links with encoding errors. There are several ways to fix this.',
+    generalTab: 'General',
+    fixSteps: {
+      title: "Let's troubleshoot in this order:",
+      step1Title: "Make sure you've set up Workout Timer correctly",
+      step1Link: 'Detailed installation guide (ChatGPT example)',
+      step2Title: 'Try regenerating the link',
+      step3Title: 'Use a more advanced model',
+      step3Examples: 'GPT-5.2, Claude Opus, Gemini Thinking',
+      step3Prompt: 'Please use a more capable AI model (like GPT-5.2, Claude Opus, or Gemini Thinking) and regenerate the workout timer link. Return full link, not markdown.',
+      step4Title: 'Translate to English',
+      step4Prompt: 'Please translate all exercise names to English and regenerate the workout timer link. Return full link, not markdown.',
     },
-    solutions: {
-      title: 'Try these fixes',
-      regenerate: 'Ask AI to regenerate the link with proper base64 encoding',
-      switchModel: 'Try a thinking/reasoning model (GPT-5.2, Claude Opus, Gemini thinking)',
-      useEnglish: 'If using Russian, try English exercise names first',
-      checkLink: 'Make sure the full link was copied (should not end with "...")',
-    },
-    viewInstructions: 'View detailed instructions',
     specific: {
       control_characters: {
         title: 'Corrupted Link Data',
-        description: 'The AI generated invalid characters in the workout data.',
-        fix: 'Try Gemini Thinking mode, or switch to ChatGPT/Claude.',
+        why: 'The AI inserted invisible control characters into the link data. This commonly happens with Gemini.',
+        prompt: 'Please regenerate the workout timer link using clean text encoding. Do not include any special or control characters. Return full link, not markdown.',
       },
       invalid_utf8: {
         title: 'Encoding Error',
-        description: 'Russian/Cyrillic text was not encoded correctly.',
-        fix: 'Ask AI to use English exercise names, or try a thinking model.',
+        why: 'Russian or special characters were not encoded correctly. Some AI models struggle with non-Latin text.',
+        prompt: 'Please regenerate the workout timer link with proper UTF-8 encoding for all text. Return full link, not markdown.',
       },
       malformed_json: {
         title: 'Malformed Data',
-        description: 'The workout data structure is broken.',
-        fix: 'Ask AI to regenerate the link carefully.',
+        why: 'The workout data structure got corrupted during generation. The AI may have made a syntax error.',
+        prompt: 'Please regenerate the workout timer link. Make sure the JSON is valid and properly formatted. Return full link, not markdown.',
       },
       invalid_base64: {
         title: 'Invalid Link Format',
-        description: 'The link encoding is incorrect.',
-        fix: 'Ensure the entire link was copied. Ask AI to regenerate.',
+        why: 'The link encoding is broken. This can happen when the AI uses the wrong encoding method.',
+        prompt: 'Please regenerate the workout timer link using proper URL-safe base64 encoding. Return full link, not markdown.',
       },
       schema_mismatch: {
         title: 'Missing Workout Fields',
-        description: 'The workout is missing required information.',
-        fix: 'Ask AI to include all required fields (name, rounds, exercises with duration).',
+        why: 'The workout data is missing required fields. The AI may not have followed the schema correctly.',
+        prompt: 'Please regenerate the link. Double-check the required schema: name, rounds, exercises with duration. Return full link, not markdown.',
       },
       truncated: {
         title: 'Incomplete Link',
-        description: 'The link appears to be cut off.',
-        fix: 'Make sure you copied the entire link. Should not end with "..."',
+        why: 'The link was cut off, likely due to message length limits or copy-paste issues.',
+        prompt: 'Please regenerate the workout timer link. Return it as a complete, uncut string, not markdown.',
       },
       unknown: {
         title: 'Unknown Error',
-        description: 'Could not process the workout link.',
-        fix: 'Try regenerating the link or use a different AI model.',
+        why: 'Something went wrong with the link generation. The exact cause is unclear.',
+        prompt: 'Please regenerate the workout timer link using proper encoding. Return full link, not markdown.',
       },
     },
-    geminiWarning: 'Gemini has known encoding issues. Consider using ChatGPT or Claude for more reliable links.',
   },
   controls: {
     pause: 'PAUSE',
@@ -175,7 +174,9 @@ export const en = {
     continue: 'Continue',
     specify: 'Please specify...',
     minChars: 'Minimum 3 characters',
-    privacy: 'Your replies are analyzed and immediately discarded. Nothing is stored.',
+    maxChars: 'Maximum 50 characters',
+    invalidChars: 'Please use only letters, numbers, and basic punctuation',
+    privacy: 'Your replies are used for workouts personalization only. Immediately discarded after. Nothing is stored.',
     steps: {
       language: {
         title: 'What language do you prefer?',
@@ -200,6 +201,7 @@ export const en = {
           hiit: 'HIIT / Cardio',
           yoga: 'Yoga / Mobility',
           mixed: 'Mixed / Variety',
+          other: 'Other / Let me specify',
         },
       },
       equipment: {
@@ -230,6 +232,7 @@ export const en = {
           weight: 'Lose weight',
           endurance: 'Improve endurance',
           general: 'General fitness',
+          other: 'Other / Let me specify',
         },
       },
       tracker: {
@@ -257,27 +260,66 @@ export const en = {
   // Landing page translations
   landing: {
     hero: {
-      title: 'Your AI-Powered Personal Trainer',
-      subtitle: 'Custom workouts in one click. Works with ChatGPT, Claude, Gemini. No subscription. No app to install.',
-      cta: 'Supercharge AI Workouts',
-      subtext: 'Lifetime access \u2022 No subscription',
+      titlePart1: 'Your',
+      titlePart2: 'workouts could be more than text',
+      subtitle: 'Supercharge your AI chat to create personalised workouts and turn them into interactive timers',
+      cta: 'Get Started',
+      subtext: 'No login. No subscription. Lifetime access.',
     },
-    features: {
+    socialProof: {
+      text: 'users already training',
+    },
+    howItWorks: {
       title: 'How It Works',
       steps: [
-        { title: '1. Answer Questions', description: 'Tell us about your equipment, goals, and preferences' },
-        { title: '2. Get Your Setup', description: 'Receive personalized instructions for your AI assistant' },
-        { title: '3. Train Forever', description: 'Ask your AI for custom workouts anytime' },
+        { title: 'Complete the poll.', description: 'Personalize your workout experience.' },
+        { title: 'Download the file.', description: "We'll create you a file to level-up your AI chat." },
+        { title: 'Supercharge workouts.', description: 'Upload file to your AI to unlock personalized workouts and interactive timer.' },
+        { title: 'Ask for a workout.', description: 'Get a general or a more nuanced workout plan.' },
+        { title: 'Open timer via link.', description: 'Click/copy link to open a timer for YOUR workout. Countdown. Breaks. Rounds. Video Tutorials. You got it.' },
       ],
+      demoButton: 'Try Demo Timer',
     },
     benefits: {
-      title: 'Why This Works',
+      title: 'Why Choose Workout Timer',
       items: [
-        { title: 'Knows Your Equipment', description: 'AI only suggests exercises you can actually do' },
-        { title: 'Infinitely Flexible', description: '"Make it harder" / "I hurt my knee" / "Only 10 mins"' },
-        { title: 'No App Required', description: 'Timer runs in browser, works on any device' },
-        { title: 'Pay Once, Own Forever', description: 'No subscriptions, no recurring fees' },
+        { title: 'It knows you. Literally.', description: 'Use your favourite AI chat where you have history, personality. Workouts just build on top of that.' },
+        { title: 'Works on any device.', description: 'Workouts in YOUR AI chat. Timer lives in browser. Simple.' },
+        { title: 'Hackable. Flexible.', description: 'Build your own instructions on top of ours.' },
+        { title: 'Lifetime access.', description: "Pay once, use forever. No subscription. No fees. It's yours." },
+        { title: 'Secure & Private.', description: "We don't store your data unless you ask. It all lives in YOUR offline file and YOUR AI chat." },
+        { title: 'Dead simple.', description: 'Quick poll. No login. 2 min setup. Use forever.' },
+        { title: 'Works in all top LLMs.', description: 'ChatGPT, Claude, Gemini – you name it. Whatever you use, you can make it work there.' },
+        { title: 'Learn new tricks.', description: 'Don\'t know what "Hyperextension" is? We include YouTube link for you to quickly have a look.' },
       ],
+    },
+    forWhom: {
+      title: 'Is This For You?',
+      items: [
+        { title: 'You already plan your workouts with AI.', description: 'Level up the game! Stop checking that table on the phone every time – just run the timer fullscreen and GO!' },
+        { title: 'Tired of YouTube workouts.', description: 'Create your personalized ones. Learn from the embedded videos. Tailor the timer to your pace.' },
+        { title: 'Still didn\'t get to "that gym".', description: 'Want to start working out but don\'t know how to start – tell your best AI buddy about it and don\'t skip the leg day.' },
+      ],
+    },
+    pricing: {
+      title: 'Simple Pricing',
+      originalPrice: '$25',
+      price: '$10',
+      benefits: [
+        'Money-Back Guarantee',
+        'Discounts & Bonuses (coming soon)',
+        'Lifetime Access',
+        'Interactive Workout Timer',
+        'Personalized AI Workouts',
+        'Setup Guide & Support',
+      ],
+    },
+    testimonials: {
+      title: 'What Users Say',
+    },
+    finalCTA: {
+      title: 'This is your year.',
+      subtitle: 'Change the way you gym.',
     },
   },
 
@@ -305,15 +347,31 @@ export const en = {
       other: 'Other',
       prefer_not_to_say: 'Prefer not to say',
     },
+    dataConsent: {
+      title: 'What would you like us to do with your data?',
+      save: {
+        title: 'Save data (Restore file anytime)',
+        description: 'We store your preferences securely. You can restore your file anytime using your email.',
+        reassurance: 'Only used for file restoration. Never shared or analyzed.',
+      },
+      discard: {
+        title: 'Discard data (Secure but no backup)',
+        description: "We won't store any personal information. Your data stays completely private.",
+        warning: "Your answers stay in browser memory for 48 hours. After that, we won't be able to restore your file if you lose it.",
+      },
+      selectButton: 'Select this option',
+    },
   },
 
   // Payment summary
   payment: {
     orderReady: 'Your order is ready',
-    personalizedTimer: 'Personalized Timer',
-    stepByStep: 'Step-by-Step Guide',
-    stepByStepDesc: "We'll show you how to supercharge your AI coach",
-    moreValue: 'More Value',
+    personalizedWorkouts: 'Personalized Workouts',
+    interactiveTimer: 'Interactive Workout Timer',
+    interactiveTimerDesc: 'Level up your personalized workouts',
+    guidesSupport: 'Guides and Support',
+    guidesDesc: "We'll show you how to supercharge your AI coach",
+    andMore: "And that's not all",
     lifetimeFeatures: 'Lifetime access to all new features',
     discounts: 'Discounts on other health-tech services',
     lifetimeNoSub: 'Lifetime access. No subscription.',
@@ -341,6 +399,9 @@ export const en = {
     allSet: "You're all set!",
     downloadReady: 'Your personalized setup file is ready to download.',
     downloadFile: 'Download Setup File',
+    niceTry: 'Nice try!',
+    notPurchased: 'This page is reserved for paying customers. Good thinking though!',
+    startOver: 'Start from the beginning',
     nextSteps: 'Next steps:',
     askWorkout: 'Ask for a workout!',
     openTimer: 'Open timer',
@@ -360,11 +421,101 @@ export const en = {
     },
     restoreNote: 'Lost your file? You can re-download it anytime using your email.',
     restoreLink: 'Restore file',
+    localRecovery: 'Local copy available for ',
+    downloadAgain: 'Download from local storage',
   },
 
   // Common
   common: {
     required: '*',
+  },
+
+  // Restore page
+  restore: {
+    title: 'Restore Your File',
+    subtitle: 'Enter your email to re-download your file',
+    emailPlaceholder: 'Use the email linked to your order',
+    downloadButton: 'Download File',
+    loading: 'Looking up...',
+    success: 'File downloaded successfully!',
+    back: '← Back',
+    downloadAgain: 'Download Again',
+    // Discarded data states
+    discarded: {
+      title: 'Data Not Saved',
+      message: 'You chose not to save your data at checkout.',
+      localAvailable: 'Good news: Your local copy is still available!',
+      timeRemaining: 'Time remaining: ',
+      downloadLocal: 'Download from local storage',
+      expired: 'Your 48-hour local storage window has expired.',
+      contactSupport: 'Contact support@workout-timer.app for a discount on repurchase.',
+    },
+  },
+
+  // Getting started page (linked from Polar benefit)
+  gettingStarted: {
+    title: 'Welcome to Workout Timer',
+    whatYouGot: {
+      title: 'Make sure to store the file safely',
+      description: 'You will use this file to supercharge your AI chats to generate personalised workouts and create interactive timers.',
+    },
+    links: {
+      restore: {
+        title: 'Restore Your File',
+        description: 'Lost your file? Re-download it using your purchase email.',
+      },
+      timer: {
+        title: 'Try the Timer',
+        description: 'See the workout timer in action with a demo workout.',
+      },
+      troubleshooting: {
+        title: 'Common Errors',
+        description: 'Solutions for link generation issues.',
+      },
+      feedback: {
+        title: 'Leave Feedback',
+      },
+    },
+    setup: {
+      title: 'Quick Setup by Platform',
+      detailedGuide: 'Learn more',
+      otherTitle: 'Other AI Assistants',
+      chatgpt: [
+        'Go to chatgpt.com and sign in',
+        'Create a new Project',
+        'Upload file to Project Knowledge',
+        'Ask for a workout!',
+      ],
+      claude: [
+        'Go to claude.ai and sign in',
+        'Create a new Project',
+        'Upload file to Project Knowledge',
+        'Ask for a workout!',
+      ],
+      gemini: [
+        'Open Gemini and sign in',
+        'Create a new Gem',
+        'Upload file to Gem Knowledge',
+        'Ask for a workout!',
+      ],
+      other: [
+        'Open your AI assistant',
+        'Start a new conversation',
+        'Paste the entire file as your first message',
+        'Ask for a workout!',
+      ],
+    },
+    tips: {
+      title: 'Pro Tips',
+      items: [
+        'Use a thinking/reasoning model for best results (GPT-4o, Claude Sonnet, Gemini Pro)',
+        'Be specific: "Give me a 20-minute upper body workout with dumbbells"',
+        'The AI will generate a clickable timer link - just tap it to start!',
+        'Save your file somewhere safe, or use the restore link anytime',
+      ],
+    },
+    cta: 'Restore My File',
+    supportNote: 'Need help?',
   },
 
   // AI platform instructions
@@ -404,9 +555,10 @@ export const en = {
       subtitle: 'Log in. Create GPT. Add file. Ask for a workout.',
       steps: [
         'Open chatgpt.com and sign in',
-        'Create a new GPT or start a Project',
-        'Paste your instructions file contents',
+        'Create a new Project',
+        'Upload file to Project Knowledge',
         'Ask for a workout!',
+        'Click the link to open a timer',
       ],
       modelTip: {
         title: 'Works best with GPT-5.2',

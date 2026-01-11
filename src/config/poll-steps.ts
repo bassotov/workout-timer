@@ -18,7 +18,13 @@ export const POLL_STEPS: PollStep[] = [
   },
   {
     id: 'trainingType',
-    options: [{ id: 'strength' }, { id: 'hiit' }, { id: 'yoga' }, { id: 'mixed' }],
+    options: [
+      { id: 'strength' },
+      { id: 'hiit' },
+      { id: 'yoga' },
+      { id: 'mixed' },
+      { id: 'other', allowCustom: true },
+    ],
   },
   {
     id: 'equipment',
@@ -43,7 +49,13 @@ export const POLL_STEPS: PollStep[] = [
   },
   {
     id: 'goals',
-    options: [{ id: 'muscle' }, { id: 'weight' }, { id: 'endurance' }, { id: 'general' }],
+    options: [
+      { id: 'muscle' },
+      { id: 'weight' },
+      { id: 'endurance' },
+      { id: 'general' },
+      { id: 'other', allowCustom: true },
+    ],
   },
   {
     id: 'tracker',

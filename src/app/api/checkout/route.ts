@@ -46,32 +46,47 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Build metadata from poll answers (stored on order for regeneration)
-    const metadata = {
-      // Core fields
-      name: answers.name || '',
-      language: answers.language || 'en',
-      aiPlatform: answers.aiPlatform || '',
-      trainingType: answers.trainingType || '',
-      equipment: answers.equipment || '',
-      weightPreference: answers.weightPreference || '',
-      goals: answers.goals || '',
-      tracker: answers.tracker || '',
-      coachingStyle: answers.coachingStyle || '',
-      limitations: answers.limitations || '',
+    // Build metadata conditionally based on data consent choice
+    const dataConsent = answers?.dataConsent;
 
-      // Personalization fields
-      gender: answers.gender || '',
-      weight: answers.weight || '',
-      height: answers.height || '',
-      birthYear: answers.birthYear || '',
-      customGuidelines: answers.customGuidelines || '',
+    let metadata: Record<string, string>;
 
-      // Custom "other" values
-      customEquipment: answers.customEquipment || '',
-      customAiPlatform: answers.customAiPlatform || '',
-      customTracker: answers.customTracker || '',
-    };
+    if (dataConsent === 'discard') {
+      // Minimal metadata - only track that user chose to discard
+      metadata = {
+        dataConsent: 'discarded',
+        discardedAt: new Date().toISOString(),
+        language: answers.language || 'en',
+      };
+    } else {
+      // Full metadata - existing behavior (dataConsent is 'save' or undefined for backwards compatibility)
+      metadata = {
+        dataConsent: 'saved',
+        // Core fields
+        name: answers.name || '',
+        language: answers.language || 'en',
+        aiPlatform: answers.aiPlatform || '',
+        trainingType: answers.trainingType || '',
+        equipment: answers.equipment || '',
+        weightPreference: answers.weightPreference || '',
+        goals: answers.goals || '',
+        tracker: answers.tracker || '',
+        coachingStyle: answers.coachingStyle || '',
+        limitations: answers.limitations || '',
+
+        // Personalization fields
+        gender: answers.gender || '',
+        weight: answers.weight || '',
+        height: answers.height || '',
+        birthYear: answers.birthYear || '',
+        customGuidelines: answers.customGuidelines || '',
+
+        // Custom "other" values
+        customEquipment: answers.customEquipment || '',
+        customAiPlatform: answers.customAiPlatform || '',
+        customTracker: answers.customTracker || '',
+      };
+    }
 
     // Construct checkout URL with email, name, and metadata
     const checkoutUrl = `/api/checkout?products=${productId}&customerEmail=${encodeURIComponent(answers.email.trim())}&customerName=${encodeURIComponent(answers.name?.trim() || '')}&metadata=${encodeURIComponent(JSON.stringify(metadata))}`;

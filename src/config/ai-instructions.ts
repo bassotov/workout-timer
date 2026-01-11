@@ -1,20 +1,36 @@
-export const AI_CONFIGS = {
+export interface AIConfig {
+  name: string;
+  logo: string;
+  color: string;
+  screenshots: string[];
+}
+
+export const AI_CONFIGS: Record<string, AIConfig> = {
   chatgpt: {
     name: 'ChatGPT',
-    icon: '🤖',
-    color: 'from-green-500/20 to-green-600/20',
+    logo: '/logos/chatgpt.png',
+    color: 'from-white/30 to-white/40',
+    screenshots: [
+      '/screenshots/chatgpt-1.png',
+      '/screenshots/chatgpt-2.png',
+      '/screenshots/chatgpt-3.png',
+      '/screenshots/chatgpt-4.png',
+      '/screenshots/chatgpt-5.png',
+    ],
   },
   claude: {
     name: 'Claude',
-    icon: '🧠',
+    logo: '/logos/claude.png',
     color: 'from-orange-500/20 to-orange-600/20',
+    screenshots: [],
   },
   gemini: {
     name: 'Gemini',
-    icon: '✨',
+    logo: '/logos/gemini.png',
     color: 'from-blue-500/20 to-blue-600/20',
+    screenshots: [],
   },
-} as const;
+};
 
-export type AIConfigKey = keyof typeof AI_CONFIGS;
-export const AI_CONFIG_KEYS = Object.keys(AI_CONFIGS) as AIConfigKey[];
+export type AIConfigKey = 'chatgpt' | 'claude' | 'gemini';
+export const AI_CONFIG_KEYS: AIConfigKey[] = ['chatgpt', 'claude', 'gemini'];

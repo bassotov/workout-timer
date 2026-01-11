@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { PollAnswers } from '@/types';
 import { POLL_STEPS, type PollStep } from '@/config';
-import { getStoredValue, setStoredValue, STORAGE_KEYS } from '@/lib/storage';
+import { getStoredValueWithTTL, setStoredValueWithTTL, STORAGE_KEYS, STORAGE_TTL } from '@/lib';
 
 type Page = 'landing' | 'poll' | 'details' | 'payment' | 'success';
 
@@ -34,12 +34,17 @@ const DEFAULT_ANSWERS: PollAnswers = {
   customEquipment: undefined,
   customAiPlatform: undefined,
   customTracker: undefined,
+  customTrainingType: undefined,
+  customGoals: undefined,
+
+  // Consent
+  dataConsent: undefined,
 };
 
 // Initialize answers from localStorage (called lazily)
 function getInitialAnswers(): PollAnswers {
   if (typeof window === 'undefined') return DEFAULT_ANSWERS;
-  const saved = getStoredValue<PollAnswers>(STORAGE_KEYS.POLL_ANSWERS, DEFAULT_ANSWERS);
+  const saved = getStoredValueWithTTL<PollAnswers>(STORAGE_KEYS.POLL_ANSWERS, DEFAULT_ANSWERS);
   if (!saved || !saved.language) return DEFAULT_ANSWERS;
 
   return { ...DEFAULT_ANSWERS, ...saved };
@@ -53,7 +58,7 @@ export function usePoll() {
   // Persist answers to localStorage whenever they change
   useEffect(() => {
     if (answers.language) {
-      setStoredValue(STORAGE_KEYS.POLL_ANSWERS, answers);
+      setStoredValueWithTTL(STORAGE_KEYS.POLL_ANSWERS, answers, STORAGE_TTL.POLL_ANSWERS);
     }
   }, [answers]);
 
@@ -68,12 +73,17 @@ export function usePoll() {
   const goToSuccess = useCallback(() => setPage('success'), []);
 
   // Find next step, skipping conditional steps that don't apply
-  const nextStep = useCallback(() => {
+  // Accepts optional updatedAnswers to use fresh values before state updates
+  const nextStep = useCallback((updatedAnswers?: Partial<PollAnswers>) => {
+    const effectiveAnswers = updatedAnswers
+      ? { ...answers, ...updatedAnswers }
+      : answers;
+
     let next = pollStep + 1;
     while (next < POLL_STEPS.length) {
       const step = POLL_STEPS[next];
       // If step has no conditional, or conditional returns true, use it
-      if (!step.conditional || step.conditional(answers)) {
+      if (!step.conditional || step.conditional(effectiveAnswers)) {
         setPollStep(next);
         return;
       }
@@ -83,12 +93,17 @@ export function usePoll() {
   }, [pollStep, answers]);
 
   // Find previous step, skipping conditional steps that don't apply
-  const prevStep = useCallback(() => {
+  // Accepts optional updatedAnswers to use fresh values before state updates
+  const prevStep = useCallback((updatedAnswers?: Partial<PollAnswers>) => {
+    const effectiveAnswers = updatedAnswers
+      ? { ...answers, ...updatedAnswers }
+      : answers;
+
     let prev = pollStep - 1;
     while (prev >= 0) {
       const step = POLL_STEPS[prev];
       // If step has no conditional, or conditional returns true, use it
-      if (!step.conditional || step.conditional(answers)) {
+      if (!step.conditional || step.conditional(effectiveAnswers)) {
         setPollStep(prev);
         return;
       }

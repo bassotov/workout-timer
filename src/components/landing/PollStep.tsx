@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { BackButton } from '@/components/ui/back-button';
 import { PollProgress } from './PollProgress';
 import { useLanguage, LANGUAGE_FLAGS, type Language } from '@/i18n';
+import { validateCustomInput, MAX_CUSTOM_INPUT_LENGTH } from '@/lib';
 import type { PollStep as PollStepType, PollStepId } from '@/types';
 
 interface PollStepProps {
@@ -63,13 +64,56 @@ export function PollStep({
     onSelect(optionId);
   };
 
+  // Validate custom input
+  const validation = validateCustomInput(localCustomValue);
+
   const handleCustomContinue = () => {
-    if (localCustomValue.trim().length >= 3 && onCustomChange) {
-      onCustomChange(localCustomValue.trim());
+    if (validation.isValid && onCustomChange) {
+      onCustomChange(validation.sanitized);
     }
   };
 
-  const canContinue = localCustomValue.trim().length >= 3;
+  const handleCustomInputChange = (value: string) => {
+    // Enforce max length during input
+    if (value.length <= MAX_CUSTOM_INPUT_LENGTH) {
+      setLocalCustomValue(value);
+    }
+  };
+
+  // Threshold to start showing character count
+  const SHOW_COUNT_FROM = 40;
+
+  // Get helper message for display (errors, character count, or max reached)
+  const getHelperMessage = (): string | null => {
+    const len = localCustomValue.length;
+
+    // Show nothing if empty
+    if (len === 0) return null;
+
+    // Show invalid chars error (priority)
+    if (validation.error === 'invalidChars') {
+      return t.poll.invalidChars;
+    }
+
+    // Show min chars hint
+    if (len < 3) {
+      return t.poll.minChars;
+    }
+
+    // Show max reached message
+    if (len >= MAX_CUSTOM_INPUT_LENGTH) {
+      return t.poll.maxChars;
+    }
+
+    // Show character count when approaching limit
+    if (len >= SHOW_COUNT_FROM) {
+      return `${len}/${MAX_CUSTOM_INPUT_LENGTH}`;
+    }
+
+    return null;
+  };
+
+  const helperMessage = getHelperMessage();
 
   // Get option label from translations (with flag for language step)
   const getOptionLabel = (optionId: string): string => {
@@ -119,7 +163,7 @@ export function PollStep({
                   key={option.id}
                   variant="outline"
                   onClick={() => handleOptionClick(option.id)}
-                  className={`p-4 h-auto text-left justify-start transition-colors ${
+                  className={`p-4 h-auto text-left justify-start whitespace-normal transition-colors ${
                     isSelected
                       ? 'bg-primary text-primary-foreground border-primary'
                       : 'hover:bg-primary hover:text-primary-foreground hover:border-primary'
@@ -139,22 +183,23 @@ export function PollStep({
           >
             <Input
               value={localCustomValue}
-              onChange={(e) => setLocalCustomValue(e.target.value)}
+              onChange={(e) => handleCustomInputChange(e.target.value)}
               placeholder={t.poll.specify}
               autoFocus={showCustomInput}
               tabIndex={showCustomInput ? 0 : -1}
+              maxLength={MAX_CUSTOM_INPUT_LENGTH}
             />
             <Button
               onClick={handleCustomContinue}
-              disabled={!canContinue}
+              disabled={!validation.isValid}
               className="w-full"
               tabIndex={showCustomInput ? 0 : -1}
             >
               {t.poll.continue}
             </Button>
-            {localCustomValue.length > 0 && localCustomValue.length < 3 && (
+            {helperMessage && (
               <p className="text-xs text-muted-foreground text-center">
-                {t.poll.minChars}
+                {helperMessage}
               </p>
             )}
           </div>

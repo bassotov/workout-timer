@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import confetti from 'canvas-confetti';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ModelRecommendations } from '@/components/landing';
 import { useLanguage } from '@/i18n';
 import { generateInstructions } from '@/lib/instruction-generator';
+import { getRemainingTTL, STORAGE_KEYS } from '@/lib';
 import { AI_CONFIG_KEYS } from '@/config';
 import type { PollAnswers } from '@/types';
 
@@ -15,15 +16,32 @@ const TIMER_BASE_URL = 'https://workout-timer.app/timer';
 
 interface SuccessContentProps {
   answers: PollAnswers;
+  verified: boolean;
 }
 
-export function SuccessContent({ answers }: SuccessContentProps) {
+export function SuccessContent({ answers, verified }: SuccessContentProps) {
   const { t } = useLanguage();
   const platform = answers.aiPlatform || 'chatgpt';
   const hasInstructionPage = AI_CONFIG_KEYS.includes(platform as typeof AI_CONFIG_KEYS[number]);
+  const [remainingTime, setRemainingTime] = useState<number | null>(null);
 
-  // Confetti burst on mount
+  // Track remaining TTL for local storage
   useEffect(() => {
+    const updateTTL = () => {
+      const ttl = getRemainingTTL(STORAGE_KEYS.POLL_ANSWERS);
+      setRemainingTime(ttl);
+    };
+
+    updateTTL();
+    const interval = setInterval(updateTTL, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Confetti burst on mount (only for verified purchases)
+  useEffect(() => {
+    if (!verified) return;
+
     // Left burst
     confetti({
       particleCount: 100,
@@ -36,7 +54,7 @@ export function SuccessContent({ answers }: SuccessContentProps) {
       spread: 70,
       origin: { x: 1, y: 0.6 },
     });
-  }, []);
+  }, [verified]);
 
   const downloadInstructions = () => {
     const content = generateInstructions(answers, TIMER_BASE_URL);
@@ -60,6 +78,38 @@ export function SuccessContent({ answers }: SuccessContentProps) {
 
   const steps = getPlatformSteps();
 
+  const formatRemainingTime = (ms: number): string => {
+    const hours = Math.floor(ms / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    if (hours > 0) {
+      return `${hours}h ${minutes}m`;
+    }
+    return `${minutes}m`;
+  };
+
+  // Unauthorized access - show "nice try" message
+  if (!verified) {
+    return (
+      <div className="min-h-dvh bg-background text-foreground flex flex-col items-center justify-center p-6">
+        <div className="w-full max-w-md text-center">
+          <div className="text-6xl mb-4">🧐</div>
+          <h2 className="text-2xl font-bold mb-4">{t.success.niceTry}</h2>
+          <p className="text-muted-foreground mb-8">
+            {t.success.notPurchased}
+          </p>
+          <Button disabled className="w-full text-lg py-6 h-auto mb-4 opacity-50 cursor-not-allowed">
+            📥 {t.success.downloadFile}
+          </Button>
+          <Button variant="default" asChild className="w-full">
+            <Link href="/">
+              {t.success.startOver}
+            </Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-dvh bg-background text-foreground flex flex-col items-center justify-center p-6">
       <div className="w-full max-w-md text-center">
@@ -71,8 +121,26 @@ export function SuccessContent({ answers }: SuccessContentProps) {
         <Button onClick={downloadInstructions} className="w-full text-lg py-6 h-auto mb-4">
           📥 {t.success.downloadFile}
         </Button>
+        {remainingTime !== null && remainingTime > 0 && (
+          <div className="mb-4 p-3 bg-muted/50 rounded-lg text-sm">
+            <p className="text-muted-foreground">
+              {t.success.localRecovery}
+              <span className="font-medium text-foreground">
+                {formatRemainingTime(remainingTime)}
+              </span>
+            </p>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={downloadInstructions}
+              className="mt-2"
+            >
+              {t.success.downloadAgain}
+            </Button>
+          </div>
+        )}
         <ModelRecommendations platform={platform as 'chatgpt' | 'claude' | 'gemini' | 'other'} />
-        <Card className="text-left mb-4">
+        <Card className="text-left">
           <CardHeader>
             <CardTitle className="text-base">{t.success.nextSteps}</CardTitle>
           </CardHeader>
@@ -84,21 +152,12 @@ export function SuccessContent({ answers }: SuccessContentProps) {
           </CardContent>
         </Card>
         {hasInstructionPage && (
-          <Button variant="secondary" asChild className="w-full mb-6">
+          <Button variant="secondary" asChild className="w-full mt-4">
             <Link href={`/instructions/${platform}`}>
               {t.success.detailedInstructions}
             </Link>
           </Button>
         )}
-        <Button variant="link" asChild>
-          <a href={`/timer?lang=${answers.language || 'en'}`}>→ {t.success.openTimer}</a>
-        </Button>
-        <p className="text-xs text-muted-foreground mt-6">
-          {t.success.restoreNote}{' '}
-          <Link href="/restore" className="underline hover:text-foreground">
-            {t.success.restoreLink}
-          </Link>
-        </p>
       </div>
     </div>
   );

@@ -90,3 +90,56 @@ export function isPositiveNumber(value: unknown): value is number {
 export function isNonNegativeNumber(value: unknown): value is number {
   return typeof value === 'number' && value >= 0 && Number.isFinite(value);
 }
+
+/**
+ * Maximum length for custom poll input fields (concise labels like "Martial Arts")
+ */
+export const MAX_CUSTOM_INPUT_LENGTH = 50;
+
+/**
+ * Pattern for allowed characters in custom input
+ * Allows: letters (unicode), numbers, spaces, and common punctuation
+ */
+const ALLOWED_PATTERN = /^[\p{L}\p{N}\s\-\/\.,&()]+$/u;
+
+/**
+ * Pattern to detect control characters
+ */
+const CONTROL_CHARS_PATTERN = /[\x00-\x1F\x7F]/;
+
+export type CustomInputError = 'minChars' | 'maxChars' | 'invalidChars';
+
+export interface CustomInputValidation {
+  isValid: boolean;
+  sanitized: string;
+  error?: CustomInputError;
+}
+
+/**
+ * Validates custom input from poll "Other" fields
+ * @param value - The input value to validate
+ * @returns Validation result with sanitized value and optional error
+ */
+export function validateCustomInput(value: string): CustomInputValidation {
+  const trimmed = value.trim();
+
+  // Length checks
+  if (trimmed.length < 3) {
+    return { isValid: false, sanitized: trimmed, error: 'minChars' };
+  }
+  if (trimmed.length > MAX_CUSTOM_INPUT_LENGTH) {
+    return { isValid: false, sanitized: trimmed, error: 'maxChars' };
+  }
+
+  // Check for control characters
+  if (CONTROL_CHARS_PATTERN.test(trimmed)) {
+    return { isValid: false, sanitized: trimmed, error: 'invalidChars' };
+  }
+
+  // Character validation - only allow safe characters
+  if (!ALLOWED_PATTERN.test(trimmed)) {
+    return { isValid: false, sanitized: trimmed, error: 'invalidChars' };
+  }
+
+  return { isValid: true, sanitized: trimmed };
+}

@@ -14,8 +14,9 @@ interface HeaderProps {
 }
 
 const NAV_ITEMS = [
-  { labelKey: 'howItWorks', href: '#features' },
+  { labelKey: 'howItWorks', href: '#how-it-works' },
   { labelKey: 'benefits', href: '#benefits' },
+  { labelKey: 'pricing', href: '#pricing' },
 ] as const;
 
 export function Header({
@@ -49,6 +50,7 @@ export function Header({
   const navLabels: Record<string, string> = {
     howItWorks: t.nav?.howItWorks ?? 'How It Works',
     benefits: t.nav?.benefits ?? 'Benefits',
+    pricing: t.nav?.pricing ?? 'Pricing',
   };
 
   return (
