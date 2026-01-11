@@ -49,10 +49,22 @@ export default function TermsOfService() {
 
           <section>
             <h2 className="text-xl font-semibold text-foreground mb-4">4. Refund Policy</h2>
+            <p className="mb-4">
+              Payments are processed by Polar as our Merchant of Record. Refund requests are handled
+              according to Polar&apos;s refund policy:
+            </p>
+            <ul className="list-disc pl-6 space-y-2 mb-4">
+              <li>Refund requests may be submitted within 60 days of purchase.</li>
+              <li>Refunds are issued at Polar&apos;s discretion.</li>
+              <li>Payment processing fees are non-refundable.</li>
+            </ul>
             <p>
-              Due to the digital nature of this product and instant delivery, all sales are final.
-              If you experience technical issues, please contact us at pasha@barbash.in and we will
-              work to resolve the problem.
+              We&apos;re committed to customer satisfaction. If you experience any issues with your purchase,
+              please contact us at{' '}
+              <a href="mailto:support@workout-timer.app" className="text-primary hover:text-primary/80 transition-colors">
+                support@workout-timer.app
+              </a>{' '}
+              and we&apos;ll work to resolve the problem.
             </p>
           </section>
 
@@ -114,8 +126,8 @@ export default function TermsOfService() {
             <h2 className="text-xl font-semibold text-foreground mb-4">10. Contact</h2>
             <p>
               For questions about these Terms of Service, please contact us at{' '}
-              <a href="mailto:pasha@barbash.in" className="text-primary hover:text-primary/80 transition-colors">
-                pasha@barbash.in
+              <a href="mailto:support@workout-timer.app" className="text-primary hover:text-primary/80 transition-colors">
+                support@workout-timer.app
               </a>
             </p>
           </section>

@@ -107,14 +107,14 @@ export async function GET(request: NextRequest) {
         {
           error:
             lang === 'ru'
-              ? 'Вы выбрали не сохранять данные при покупке. Ваш файл был доступен только в браузере в течение 48 часов.'
-              : 'You chose not to save your data at checkout. Your file was only available in your browser for 48 hours.',
+              ? 'Вы выбрали не сохранять данные при покупке. Восстановление файла невозможно.'
+              : 'You chose not to save your data at checkout. File restoration is not possible.',
           code: 'DATA_DISCARDED',
           discardedAt,
           helpMessage:
             lang === 'ru'
-              ? 'Для восстановления файла свяжитесь с поддержкой для получения скидки 50% на повторную покупку.'
-              : 'To get your file back, contact support for a 50% discount on repurchase.',
+              ? 'Свяжитесь с поддержкой для получения скидки 50% на повторную покупку.'
+              : 'Contact support for a 50% discount on repurchase.',
         },
         { status: 410 } // 410 Gone - resource no longer available
       );

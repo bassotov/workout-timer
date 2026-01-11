@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import confetti from 'canvas-confetti';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ModelRecommendations } from '@/components/landing';
 import { useLanguage } from '@/i18n';
 import { generateInstructions } from '@/lib/instruction-generator';
-import { getRemainingTTL, STORAGE_KEYS } from '@/lib';
 import { AI_CONFIG_KEYS } from '@/config';
 import type { PollAnswers } from '@/types';
 
@@ -23,20 +22,6 @@ export function SuccessContent({ answers, verified }: SuccessContentProps) {
   const { t } = useLanguage();
   const platform = answers.aiPlatform || 'chatgpt';
   const hasInstructionPage = AI_CONFIG_KEYS.includes(platform as typeof AI_CONFIG_KEYS[number]);
-  const [remainingTime, setRemainingTime] = useState<number | null>(null);
-
-  // Track remaining TTL for local storage
-  useEffect(() => {
-    const updateTTL = () => {
-      const ttl = getRemainingTTL(STORAGE_KEYS.POLL_ANSWERS);
-      setRemainingTime(ttl);
-    };
-
-    updateTTL();
-    const interval = setInterval(updateTTL, 60000); // Update every minute
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Confetti burst on mount (only for verified purchases)
   useEffect(() => {
@@ -78,15 +63,6 @@ export function SuccessContent({ answers, verified }: SuccessContentProps) {
 
   const steps = getPlatformSteps();
 
-  const formatRemainingTime = (ms: number): string => {
-    const hours = Math.floor(ms / (1000 * 60 * 60));
-    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-    if (hours > 0) {
-      return `${hours}h ${minutes}m`;
-    }
-    return `${minutes}m`;
-  };
-
   // Unauthorized access - show "nice try" message
   if (!verified) {
     return (
@@ -121,13 +97,16 @@ export function SuccessContent({ answers, verified }: SuccessContentProps) {
         <Button onClick={downloadInstructions} className="w-full text-lg py-6 h-auto mb-4">
           📥 {t.success.downloadFile}
         </Button>
-        {remainingTime !== null && remainingTime > 0 && (
+        {answers.dataConsent === 'discard' ? (
+          <div className="mb-4 p-3 bg-amber-500/15 border border-amber-500/30 rounded-lg text-sm">
+            <p className="text-amber-600 dark:text-amber-400 font-medium">
+              ⚠️ {t.success.discardWarning}
+            </p>
+          </div>
+        ) : (
           <div className="mb-4 p-3 bg-muted/50 rounded-lg text-sm">
             <p className="text-muted-foreground">
-              {t.success.localRecovery}
-              <span className="font-medium text-foreground">
-                {formatRemainingTime(remainingTime)}
-              </span>
+              {t.success.restoreNote}
             </p>
             <Button
               variant="ghost"

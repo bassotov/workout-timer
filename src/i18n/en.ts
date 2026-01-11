@@ -358,7 +358,7 @@ export const en = {
       discard: {
         title: 'Discard data (Secure but no backup)',
         description: "We won't store any personal information. Your data stays completely private.",
-        warning: "Your answers stay in browser memory for 48 hours. After that, we won't be able to restore your file if you lose it.",
+        warning: "If you lose your file, we won't be able to restore it. Make sure to save it somewhere safe.",
       },
       selectButton: 'Select this option',
     },
@@ -421,9 +421,8 @@ export const en = {
       other: ['Open your AI assistant', 'Start a new chat', 'Paste file contents as your first message'],
     },
     restoreNote: 'Lost your file? You can re-download it anytime using your email.',
-    restoreLink: 'Restore file',
-    localRecovery: 'Local copy available for ',
-    downloadAgain: 'Download from local storage',
+    downloadAgain: 'Download Again',
+    discardWarning: 'You chose to discard your data. Save this file now — it cannot be restored later.',
   },
 
   // Common
@@ -448,7 +447,7 @@ export const en = {
       localAvailable: 'Good news: Your local copy is still available!',
       timeRemaining: 'Time remaining: ',
       downloadLocal: 'Download from local storage',
-      expired: 'Your 48-hour local storage window has expired.',
+      expired: 'Your local storage has expired and file cannot be restored.',
       contactSupport: 'Contact support@workout-timer.app for a discount on repurchase.',
     },
   },

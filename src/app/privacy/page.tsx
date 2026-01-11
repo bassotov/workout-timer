@@ -127,8 +127,8 @@ export default function PrivacyPolicy() {
             <h2 className="text-xl font-semibold text-foreground mb-4">11. Contact</h2>
             <p>
               For questions about this Privacy Policy, please contact us at{' '}
-              <a href="mailto:pasha@barbash.in" className="text-primary hover:text-primary/80 transition-colors">
-                pasha@barbash.in
+              <a href="mailto:support@workout-timer.app" className="text-primary hover:text-primary/80 transition-colors">
+                support@workout-timer.app
               </a>
             </p>
           </section>

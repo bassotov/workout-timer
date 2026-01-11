@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { LanguageProvider, LanguageHtmlUpdater } from "@/i18n";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -32,6 +33,7 @@ export default function RootLayout({
           <LanguageHtmlUpdater />
           {children}
         </LanguageProvider>
+        <Analytics/>
       </body>
     </html>
   );
