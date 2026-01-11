@@ -8,8 +8,11 @@ export function Pricing() {
   const { t } = useLanguage();
 
   return (
-    <section id="pricing" className="max-w-md mx-auto px-6 py-16">
-      <Card className="border-primary/30 shadow-xl">
+    <section id="pricing" className="px-6 py-16">
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 max-w-xl mx-auto">
+        {t.landing.pricing.title}
+      </h2>
+      <Card className="border-primary/30 shadow-xl max-w-md mx-auto">
         <CardContent className="pt-8 text-center">
           {/* Price */}
           <div className="mb-8">

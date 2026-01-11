@@ -131,7 +131,7 @@ export function PollStep({
   return (
     <div className="min-h-dvh bg-background text-foreground flex flex-col items-center p-6">
       {/* Fixed-position header area - stays at consistent height from top */}
-      <div className="w-full max-w-md pt-56">
+      <div className="w-full max-w-md pt-8 sm:pt-56">
         <BackButton onClick={onBack} label={t.poll.back} className="mb-4" />
           {/* Privacy indicator */}
           <div className="flex flex-col items-center justify-center gap-1.5 text-xs text-muted-foreground mb-4">

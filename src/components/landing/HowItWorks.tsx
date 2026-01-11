@@ -14,7 +14,12 @@ export function HowItWorks() {
       </h2>
 
       <div className="grid md:grid-cols-2 gap-12 items-start">
-        {/* Left: Stepper */}
+        {/* Left: Phone mockup placeholder */}
+        <div className="hidden md:flex justify-center">
+          <PhoneMockup />
+        </div>
+
+        {/* Right: Stepper */}
         <div className="space-y-0">
           {t.landing.howItWorks.steps.map((step, i) => (
             <StepItem
@@ -33,11 +38,6 @@ export function HowItWorks() {
               </Link>
             </Button>
           </div>
-        </div>
-
-        {/* Right: Phone mockup placeholder */}
-        <div className="hidden md:flex justify-center">
-          <PhoneMockup />
         </div>
       </div>
     </section>

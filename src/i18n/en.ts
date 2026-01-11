@@ -261,7 +261,8 @@ export const en = {
   landing: {
     hero: {
       titlePart1: 'Your',
-      titlePart2: 'workouts could be more than text',
+      titlePart2: 'workouts',
+      titlePart3: 'could be more than text',
       subtitle: 'Supercharge your AI chat to create personalised workouts and turn them into interactive timers',
       cta: 'Get Started',
       subtext: 'No login. No subscription. Lifetime access.',
@@ -302,16 +303,16 @@ export const en = {
       ],
     },
     pricing: {
-      title: 'Simple Pricing',
+      title: 'Buy Once. Use Forever.',
       originalPrice: '$25',
       price: '$10',
       benefits: [
-        'Money-Back Guarantee',
-        'Discounts & Bonuses (coming soon)',
         'Lifetime Access',
-        'Interactive Workout Timer',
-        'Personalized AI Workouts',
         'Setup Guide & Support',
+        'Personalized AI Workouts',
+        'Interactive Workout Timer',
+        'Discounts & Bonuses (coming soon)',
+        'Money-Back Guarantee',
       ],
     },
     testimonials: {

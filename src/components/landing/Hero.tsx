@@ -12,11 +12,23 @@ export function Hero({ onStart }: HeroProps) {
   const { t } = useLanguage();
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-16 text-center">
-      <h1 className="text-4xl md:text-5xl font-bold mb-4 inline-flex items-center justify-center flex-wrap gap-x-3">
-        <span>{t.landing.hero.titlePart1}</span>
-        <AILogoFlipper />
-        <span>{t.landing.hero.titlePart2}</span>
+    <div className="relative">
+      {/* Sunrise gradient - orange circle at top fading down */}
+      <div
+        className="absolute inset-x-0 -top-28 bottom-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(251, 146, 60, 0.15) 0%, transparent 70%)',
+        }}
+      />
+      <div className="relative max-w-4xl mx-auto px-6 py-16 text-center">
+      <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <span className="inline-flex items-center justify-center flex-wrap gap-x-3">
+          <span>{t.landing.hero.titlePart1}</span>
+          <AILogoFlipper />
+          <span>{t.landing.hero.titlePart2}</span>
+        </span>
+        <br />
+        <span>{t.landing.hero.titlePart3}</span>
       </h1>
       <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
         {t.landing.hero.subtitle}
@@ -25,7 +37,7 @@ export function Hero({ onStart }: HeroProps) {
       <Button
         onClick={onStart}
         size="lg"
-        className="text-lg px-10 py-6 h-auto"
+        className="text-lg px-16 py-6 h-auto"
       >
         {t.landing.hero.cta}
       </Button>
@@ -35,6 +47,7 @@ export function Hero({ onStart }: HeroProps) {
       </p>
 
       <SocialProof />
+      </div>
     </div>
   );
 }
