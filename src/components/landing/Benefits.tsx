@@ -89,9 +89,9 @@ export function Benefits() {
 function DemoVideo({ className }: { className?: string }) {
   return (
     <div className={`relative ${className ?? ''}`}>
-      <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
-        <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm text-muted-foreground whitespace-nowrap">
-          Works in <img src="/logos/chatgpt.png" alt="ChatGPT" className="size-4 ml-1.5 mr-0.5 invert" /> ChatGPT
+      <div className="absolute -top-12 inset-x-0 flex justify-center z-10">
+        <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm text-muted-foreground">
+          Works in <img src="/logos/chatgpt.png" alt="ChatGPT" className="size-4 mx-1.5 invert" /> ChatGPT
         </span>
       </div>
       <video

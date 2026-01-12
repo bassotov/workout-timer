@@ -39,7 +39,7 @@ export function Pricing({ onStart }: PricingProps) {
             <div className="absolute -right-4 -top-2 md:-right-2">
               {/* Badge */}
               <div className="rotate-12 bg-muted/80 border border-border rounded-full px-3 py-1.5 flex items-center gap-1.5">
-                <Gem className="size-3.5 text-primarygloba" />
+                <Gem className="size-3.5 text-primary" />
                 <span className="text-xs font-medium text-muted-foreground">
                   {t.landing.pricing.badge}
                 </span>

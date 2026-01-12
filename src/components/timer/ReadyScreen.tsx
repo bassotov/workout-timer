@@ -30,6 +30,14 @@ function truncateWeight(weight: string, maxLength = 5): string {
   return weight.length > maxLength ? weight.slice(0, maxLength).trim() : weight;
 }
 
+function truncateName(name: string, max = 20): string {
+  return name.length > max ? name.slice(0, max).trim() + '...' : name;
+}
+
+function cleanReps(reps: string): string {
+  return reps.replace(/\s*(for\s+)?each(\s+\w+)?$/i, '').trim();
+}
+
 export function ReadyScreen({ workout, totalDuration, onStart, translations: t }: ReadyScreenProps) {
   return (
     <div className="min-h-dvh bg-background flex flex-col items-center justify-center p-6 safe-area-inset text-foreground">
@@ -51,10 +59,10 @@ export function ReadyScreen({ workout, totalDuration, onStart, translations: t }
                   className="flex items-center gap-2 hover:opacity-70 transition-opacity group"
                 >
                   <YouTubeIcon className="w-4 h-4 opacity-50 group-hover:opacity-70" />
-                  <span className="underline decoration-foreground/30 underline-offset-2">{ex.name}</span>
+                  <span className="underline decoration-foreground/30 underline-offset-2">{truncateName(ex.name)}</span>
                 </a>
                 <span className="text-muted-foreground">
-                  {ex.weight && ex.weight !== '—' && `${truncateWeight(ex.weight)} • `}{ex.reps}
+                  {ex.weight && ex.weight !== '—' && `${truncateWeight(ex.weight)} • `}{cleanReps(ex.reps)}
                 </span>
               </div>
             );

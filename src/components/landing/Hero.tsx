@@ -33,7 +33,7 @@ export function Hero({ onStart }: HeroProps) {
           <span>{t.landing.hero.titlePart2}</span>
         </span>
         <br />
-        {t.landing.hero.titlePart3}<WavyUnderline>{t.landing.hero.titlePart4}</WavyUnderline>
+        <span className="ml-1">{t.landing.hero.titlePart3}</span><WavyUnderline>{t.landing.hero.titlePart4}</WavyUnderline>
       </h1>
       <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
         {t.landing.hero.subtitle}
