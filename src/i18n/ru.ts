@@ -269,7 +269,7 @@ export const ru: TranslationKeys = {
       titlePart4: 'текст',
       subtitle: 'Прокачай свой AI-чат для создания персональных тренировок и превращай их в интерактивные таймеры',
       cta: 'Начать',
-      subtext: 'Без регистрации. Без подписки. Навсегда.',
+      subtext: 'Без регистрации и СМС',
       restorePurchase: 'Восстановить покупку',
     },
     socialProof: {
@@ -311,7 +311,7 @@ export const ru: TranslationKeys = {
       title: 'Купи раз. Пользуйся всегда.',
       badge: 'Ограниченное предложение',
       planTitle: 'Пожизненный доступ',
-      planSubtitle: 'Без логина. Без подписки. Просто.',
+      planSubtitle: 'Без логина. Без подписки.',
       originalPrice: '$25',
       price: '$10',
       countdown: {

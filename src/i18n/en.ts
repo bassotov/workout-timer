@@ -269,7 +269,7 @@ export const en = {
       titlePart4: 'text',
       subtitle: 'Supercharge your AI chat to create personalised workouts and turn them into interactive timers',
       cta: 'Get Started',
-      subtext: 'No login. No subscription. Lifetime access.',
+      subtext: 'No login. No subscription. Lifetime.',
       restorePurchase: 'Restore Purchase',
     },
     socialProof: {
@@ -311,7 +311,7 @@ export const en = {
       title: 'Buy Once. Use Forever.',
       badge: 'Limited Offer',
       planTitle: 'Lifetime Access',
-      planSubtitle: 'No login. No subscription. Simple.',
+      planSubtitle: 'No login. No subscription.',
       originalPrice: '$25',
       price: '$10',
       countdown: {
