@@ -4,6 +4,7 @@ export const en = {
     howItWorks: 'How It Works',
     benefits: 'Benefits',
     pricing: 'Pricing',
+    restore: 'Restore',
   },
 
   // Footer
@@ -56,8 +57,8 @@ export const en = {
       step3Title: 'Use a more advanced model',
       step3Examples: 'GPT-5.2, Claude Opus, Gemini Thinking',
       step3Prompt: 'Please use a more capable AI model (like GPT-5.2, Claude Opus, or Gemini Thinking) and regenerate the workout timer link. Return full link, not markdown.',
-      step4Title: 'Translate to English',
-      step4Prompt: 'Please translate all exercise names to English and regenerate the workout timer link. Return full link, not markdown.',
+      step4Title: 'Try English exercise names',
+      step4Prompt: 'Links break more often with non-Latin character languages (Russian, Mandarin, Korean, etc.). Please translate all exercise names to English and regenerate the workout timer link. Return full link, not markdown.',
     },
     specific: {
       control_characters: {
@@ -118,11 +119,12 @@ export const en = {
     min: 'min',
   },
   tracker: {
-    title: 'Start Tracking',
-    ready: "Ready, let's go!",
-    whoop: 'Open WHOOP → Activity → Strength Training',
-    apple: 'Start a workout on your Apple Watch',
-    garmin: 'Start activity recording on your Garmin',
+    title: 'Quick Reminder',
+    ready: 'Ok! Go!',
+    whoop: "Don't forget to start activity on WHOOP",
+    apple: "Don't forget to start a workout on Apple Watch",
+    garmin: "Don't forget to start activity on Garmin",
+    custom: "Don't forget to start {name}",
   },
   cooldown: [
     { name: 'Quad Stretch', duration: 30, desc: 'Standing, pull heel to glute, 15s per leg' },
@@ -266,6 +268,7 @@ export const en = {
       subtitle: 'Supercharge your AI chat to create personalised workouts and turn them into interactive timers',
       cta: 'Get Started',
       subtext: 'No login. No subscription. Lifetime access.',
+      restorePurchase: 'Restore Purchase',
     },
     socialProof: {
       text: 'users already training',
@@ -423,6 +426,17 @@ export const en = {
     restoreNote: 'Lost your file? You can re-download it anytime using your email.',
     downloadAgain: 'Download Again',
     discardWarning: 'You chose to discard your data. Save this file now — it cannot be restored later.',
+    // Non-verified state
+    alreadyPurchased: 'Already purchased?',
+    notPurchasedYet: "Haven't purchased yet?",
+    findEmailInstructions: 'Find your confirmation email from "Workout Timer (via Polar)" and click "Access my purchase"',
+    restoreYourFile: 'Restore Your File',
+    takeQuickPoll: 'Take a quick poll and get your personalized workouts with interactive timer',
+    getStarted: 'Get Started',
+    // Help section
+    needHelp: 'Need help?',
+    gettingStartedGuide: 'Getting Started Guide',
+    helpText: 'If any questions or need help, please contact',
   },
 
   // Common

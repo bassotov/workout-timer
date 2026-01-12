@@ -14,9 +14,9 @@ export function HowItWorks() {
       </h2>
 
       <div className="grid md:grid-cols-2 gap-12 items-start">
-        {/* Left: Phone mockup placeholder */}
+        {/* Left: Demo video */}
         <div className="hidden md:flex justify-center">
-          <PhoneMockup />
+          <DemoVideo />
         </div>
 
         {/* Right: Stepper */}
@@ -71,15 +71,17 @@ function StepItem({
   );
 }
 
-function PhoneMockup() {
+function DemoVideo() {
   return (
-    <div className="relative w-64 h-[500px] bg-muted rounded-[2.5rem] border-4 border-foreground/20 shadow-xl">
-      {/* Notch */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-1.5 bg-foreground/20 rounded-full" />
-      {/* Screen */}
-      <div className="absolute inset-4 rounded-[2rem] bg-background/50 flex items-center justify-center">
-        <span className="text-muted-foreground text-sm">Timer Preview</span>
-      </div>
-    </div>
+    <video
+      autoPlay
+      loop
+      muted
+      playsInline
+      className="w-full max-w-xs rounded-2xl ml-40"
+      poster="/demo/how-it-works.gif"
+    >
+      <source src="/demo/how-it-works.mp4" type="video/mp4" />
+    </video>
   );
 }

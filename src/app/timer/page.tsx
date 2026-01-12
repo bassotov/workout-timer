@@ -84,7 +84,7 @@ function TimerContent() {
   // Show demo screen if no workout URL provided
   if (!workout) return <DemoScreen onLoadDemo={() => setDemoWorkout(getDemoWorkout(langParam || detectBrowserLanguage()))} lang={langParam || undefined} />;
 
-  const trackerTranslations = { trackerTitle: t.tracker.title, trackerReady: t.tracker.ready, trackerWhoop: t.tracker.whoop, trackerApple: t.tracker.apple, trackerGarmin: t.tracker.garmin, reset: t.controls.reset };
+  const trackerTranslations = { trackerTitle: t.tracker.title, trackerReady: t.tracker.ready, trackerWhoop: t.tracker.whoop, trackerApple: t.tracker.apple, trackerGarmin: t.tracker.garmin, trackerCustom: t.tracker.custom, reset: t.controls.reset };
 
   if (timer.state.phase === 'complete') {
     return <CompletionScreen workoutName={workout.name} onStartAgain={timer.actions.reset} onNewWorkout={() => { setDemoWorkout(null); timer.actions.reset(); }} translations={{ greatWork: t.workout.greatWork, workoutComplete: t.workout.workoutComplete, startAgain: t.controls.startAgain, newWorkout: t.controls.newWorkout }} />;

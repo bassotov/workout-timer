@@ -57,3 +57,6 @@ export {
 
 // Workout instruction generator
 export { generateInstructions } from './instruction-generator';
+
+// File sharing/download
+export { downloadOrShareFile } from './share';

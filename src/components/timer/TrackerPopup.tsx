@@ -10,35 +10,39 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 
-type TrackerType = 'whoop' | 'apple' | 'garmin' | 'none';
-
 interface TrackerPopupTranslations {
   trackerTitle: string;
   trackerReady: string;
   trackerWhoop: string;
   trackerApple: string;
   trackerGarmin: string;
+  trackerCustom: string; // Template with {name} placeholder
   reset: string;
 }
 
 interface TrackerPopupProps {
   open: boolean;
-  tracker: TrackerType | undefined;
+  tracker: string | undefined;
   onStart: () => void;
   onClose: () => void;
   translations: TrackerPopupTranslations;
 }
 
-function getTrackerMessage(tracker: TrackerType | undefined, t: TrackerPopupTranslations): string {
-  switch (tracker) {
+function getTrackerMessage(tracker: string | undefined, t: TrackerPopupTranslations): string {
+  switch (tracker?.toLowerCase()) {
     case 'whoop':
       return t.trackerWhoop;
     case 'apple':
+    case 'apple watch':
       return t.trackerApple;
     case 'garmin':
       return t.trackerGarmin;
-    default:
+    case 'none':
+    case undefined:
       return '';
+    default:
+      // Custom tracker name - use template
+      return t.trackerCustom.replace('{name}', tracker!);
   }
 }
 

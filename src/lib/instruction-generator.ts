@@ -245,7 +245,7 @@ https://workout-timer.app/timer?w=eyJuYW1l...
 }
 
 export function generateInstructions(answers: PollAnswers, timerUrl: string): string {
-  const lang = answers.language || 'en';
+  const lang = 'en'; // Force English for instructions
   const equipment = (Array.isArray(answers.equipment) ? answers.equipment[0] : answers.equipment) as Equipment || 'home';
   const goal = (Array.isArray(answers.goals) ? answers.goals[0] : answers.goals) as Goal || 'general';
   const training = (answers.trainingType as TrainingType) || 'strength';
@@ -299,16 +299,16 @@ Start with LIGHTER weights and note "increase if too easy" in workout.`
 
   const variables: Record<string, string> = {
     USER_NAME: answers.name || 'User',
-    LANGUAGE_NAME: lang === 'ru' ? 'Russian' : 'English',
+    LANGUAGE_NAME: 'English', // Always English
     LANGUAGE_CODE: lang,
     EQUIPMENT: equipmentText,
     GOALS: GOALS_MAP[goal] || goal,
     TRAINING_TYPE: TRAINING_MAP[training] || training,
     LIMITATIONS: answers.limitations || 'None specified',
     TRACKER: hasTracker ? trackerText : 'None',
-    TRACKER_CODE: tracker,
-    TRACKER_FIELD: hasTracker ? `"tracker": "${tracker}",` : '',
-    TRACKER_RULE: hasTracker ? `- tracker: ALWAYS use "${tracker}"` : '',
+    TRACKER_CODE: trackerText,
+    TRACKER_FIELD: hasTracker ? `"tracker": "${trackerText}",` : '',
+    TRACKER_RULE: hasTracker ? `- tracker: ALWAYS use "${trackerText}"` : '',
     TIMER_BASE_URL: timerUrl,
     COACHING_STYLE_DESCRIPTION: buildCoachingStyleDescription(coachingStyle, lang),
     EXAMPLE_RESPONSE: getExampleResponse(coachingStyle, lang),

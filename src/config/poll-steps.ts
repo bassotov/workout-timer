@@ -6,6 +6,7 @@ export const POLL_STEPS: PollStep[] = [
   {
     id: 'language',
     options: [{ id: 'en' }, { id: 'ru' }],
+    conditional: () => false, // Skip - always use English for instructions
   },
   {
     id: 'aiPlatform',

@@ -9,7 +9,7 @@ type Page = 'landing' | 'poll' | 'details' | 'payment' | 'success';
 
 const DEFAULT_ANSWERS: PollAnswers = {
   // Core poll answers
-  language: '',
+  language: 'en', // Always English for instructions
   aiPlatform: '',
   trainingType: '',
   equipment: '',
@@ -45,19 +45,30 @@ const DEFAULT_ANSWERS: PollAnswers = {
 function getInitialAnswers(): PollAnswers {
   if (typeof window === 'undefined') return DEFAULT_ANSWERS;
   const saved = getStoredValueWithTTL<PollAnswers>(STORAGE_KEYS.POLL_ANSWERS, DEFAULT_ANSWERS);
-  if (!saved || !saved.language) return DEFAULT_ANSWERS;
+  if (!saved) return DEFAULT_ANSWERS;
 
   return { ...DEFAULT_ANSWERS, ...saved };
 }
 
+// Find the first valid step (one that passes conditional check)
+function getFirstValidStep(answers: PollAnswers): number {
+  for (let i = 0; i < POLL_STEPS.length; i++) {
+    const step = POLL_STEPS[i];
+    if (!step.conditional || step.conditional(answers)) {
+      return i;
+    }
+  }
+  return 0;
+}
+
 export function usePoll() {
   const [page, setPage] = useState<Page>('landing');
-  const [pollStep, setPollStep] = useState(0);
   const [answers, setAnswers] = useState<PollAnswers>(getInitialAnswers);
+  const [pollStep, setPollStep] = useState(() => getFirstValidStep(getInitialAnswers()));
 
   // Persist answers to localStorage whenever they change
   useEffect(() => {
-    if (answers.language) {
+    if (answers.aiPlatform) {
       setStoredValueWithTTL(STORAGE_KEYS.POLL_ANSWERS, answers, STORAGE_TTL.POLL_ANSWERS);
     }
   }, [answers]);
@@ -113,11 +124,13 @@ export function usePoll() {
   }, [pollStep, answers]);
 
   const currentStepConfig: PollStep = POLL_STEPS[pollStep];
+  const isFirstStep = pollStep === getFirstValidStep(answers);
 
   return {
     page,
     pollStep,
     answers,
+    isFirstStep,
     goToLanding,
     goToPoll,
     goToDetails,

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePoll } from '@/hooks';
 import { validateEnv, POLL_STEPS } from '@/config';
-import { getVisibleSteps, getVisibleStepIndex, getStoredValue, removeStoredValue, STORAGE_KEYS } from '@/lib';
+import { getVisibleSteps, getVisibleStepIndex, getStoredValue, STORAGE_KEYS } from '@/lib';
 import { Header, Footer } from '@/components/ui';
 import {
   Hero,
@@ -24,6 +24,7 @@ export default function LandingPage() {
     page,
     pollStep,
     answers,
+    isFirstStep,
     goToLanding,
     goToPoll,
     goToDetails,
@@ -60,11 +61,6 @@ export default function LandingPage() {
       // Verification is valid if it exists and was set within the last hour
       const isValid = verification && Date.now() - verification.timestamp < 60 * 60 * 1000;
       setIsPurchaseVerified(!!isValid);
-
-      // Clear the verification flag after use (one-time use)
-      if (isValid) {
-        removeStoredValue(STORAGE_KEYS.PURCHASE_VERIFIED);
-      }
 
       goToSuccess();
     }
@@ -155,7 +151,7 @@ export default function LandingPage() {
   if (page === 'success') {
     return (
       <main className="min-h-dvh bg-background">
-        <SuccessContent answers={answers} verified={isPurchaseVerified} />
+        <SuccessContent answers={answers} verified={isPurchaseVerified} onStartPoll={goToPoll} />
       </main>
     );
   }
@@ -204,7 +200,7 @@ export default function LandingPage() {
         customValue={customValueMap[currentStepConfig.id]}
         onSelect={handlePollSelect}
         onCustomChange={handleCustomContinue}
-        onBack={pollStep === 0 ? goToLanding : prevStep}
+        onBack={isFirstStep ? goToLanding : prevStep}
         currentStep={getVisibleStepIndex(pollStep, answers)}
         totalSteps={getVisibleSteps(answers)}
       />

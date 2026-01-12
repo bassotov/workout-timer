@@ -14,6 +14,6 @@ export interface Workout {
   restRound: number;     // Rest between rounds (seconds)
   cooldown: boolean;
   lang?: 'en' | 'ru';    // UI language
-  tracker?: 'whoop' | 'apple' | 'garmin' | 'none';
+  tracker?: string; // 'whoop' | 'apple' | 'garmin' | 'none' or custom name
   exercises: Exercise[];
 }

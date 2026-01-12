@@ -11,11 +11,11 @@ export const AI_CONFIGS: Record<string, AIConfig> = {
     logo: '/logos/chatgpt.png',
     color: 'from-white/30 to-white/40',
     screenshots: [
-      '/screenshots/chatgpt-1.png',
-      '/screenshots/chatgpt-2.png',
-      '/screenshots/chatgpt-3.png',
-      '/screenshots/chatgpt-4.png',
-      '/screenshots/chatgpt-5.png',
+      '/screenshots/chatgpt/chatgpt-1.png',
+      '/screenshots/chatgpt/chatgpt-2.png',
+      '/screenshots/chatgpt/chatgpt-3.png',
+      '/screenshots/chatgpt/chatgpt-4.png',
+      '/screenshots/chatgpt/chatgpt-5.png',
     ],
   },
   claude: {

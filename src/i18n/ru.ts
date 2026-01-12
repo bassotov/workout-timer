@@ -6,6 +6,7 @@ export const ru: TranslationKeys = {
     howItWorks: 'Как это работает',
     benefits: 'Преимущества',
     pricing: 'Цены',
+    restore: 'Восстановить',
   },
 
   // Footer
@@ -58,8 +59,8 @@ export const ru: TranslationKeys = {
       step3Title: 'Используйте продвинутую модель',
       step3Examples: 'GPT-5.2, Claude Opus, Gemini Thinking',
       step3Prompt: 'Пожалуйста, используй более мощную модель AI (например GPT-5.2, Claude Opus или Gemini Thinking) и перегенерируй ссылку на таймер. Верни полную ссылку, не markdown.',
-      step4Title: 'Переведите на английский',
-      step4Prompt: 'Пожалуйста, переведи все названия упражнений на английский и перегенерируй ссылку на таймер. Верни полную ссылку, не markdown.',
+      step4Title: 'Попробуйте английские названия',
+      step4Prompt: 'Ссылки чаще ломаются с нелатинскими языками (русский, китайский, корейский и др.). Пожалуйста, переведи все названия упражнений на английский и перегенерируй ссылку на таймер. Верни полную ссылку, не markdown.',
     },
     specific: {
       control_characters: {
@@ -120,11 +121,12 @@ export const ru: TranslationKeys = {
     min: 'мин',
   },
   tracker: {
-    title: 'Включи трекер',
-    ready: 'Готов, поехали!',
-    whoop: 'Открой WHOOP → Activity → Strength Training',
-    apple: 'Запусти тренировку на Apple Watch',
-    garmin: 'Запусти запись активности на Garmin',
+    title: 'Напоминание',
+    ready: 'Ок! Погнали!',
+    whoop: 'Не забудь включить активность на WHOOP',
+    apple: 'Не забудь включить тренировку на Apple Watch',
+    garmin: 'Не забудь включить активность на Garmin',
+    custom: 'Не забудь включить {name}',
   },
   cooldown: [
     { name: 'Растяжка квадрицепса', duration: 30, desc: 'Стоя, подтяни пятку к ягодице, 15 сек на ногу' },
@@ -266,6 +268,7 @@ export const ru: TranslationKeys = {
       subtitle: 'Прокачай свой AI-чат для создания персональных тренировок и превращай их в интерактивные таймеры',
       cta: 'Начать',
       subtext: 'Без регистрации. Без подписки. Навсегда.',
+      restorePurchase: 'Восстановить покупку',
     },
     socialProof: {
       text: 'уже тренируются',
@@ -423,6 +426,17 @@ export const ru: TranslationKeys = {
     restoreNote: 'Потеряли файл? Вы можете скачать его повторно по email.',
     downloadAgain: 'Скачать снова',
     discardWarning: 'Вы выбрали не сохранять данные. Сохраните этот файл сейчас — восстановить его будет невозможно.',
+    // Non-verified state
+    alreadyPurchased: 'Уже приобрели?',
+    notPurchasedYet: 'Еще не приобрели?',
+    findEmailInstructions: 'Найдите письмо-подтверждение от "Workout Timer (via Polar)" и нажмите "Access my purchase"',
+    restoreYourFile: 'Восстановить файл',
+    takeQuickPoll: 'Пройдите короткий опрос и получите персонализированные тренировки с интерактивным таймером',
+    getStarted: 'Начать',
+    // Help section
+    needHelp: 'Нужна помощь?',
+    gettingStartedGuide: 'Руководство по началу работы',
+    helpText: 'Если есть вопросы или нужна помощь, напишите на',
   },
 
   // Common

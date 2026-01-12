@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Button, AILogoFlipper } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 import { SocialProof } from './SocialProof';
@@ -20,7 +21,11 @@ export function Hero({ onStart }: HeroProps) {
           background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(251, 146, 60, 0.15) 0%, transparent 70%)',
         }}
       />
-      <div className="relative max-w-4xl mx-auto px-6 py-16 text-center">
+      <div className="relative max-w-4xl mx-auto px-6 py-10 text-center">
+      <div className="inline-block mb-10 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm text-muted-foreground">
+        {t.landing.hero.subtext}
+      </div>
+
       <h1 className="text-4xl md:text-5xl font-bold mb-4">
         <span className="inline-flex items-center justify-center flex-wrap gap-x-3">
           <span>{t.landing.hero.titlePart1}</span>
@@ -42,9 +47,12 @@ export function Hero({ onStart }: HeroProps) {
         {t.landing.hero.cta}
       </Button>
 
-      <p className="mt-4 text-muted-foreground text-sm">
-        {t.landing.hero.subtext}
-      </p>
+      <Link
+        href="/restore"
+        className="block mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
+      >
+        {t.landing.hero.restorePurchase}
+      </Link>
 
       <SocialProof />
       </div>

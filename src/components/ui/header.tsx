@@ -17,10 +17,11 @@ const NAV_ITEMS = [
   { labelKey: 'howItWorks', href: '#how-it-works' },
   { labelKey: 'benefits', href: '#benefits' },
   { labelKey: 'pricing', href: '#pricing' },
+  { labelKey: 'restore', href: '/restore' },
 ] as const;
 
 export function Header({
-  showLanguageSwitcher = true,
+  showLanguageSwitcher = false, // Hidden for now - English only
   showNav = true,
   className,
   onCtaClick,
@@ -51,6 +52,7 @@ export function Header({
     howItWorks: t.nav?.howItWorks ?? 'How It Works',
     benefits: t.nav?.benefits ?? 'Benefits',
     pricing: t.nav?.pricing ?? 'Pricing',
+    restore: t.nav?.restore ?? 'Restore',
   };
 
   return (
