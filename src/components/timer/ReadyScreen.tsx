@@ -26,6 +26,10 @@ function YouTubeIcon({ className }: { className?: string }) {
   );
 }
 
+function truncateWeight(weight: string, maxLength = 5): string {
+  return weight.length > maxLength ? weight.slice(0, maxLength).trim() : weight;
+}
+
 export function ReadyScreen({ workout, totalDuration, onStart, translations: t }: ReadyScreenProps) {
   return (
     <div className="min-h-dvh bg-background flex flex-col items-center justify-center p-6 safe-area-inset text-foreground">
@@ -50,7 +54,7 @@ export function ReadyScreen({ workout, totalDuration, onStart, translations: t }
                   <span className="underline decoration-foreground/30 underline-offset-2">{ex.name}</span>
                 </a>
                 <span className="text-muted-foreground">
-                  {ex.weight && ex.weight !== '—' && `${ex.weight} • `}{ex.reps}
+                  {ex.weight && ex.weight !== '—' && `${truncateWeight(ex.weight)} • `}{ex.reps}
                 </span>
               </div>
             );
