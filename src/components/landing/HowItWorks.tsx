@@ -1,21 +1,25 @@
 'use client';
 
-import Link from 'next/link';
-import { Button } from '@/components/ui';
+import { WavyUnderline } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 
 export function HowItWorks() {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <section id="how-it-works" className="max-w-6xl mx-auto px-6 py-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
-        {t.landing.howItWorks.title}
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-30">
+        <WavyUnderline>{t.landing.howItWorks.title}</WavyUnderline>
       </h2>
 
-      <div className="grid md:grid-cols-2 gap-12 items-start">
-        {/* Left: Demo video */}
+      <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
+        {/* Left: Demo video (desktop) */}
         <div className="hidden md:flex justify-center">
+          <DemoVideo className="max-w-xs ml-40" />
+        </div>
+
+        {/* Mobile: Demo video above steps */}
+        <div className="md:hidden mb-4">
           <DemoVideo />
         </div>
 
@@ -30,14 +34,6 @@ export function HowItWorks() {
               isLast={i === t.landing.howItWorks.steps.length - 1}
             />
           ))}
-
-          <div className="pt-6 pl-12">
-            <Button variant="outline" asChild>
-              <Link href={`/timer?lang=${language}`} target="_blank">
-                {t.landing.howItWorks.demoButton}
-              </Link>
-            </Button>
-          </div>
         </div>
       </div>
     </section>
@@ -71,17 +67,24 @@ function StepItem({
   );
 }
 
-function DemoVideo() {
+function DemoVideo({ className }: { className?: string }) {
   return (
-    <video
-      autoPlay
-      loop
-      muted
-      playsInline
-      className="w-full max-w-xs rounded-2xl ml-40"
-      poster="/demo/how-it-works.gif"
-    >
-      <source src="/demo/how-it-works.mp4" type="video/mp4" />
-    </video>
+    <div className={`relative ${className ?? ''}`}>
+      <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
+        <span className="inline-flex items-center justify-center gap-1.5 px-6 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm text-muted-foreground whitespace-nowrap">
+          Works in <img src="/logos/claude.png" alt="Claude" className="size-4" /> Claude
+        </span>
+      </div>
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="w-full rounded-2xl"
+        poster="/demo/how-it-works.gif"
+      >
+        <source src="/demo/how-it-works.mp4" type="video/mp4" />
+      </video>
+    </div>
   );
 }

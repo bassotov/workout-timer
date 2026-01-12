@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Card, CardContent } from '@/components/ui';
+import { Card, CardContent, WavyUnderline } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 import { TESTIMONIALS } from '@/config';
 
@@ -37,8 +37,8 @@ export function Testimonials() {
 
   return (
     <section className="py-16 overflow-hidden">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 px-6">
-        {t.landing.testimonials.title}
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-30 px-6">
+        <WavyUnderline>{t.landing.testimonials.title}</WavyUnderline>
       </h2>
 
       <div

@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui';
+import { Card, CardContent, WavyUnderline } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 
 const AUDIENCE_EMOJIS = ['🤖', '📺', '🏋️'];
@@ -10,8 +10,8 @@ export function ForWhom() {
 
   return (
     <section id="for-whom" className="max-w-4xl mx-auto px-6 py-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
-        {t.landing.forWhom.title}
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-30">
+        <WavyUnderline>{t.landing.forWhom.title}</WavyUnderline>
       </h2>
 
       <div className="grid md:grid-cols-3 gap-6">

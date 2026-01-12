@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Button, AILogoFlipper } from '@/components/ui';
+import { Button, AILogoFlipper, WavyUnderline } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 import { SocialProof } from './SocialProof';
 
@@ -33,7 +33,7 @@ export function Hero({ onStart }: HeroProps) {
           <span>{t.landing.hero.titlePart2}</span>
         </span>
         <br />
-        <span>{t.landing.hero.titlePart3}</span>
+        {t.landing.hero.titlePart3}<WavyUnderline>{t.landing.hero.titlePart4}</WavyUnderline>
       </h1>
       <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
         {t.landing.hero.subtitle}
