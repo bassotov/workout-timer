@@ -218,7 +218,7 @@ export default function LandingPage() {
         <HowItWorks />
         <Benefits />
         <ForWhom />
-        <Pricing />
+        <Pricing onStart={goToPoll} />
         <Testimonials />
         <FinalCTA onStart={goToPoll} />
       </div>

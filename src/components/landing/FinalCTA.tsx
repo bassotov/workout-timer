@@ -23,7 +23,7 @@ export function FinalCTA({ onStart }: FinalCTAProps) {
           {t.landing.finalCTA.subtitle}
         </p>
         <Button size="lg" onClick={onStart} className="text-lg px-10 py-6 h-auto">
-          {t.landing.hero.cta}
+          {t.landing.finalCTA.cta}
         </Button>
       </div>
     </section>

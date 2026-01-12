@@ -308,10 +308,20 @@ export const en = {
     },
     pricing: {
       title: 'Buy Once. Use Forever.',
+      badge: 'Limited Offer',
+      planTitle: 'Lifetime Access',
+      planSubtitle: 'No login. No subscription. Simple.',
       originalPrice: '$25',
       price: '$10',
+      countdown: {
+        title: 'Price increases in:',
+        days: 'days',
+        hours: 'hours',
+        minutes: 'min',
+        seconds: 'sec',
+      },
+      cta: 'Lock This Price',
       benefits: [
-        'Lifetime Access',
         'Setup Guide & Support',
         'Personalized AI Workouts',
         'Interactive Workout Timer',
@@ -325,6 +335,7 @@ export const en = {
     finalCTA: {
       title: 'This is your year.',
       subtitle: 'Change the way you gym.',
+      cta: 'Personalise Workouts',
     },
   },
 
