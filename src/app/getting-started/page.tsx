@@ -10,7 +10,7 @@ export default function GettingStartedPage() {
 
   return (
     <main className="min-h-dvh bg-background text-foreground">
-      <Header showNav={false} />
+      <Header variant="internal" />
 
       <div className="pt-20 pb-12 px-4 max-w-2xl mx-auto">
         {/* Hero */}
@@ -70,75 +70,48 @@ export default function GettingStartedPage() {
         {/* Setup by Platform */}
         <h2 className="text-xl font-bold mb-4">{t.gettingStarted.setup.title}</h2>
 
-        <div className="grid grid-cols-2 gap-3 mb-8">
+        <div className="grid grid-cols-2 gap-4 mb-8">
           {/* ChatGPT */}
-          <Card className="hover:bg-muted/50 transition-colors">
-            <CardContent className="p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Image src="/logos/chatgpt.png" alt="ChatGPT" width={28} height={28} className="rounded-lg" />
-                <h3 className="font-semibold text-sm">ChatGPT</h3>
-              </div>
-              <ol className="text-xs text-muted-foreground space-y-0.5 list-decimal list-inside">
-                {t.gettingStarted.setup.chatgpt.map((step, i) => (
-                  <li key={i}>{step}</li>
-                ))}
-              </ol>
-              <Link href="/instructions/chatgpt" className="text-xs text-primary hover:underline mt-2 inline-block">
-                {t.gettingStarted.setup.detailedGuide} →
-              </Link>
-            </CardContent>
-          </Card>
+          <Link href="/instructions/chatgpt">
+            <Card className="h-full hover:bg-muted/50 hover:border-primary/50 transition-all cursor-pointer">
+              <CardContent className="py-0 flex flex-col items-center justify-center text-center">
+                <Image src="/logos/chatgpt.png" alt="ChatGPT" width={56} height={56} className="rounded-xl mb-3 invert" />
+                <h3 className="font-semibold text-lg mb-1">ChatGPT</h3>
+                <span className="text-xs text-muted-foreground">{t.gettingStarted.setup.detailedGuide}</span>
+              </CardContent>
+            </Card>
+          </Link>
 
           {/* Claude */}
-          <Card className="hover:bg-muted/50 transition-colors">
-            <CardContent className="p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Image src="/logos/claude.png" alt="Claude" width={28} height={28} className="rounded-lg" />
-                <h3 className="font-semibold text-sm">Claude</h3>
-              </div>
-              <ol className="text-xs text-muted-foreground space-y-0.5 list-decimal list-inside">
-                {t.gettingStarted.setup.claude.map((step, i) => (
-                  <li key={i}>{step}</li>
-                ))}
-              </ol>
-              <Link href="/instructions/claude" className="text-xs text-primary hover:underline mt-2 inline-block">
-                {t.gettingStarted.setup.detailedGuide} →
-              </Link>
-            </CardContent>
-          </Card>
+          <Link href="/instructions/claude">
+            <Card className="h-full hover:bg-muted/50 hover:border-primary/50 transition-all cursor-pointer">
+              <CardContent className="py-0 flex flex-col items-center justify-center text-center">
+                <Image src="/logos/claude.png" alt="Claude" width={56} height={56} className="rounded-xl mb-3" />
+                <h3 className="font-semibold text-lg mb-1">Claude</h3>
+                <span className="text-xs text-muted-foreground">{t.gettingStarted.setup.detailedGuide}</span>
+              </CardContent>
+            </Card>
+          </Link>
 
           {/* Gemini */}
-          <Card className="hover:bg-muted/50 transition-colors">
-            <CardContent className="p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <Image src="/logos/gemini.png" alt="Gemini" width={28} height={28} className="rounded-lg" />
-                <h3 className="font-semibold text-sm">Gemini</h3>
-              </div>
-              <ol className="text-xs text-muted-foreground space-y-0.5 list-decimal list-inside">
-                {t.gettingStarted.setup.gemini.map((step, i) => (
-                  <li key={i}>{step}</li>
-                ))}
-              </ol>
-              <Link href="/instructions/gemini" className="text-xs text-primary hover:underline mt-2 inline-block">
-                {t.gettingStarted.setup.detailedGuide} →
-              </Link>
-            </CardContent>
-          </Card>
+          <Link href="/instructions/gemini">
+            <Card className="h-full hover:bg-muted/50 hover:border-primary/50 transition-all cursor-pointer">
+              <CardContent className="py-0 flex flex-col items-center justify-center text-center">
+                <Image src="/logos/gemini.png" alt="Gemini" width={56} height={56} className="rounded-xl mb-3" />
+                <h3 className="font-semibold text-lg mb-1">Gemini</h3>
+                <span className="text-xs text-muted-foreground">{t.gettingStarted.setup.detailedGuide}</span>
+              </CardContent>
+            </Card>
+          </Link>
 
           {/* Other */}
-          <Card className="hover:bg-muted/50 transition-colors">
-            <CardContent className="p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center">
-                  <span className="text-sm">💭</span>
-                </div>
-                <h3 className="font-semibold text-sm">{t.gettingStarted.setup.otherTitle}</h3>
+          <Card className="h-full">
+            <CardContent className="py-0 flex flex-col items-center justify-center text-center">
+              <div className="w-14 h-14 rounded-xl bg-muted flex items-center justify-center mb-3">
+                <span className="text-2xl">💭</span>
               </div>
-              <ol className="text-xs text-muted-foreground space-y-0.5 list-decimal list-inside">
-                {t.gettingStarted.setup.other.map((step, i) => (
-                  <li key={i}>{step}</li>
-                ))}
-              </ol>
+              <h3 className="font-semibold text-lg mb-1">{t.gettingStarted.setup.otherTitle}</h3>
+              <span className="text-xs text-muted-foreground">{t.gettingStarted.setup.otherHint}</span>
             </CardContent>
           </Card>
         </div>

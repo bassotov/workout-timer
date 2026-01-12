@@ -2,33 +2,59 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { LanguageSwitcher } from './language-switcher';
 import { Button } from './button';
 import { useLanguage } from '@/i18n';
 
+type HeaderVariant = 'landing' | 'internal';
+
 interface HeaderProps {
   showLanguageSwitcher?: boolean;
   showNav?: boolean;
+  variant?: HeaderVariant;
   className?: string;
   onCtaClick?: () => void;
 }
 
-const NAV_ITEMS = [
+// Landing page nav - anchor links for same-page sections + page links
+const LANDING_NAV_ITEMS = [
   { labelKey: 'howItWorks', href: '#how-it-works' },
   { labelKey: 'benefits', href: '#benefits' },
   { labelKey: 'pricing', href: '#pricing' },
+  { labelKey: 'guide', href: '/getting-started' },
+  { labelKey: 'restore', href: '/restore' },
+] as const;
+
+// Internal pages nav - page links only
+const INTERNAL_NAV_ITEMS = [
+  { labelKey: 'guide', href: '/getting-started' },
   { labelKey: 'restore', href: '/restore' },
 ] as const;
 
 export function Header({
   showLanguageSwitcher = false, // Hidden for now - English only
   showNav = true,
+  variant = 'landing',
   className,
   onCtaClick,
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const { t } = useLanguage();
+
+  // Select nav items based on variant
+  const navItems = variant === 'landing' ? LANDING_NAV_ITEMS : INTERNAL_NAV_ITEMS;
+
+  // Handle CTA click - use provided callback or redirect to poll
+  const handleCtaClick = () => {
+    if (onCtaClick) {
+      onCtaClick();
+    } else {
+      router.push('/?start=poll');
+    }
+  };
 
   // Close menu on outside click
   useEffect(() => {
@@ -52,6 +78,7 @@ export function Header({
     howItWorks: t.nav?.howItWorks ?? 'How It Works',
     benefits: t.nav?.benefits ?? 'Benefits',
     pricing: t.nav?.pricing ?? 'Pricing',
+    guide: t.nav?.guide ?? 'Guide',
     restore: t.nav?.restore ?? 'Restore',
   };
 
@@ -73,7 +100,7 @@ export function Header({
         {/* Desktop Nav */}
         {showNav && (
           <nav className="hidden md:flex items-center gap-6">
-            {NAV_ITEMS.map((item) => (
+            {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -91,8 +118,8 @@ export function Header({
           {showLanguageSwitcher && <LanguageSwitcher />}
 
           {/* CTA button - desktop */}
-          {showNav && onCtaClick && (
-            <Button size="sm" className="hidden md:inline-flex" onClick={onCtaClick}>
+          {showNav && (
+            <Button size="sm" className="hidden md:inline-flex" onClick={handleCtaClick}>
               {t.footer?.getStarted ?? 'Get Started'}
             </Button>
           )}
@@ -135,7 +162,7 @@ export function Header({
         {showNav && mobileMenuOpen && (
           <div className="md:hidden border-t border-white/10">
             <nav className="flex flex-col p-4 gap-2">
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
@@ -145,11 +172,9 @@ export function Header({
                   {navLabels[item.labelKey]}
                 </a>
               ))}
-              {onCtaClick && (
-                <Button size="sm" className="mt-2" onClick={() => { handleNavClick(); onCtaClick(); }}>
-                  {t.footer?.getStarted ?? 'Get Started'}
-                </Button>
-              )}
+              <Button size="sm" className="mt-2" onClick={() => { handleNavClick(); handleCtaClick(); }}>
+                {t.footer?.getStarted ?? 'Get Started'}
+              </Button>
             </nav>
           </div>
         )}

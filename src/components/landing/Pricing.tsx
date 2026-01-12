@@ -1,10 +1,11 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Check, Gem } from 'lucide-react';
 import { Card, CardContent, Button, WavyUnderline } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 import { useCountdown } from '@/hooks';
-import { PRICE_INCREASE_DATE } from '@/config';
+import { getPricingInfo, formatPrice, type PricingInfo } from '@/lib';
 
 interface PricingProps {
   onStart: () => void;
@@ -23,7 +24,20 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
 
 export function Pricing({ onStart }: PricingProps) {
   const { t } = useLanguage();
-  const countdown = useCountdown(PRICE_INCREASE_DATE);
+
+  // Calculate pricing on client only to avoid hydration mismatch
+  const [pricing, setPricing] = useState<PricingInfo | null>(null);
+
+  useEffect(() => {
+    setPricing(getPricingInfo());
+  }, []);
+
+  // Use a far-future date initially to prevent countdown from showing during SSR
+  const countdownDate = pricing?.nextIncreaseDate ?? new Date(Date.now() + 86400000);
+  const countdown = useCountdown(countdownDate);
+
+  // Don't show countdown until pricing is loaded (prevents hydration mismatch)
+  const showCountdown = pricing && !countdown.isExpired;
 
   return (
     <section id="pricing" className="px-6 py-16">
@@ -33,7 +47,7 @@ export function Pricing({ onStart }: PricingProps) {
 
       <div className="max-w-md mx-auto">
         {/* Countdown Timer - Above the card */}
-        {!countdown.isExpired && (
+        {showCountdown && (
           <div className="mb-6 relative">
             {/* Limited Offer badge with arrow */}
             <div className="absolute -right-4 -top-2 md:-right-2">
@@ -83,9 +97,9 @@ export function Pricing({ onStart }: PricingProps) {
                 {/* Price */}
                 <div className="mb-6">
                   <span className="text-lg text-muted-foreground line-through mr-2">
-                    {t.landing.pricing.originalPrice}
+                    {formatPrice(pricing?.nextPrice ?? 12)}
                   </span>
-                  <span className="text-5xl font-bold">{t.landing.pricing.price}</span>
+                  <span className="text-5xl font-bold">{formatPrice(pricing?.currentPrice ?? 10)}</span>
                 </div>
 
                 {/* CTA Button */}

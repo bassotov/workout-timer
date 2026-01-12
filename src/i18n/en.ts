@@ -4,6 +4,7 @@ export const en = {
     howItWorks: 'How It Works',
     benefits: 'Benefits',
     pricing: 'Pricing',
+    guide: 'Guide',
     restore: 'Restore',
   },
 
@@ -14,7 +15,7 @@ export const en = {
     timerDemo: 'Timer Demo',
     getStarted: 'Get Started',
     help: 'Help',
-    gettingStartedGuide: 'Get Started Guide',
+    gettingStartedGuide: 'Quick Guide',
     restoreFile: 'Restore File',
     troubleshooting: 'Troubleshooting',
     getHelp: 'Get Help',
@@ -412,8 +413,8 @@ export const en = {
 
   // Success page
   success: {
-    allSet: "You're all set!",
-    downloadReady: 'Your personalized setup file is ready to download.',
+    allSet: 'Great! Now download your file',
+    downloadReady: 'Your personalized setup file is ready.',
     downloadFile: 'Download Setup File',
     niceTry: 'Nice try!',
     notPurchased: 'This page is reserved for paying customers. Good thinking though!',
@@ -430,9 +431,9 @@ export const en = {
       other: 'Use the most capable model available. Thinking models produce better formatted links.',
     },
     platformSteps: {
-      chatgpt: ['Open chatgpt.com', 'Create a new GPT or project', 'Paste the file contents into instructions'],
-      claude: ['Open claude.ai', 'Create a new project', 'Paste contents into Project Instructions'],
-      gemini: ['Open Gemini', 'Create a new Gem', 'Paste contents into system instructions'],
+      chatgpt: ['Open chatgpt.com and sign in', 'Create a new Project', 'Upload file to Project Knowledge', 'Add instructions to ALWAYS follow instructions in the file'],
+      claude: ['Open claude.ai and sign in', 'Create a new Project', 'In Project Instructions, write to ALWAYS follow instructions in the attached file'],
+      gemini: ['Open Gemini and sign in with Google', 'Create a new Gem', 'In Gem instructions, write to ALWAYS follow instructions in the attached file'],
       other: ['Open your AI assistant', 'Start a new chat', 'Paste file contents as your first message'],
     },
     restoreNote: 'Lost your file? You can re-download it anytime using your email.',
@@ -447,7 +448,7 @@ export const en = {
     getStarted: 'Get Started',
     // Help section
     needHelp: 'Need help?',
-    gettingStartedGuide: 'Getting Started Guide',
+    gettingStartedGuide: 'Quick Guide',
     helpText: 'If any questions or need help, please contact',
   },
 
@@ -506,28 +507,30 @@ export const en = {
       title: 'Quick Setup by Platform',
       detailedGuide: 'Learn more',
       otherTitle: 'Other AI Assistants',
+      otherHint: 'Follow instructions in file',
       chatgpt: [
-        'Go to chatgpt.com and sign in',
+        'Open chatgpt.com and sign in',
         'Create a new Project',
         'Upload file to Project Knowledge',
+        'Add instructions to ALWAYS follow instructions in the file',
         'Ask for a workout!',
       ],
       claude: [
-        'Go to claude.ai and sign in',
+        'Open claude.ai and sign in',
         'Create a new Project',
-        'Upload file to Project Knowledge',
+        'In Project Instructions, write to ALWAYS follow instructions in the attached file',
         'Ask for a workout!',
       ],
       gemini: [
-        'Open Gemini and sign in',
+        'Open Gemini and sign in with Google',
         'Create a new Gem',
-        'Upload file to Gem Knowledge',
+        'In Gem instructions, write to ALWAYS follow instructions in the attached file',
         'Ask for a workout!',
       ],
       other: [
         'Open your AI assistant',
-        'Start a new conversation',
-        'Paste the entire file as your first message',
+        'Start a new chat',
+        'Paste file contents as your first message',
         'Ask for a workout!',
       ],
     },
@@ -576,6 +579,7 @@ export const en = {
       },
     },
     screenshotAlt: 'Setup step screenshot',
+    setupOnMobile: 'Setup on Mobile',
     stepByStep: 'Step-by-step guide',
     chatgpt: {
       subtitle: 'Log in. Create GPT. Add file. Ask for a workout.',
@@ -583,6 +587,7 @@ export const en = {
         'Open chatgpt.com and sign in',
         'Create a new Project',
         'Upload file to Project Knowledge',
+        'Add instructions to ALWAYS follow instructions in the file',
         'Ask for a workout!',
         'Click the link to open a timer',
       ],
@@ -596,7 +601,7 @@ export const en = {
       steps: [
         'Open claude.ai and sign in',
         'Create a new Project',
-        'Add your instructions to Project Instructions',
+        'In Project Instructions, write to ALWAYS follow instructions in the attached file',
         'Ask for a workout!',
       ],
       modelTip: {
@@ -609,7 +614,7 @@ export const en = {
       steps: [
         'Open Gemini and sign in with Google',
         'Create a new Gem',
-        'Paste your instructions into system instructions',
+        'In Gem instructions, write to ALWAYS follow instructions in the attached file',
         'Ask for a workout!',
       ],
       modelTip: {

@@ -3,7 +3,14 @@
 import { useEffect, useState } from 'react';
 import { usePoll } from '@/hooks';
 import { validateEnv, POLL_STEPS } from '@/config';
-import { getVisibleSteps, getVisibleStepIndex, getStoredValue, STORAGE_KEYS } from '@/lib';
+import {
+  getVisibleSteps,
+  getVisibleStepIndex,
+  getStoredValue,
+  removeStoredValue,
+  STORAGE_KEYS,
+  STORAGE_TTL,
+} from '@/lib';
 import { Header, Footer } from '@/components/ui';
 import {
   Hero,
@@ -40,6 +47,20 @@ export default function LandingPage() {
 
   useEffect(() => {
     validateEnv();
+
+    // Check if download grace period has expired - if so, clear poll answers
+    const downloadCompleted = getStoredValue<{ timestamp: number } | null>(
+      STORAGE_KEYS.DOWNLOAD_COMPLETED,
+      null
+    );
+    if (downloadCompleted) {
+      const elapsed = Date.now() - downloadCompleted.timestamp;
+      if (elapsed > STORAGE_TTL.DOWNLOAD_GRACE_PERIOD) {
+        // Grace period expired - clear poll answers and download marker
+        removeStoredValue(STORAGE_KEYS.POLL_ANSWERS);
+        removeStoredValue(STORAGE_KEYS.DOWNLOAD_COMPLETED);
+      }
+    }
 
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -210,7 +231,7 @@ export default function LandingPage() {
   // Landing page (default)
   return (
     <main className="min-h-dvh bg-background text-foreground">
-      <Header onCtaClick={goToPoll} />
+      <Header variant="landing" onCtaClick={goToPoll} />
       <div className="pt-14 md:pt-28">
         <section id="hero">
           <Hero onStart={goToPoll} />

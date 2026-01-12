@@ -84,6 +84,7 @@ export function clearAllStoredValues(): void {
  */
 export const STORAGE_TTL = {
   POLL_ANSWERS: 48 * 60 * 60 * 1000, // 48 hours in milliseconds
+  DOWNLOAD_GRACE_PERIOD: 60 * 60 * 1000, // 1 hour grace period after download
 } as const;
 
 interface StoredValueWithTTL<T> {
@@ -169,4 +170,5 @@ export const STORAGE_KEYS = {
   LAST_WORKOUT: 'workout-last',
   USER_PREFERENCES: 'workout-preferences',
   PURCHASE_VERIFIED: 'workout-purchase-verified',
+  DOWNLOAD_COMPLETED: 'workout-download-completed',
 } as const;

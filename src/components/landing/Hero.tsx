@@ -18,7 +18,7 @@ export function Hero({ onStart }: HeroProps) {
       <div
         className="absolute inset-x-0 -top-28 bottom-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(251, 146, 60, 0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 100% 90% at 50% 10%, rgba(251, 146, 60, 0.15) 0%, transparent 90%)',
         }}
       />
       <div className="relative max-w-4xl mx-auto px-6 py-10 text-center">
@@ -30,10 +30,10 @@ export function Hero({ onStart }: HeroProps) {
         <span className="inline-flex items-center justify-center flex-wrap gap-x-3">
           <span>{t.landing.hero.titlePart1}</span>
           <AILogoFlipper />
-          <span>{t.landing.hero.titlePart2}</span>
+          <span className="ml-0.5 md:ml-2">{t.landing.hero.titlePart2}</span>
         </span>
         <br />
-        <span className="ml-1">{t.landing.hero.titlePart3}</span><WavyUnderline>{t.landing.hero.titlePart4}</WavyUnderline>
+        <span>{t.landing.hero.titlePart3}</span><WavyUnderline>{t.landing.hero.titlePart4}</WavyUnderline>
       </h1>
       <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
         {t.landing.hero.subtitle}

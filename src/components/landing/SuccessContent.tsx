@@ -9,8 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ModelRecommendations } from '@/components/landing';
 import { useLanguage } from '@/i18n';
 import { generateInstructions } from '@/lib/instruction-generator';
-import { downloadOrShareFile } from '@/lib';
-import { AI_CONFIG_KEYS } from '@/config';
+import { downloadOrShareFile, setStoredValue, STORAGE_KEYS } from '@/lib';
 import type { PollAnswers } from '@/types';
 
 const TIMER_BASE_URL = 'https://workout-timer.app/timer';
@@ -24,7 +23,6 @@ interface SuccessContentProps {
 export function SuccessContent({ answers, verified, onStartPoll }: SuccessContentProps) {
   const { t } = useLanguage();
   const platform = answers.aiPlatform || 'chatgpt';
-  const hasInstructionPage = AI_CONFIG_KEYS.includes(platform as typeof AI_CONFIG_KEYS[number]);
 
   // Confetti burst on mount (only for verified purchases)
   useEffect(() => {
@@ -51,9 +49,10 @@ export function SuccessContent({ answers, verified, onStartPoll }: SuccessConten
 
     const result = await downloadOrShareFile(content, filename);
 
-    // Only clear localStorage if download/share succeeded
+    // Mark download as completed - poll answers will be cleared after grace period
+    // This allows users to refresh and re-download within 1 hour
     if (result.success) {
-      localStorage.removeItem('workout-poll-answers');
+      setStoredValue(STORAGE_KEYS.DOWNLOAD_COMPLETED, { timestamp: Date.now() });
     }
   };
 
@@ -140,25 +139,11 @@ export function SuccessContent({ answers, verified, onStartPoll }: SuccessConten
         <Button onClick={downloadInstructions} className="w-full text-lg py-6 h-auto mb-4">
           📥 {t.success.downloadFile}
         </Button>
-        {answers.dataConsent === 'discard' ? (
+        {answers.dataConsent === 'discard' && (
           <div className="mb-4 p-3 bg-amber-500/15 border border-amber-500/30 rounded-lg text-sm">
             <p className="text-amber-600 dark:text-amber-400 font-medium">
               ⚠️ {t.success.discardWarning}
             </p>
-          </div>
-        ) : (
-          <div className="mb-4 p-3 bg-muted/50 rounded-lg text-sm">
-            <p className="text-muted-foreground">
-              {t.success.restoreNote}
-            </p>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={downloadInstructions}
-              className="mt-2"
-            >
-              {t.success.downloadAgain}
-            </Button>
           </div>
         )}
         <ModelRecommendations platform={platform as 'chatgpt' | 'claude' | 'gemini' | 'other'} />
@@ -173,13 +158,11 @@ export function SuccessContent({ answers, verified, onStartPoll }: SuccessConten
             </ol>
           </CardContent>
         </Card>
-        {hasInstructionPage && (
-          <Button variant="secondary" asChild className="w-full mt-4">
-            <Link href={`/instructions/${platform}`}>
-              {t.success.detailedInstructions}
-            </Link>
-          </Button>
-        )}
+        <Button variant="secondary" asChild className="w-full mt-4">
+          <Link href="/getting-started">
+            {t.success.detailedInstructions}
+          </Link>
+        </Button>
       </div>
     </div>
   );

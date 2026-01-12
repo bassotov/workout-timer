@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Header } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 import { getRemainingTTL, getStoredValueWithTTL, STORAGE_KEYS } from '@/lib';
 import { generateInstructions } from '@/lib/instruction-generator';
@@ -124,7 +125,9 @@ export default function RestorePage() {
   };
 
   return (
-    <main className="min-h-dvh bg-background text-foreground flex items-center justify-center p-6">
+    <main className="min-h-dvh bg-background text-foreground flex flex-col">
+      <Header variant="internal" />
+      <div className="flex-1 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         <Card>
           <CardHeader className="text-center">
@@ -205,6 +208,7 @@ export default function RestorePage() {
             )}
           </CardContent>
         </Card>
+      </div>
       </div>
     </main>
   );

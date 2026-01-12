@@ -81,7 +81,6 @@ function DemoVideo({ className }: { className?: string }) {
         muted
         playsInline
         className="w-full rounded-2xl"
-        poster="/demo/how-it-works.gif"
       >
         <source src="/demo/how-it-works.mp4" type="video/mp4" />
       </video>

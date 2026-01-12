@@ -26,7 +26,7 @@ export default function InstructionPage({ params }: PageProps) {
 
   return (
     <main className="min-h-dvh bg-background text-foreground">
-      <Header showNav={false} />
+      <Header variant="internal" />
 
       <div className="pt-20 pb-12 px-4 max-w-3xl mx-auto">
         {/* Platform Navigation */}
@@ -123,6 +123,26 @@ export default function InstructionPage({ params }: PageProps) {
             </div>
           ))}
         </div>
+
+        {/* Setup on Mobile - ChatGPT only */}
+        {aiKey === 'chatgpt' && (
+          <div className="mb-8">
+            <h2 className="text-xl font-bold mb-4">{t.aiInstructions.setupOnMobile}</h2>
+            <div className="flex justify-center">
+              <div className="rounded-2xl overflow-hidden border border-border max-h-[700px] w-auto">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="h-full max-h-[700px] w-auto"
+                >
+                  <source src="/demo/chatgpt-setup.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* CTA buttons */}
         <div className="text-center space-y-4">

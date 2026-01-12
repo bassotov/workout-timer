@@ -60,3 +60,6 @@ export { generateInstructions } from './instruction-generator';
 
 // File sharing/download
 export { downloadOrShareFile } from './share';
+
+// Pricing utilities
+export { getPricingInfo, formatPrice, type PricingInfo } from './pricing';

@@ -100,7 +100,6 @@ function DemoVideo({ className }: { className?: string }) {
         muted
         playsInline
         className="w-full rounded-2xl"
-        poster="/demo/chatgpt-demo.gif"
       >
         <source src="/demo/chatgpt-demo.mp4" type="video/mp4" />
       </video>

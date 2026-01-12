@@ -26,7 +26,7 @@ export default function TroubleshootingPage() {
 
   return (
     <main className="min-h-dvh bg-background text-foreground">
-      <Header showNav={false} />
+      <Header variant="internal" />
 
       <div className="pt-20 pb-12 px-4 max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold mb-2">{t.error.troubleshootingTitle}</h1>

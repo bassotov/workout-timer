@@ -14,6 +14,7 @@ export const AI_CONFIGS: Record<string, AIConfig> = {
       '/screenshots/chatgpt/chatgpt-1.png',
       '/screenshots/chatgpt/chatgpt-2.png',
       '/screenshots/chatgpt/chatgpt-3.png',
+      '/screenshots/chatgpt/chatgpt-3.5.png',
       '/screenshots/chatgpt/chatgpt-4.png',
       '/screenshots/chatgpt/chatgpt-5.png',
     ],
