@@ -62,7 +62,7 @@ export function Pricing({ onStart }: PricingProps) {
               <img
                 src="/misc/arrow.png"
                 alt=""
-                className="w-13 h-13 absolute top-8 left-8 opacity-70"
+                className="w-10 h-10 absolute top-10 left-19 md:top-8 md:left-8 opacity-70"
               />
             </div>
 

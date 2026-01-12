@@ -15,7 +15,7 @@ export function Testimonials() {
 
     let animationId: number;
     let scrollPos = 0;
-    const scrollSpeed = 0.3; // pixels per frame
+    const scrollSpeed = 0.5; // pixels per frame
 
     const scroll = () => {
       scrollPos += scrollSpeed;
@@ -58,12 +58,12 @@ export function Testimonials() {
 
       {/* Left fade gradient */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-32 md:w-100 z-10 pointer-events-none"
+        className="absolute left-0 top-0 bottom-0 w-16 md:w-100 z-10 pointer-events-none"
         style={{ background: 'linear-gradient(to right, var(--background) 20%, transparent)' }}
       />
       {/* Right fade gradient */}
       <div
-        className="absolute right-0 top-0 bottom-0 w-32 md:w-100 z-10 pointer-events-none"
+        className="absolute right-0 top-0 bottom-0 w-16 md:w-100 z-10 pointer-events-none"
         style={{ background: 'linear-gradient(to left, var(--background) 20%, transparent)' }}
       />
     </section>
