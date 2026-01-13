@@ -11,9 +11,11 @@ export const POLL_STEPS: PollStep[] = [
   {
     id: 'aiPlatform',
     options: [
-      { id: 'chatgpt' },
-      { id: 'claude' },
-      { id: 'gemini' },
+      { id: 'chatgpt', logo: '/logos/chatgpt.png', logoInvert: true },
+      { id: 'claude', logo: '/logos/claude.png', logoInvert: true },
+      { id: 'gemini', logo: '/logos/gemini.png', logoInvert: true },
+      { id: 'grok', logo: '/logos/grok.png', logoInvert: true },
+      { id: 'perplexity', logo: '/logos/perplexity.png', logoInvert: true },
       { id: 'other', allowCustom: true },
     ],
   },
@@ -23,7 +25,6 @@ export const POLL_STEPS: PollStep[] = [
       { id: 'strength' },
       { id: 'hiit' },
       { id: 'yoga' },
-      { id: 'mixed' },
       { id: 'calisthenics' },
       { id: 'cardio' },
       { id: 'pilates' },
@@ -35,8 +36,8 @@ export const POLL_STEPS: PollStep[] = [
     options: [
       { id: 'bodyweight' },
       { id: 'home' },
+      { id: 'localgym' },
       { id: 'fullgym' },
-      { id: 'custom', allowCustom: true },
     ],
   },
   {
@@ -49,7 +50,7 @@ export const POLL_STEPS: PollStep[] = [
       { id: 'veryHeavy' },  // 20kg+ / 45lb+
       { id: 'unknown' },    // I don't know
     ],
-    conditional: (answers) => ['home', 'fullgym'].includes(answers.equipment),
+    conditional: (answers) => ['home', 'localgym', 'fullgym'].includes(answers.equipment),
   },
   {
     id: 'goals',
@@ -58,6 +59,7 @@ export const POLL_STEPS: PollStep[] = [
       { id: 'weight' },
       { id: 'endurance' },
       { id: 'general' },
+      { id: 'health' },
       { id: 'other', allowCustom: true },
     ],
   },

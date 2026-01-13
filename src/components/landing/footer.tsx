@@ -70,7 +70,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/troubleshooting"
+                  href="/getting-started/troubleshooting"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {t.footer?.troubleshooting ?? 'Troubleshooting'}

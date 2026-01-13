@@ -129,16 +129,16 @@ See <link_format> for how to present the link.
 
 </system>`;
 
-type Equipment = 'bodyweight' | 'home' | 'fullgym' | 'custom';
-type Goal = 'muscle' | 'weight' | 'endurance' | 'general';
-type TrainingType = 'strength' | 'hiit' | 'yoga' | 'mixed' | 'calisthenics' | 'cardio' | 'pilates';
+type Equipment = 'bodyweight' | 'home' | 'localgym' | 'fullgym';
+type Goal = 'muscle' | 'weight' | 'endurance' | 'general' | 'health';
+type TrainingType = 'strength' | 'hiit' | 'yoga' | 'calisthenics' | 'cardio' | 'pilates';
 type Tracker = 'whoop' | 'apple' | 'garmin' | 'oura' | 'other' | 'none';
 
 const EQUIPMENT_MAP: Record<Equipment, string> = {
   bodyweight: 'Bodyweight only (no equipment)',
-  home: 'Dumbbells, resistance bands, yoga mat',
-  fullgym: 'Full gym access (barbells, machines, cables, dumbbells)',
-  custom: 'Custom equipment',
+  home: 'Essentials: resistance bands, dumbbells, yoga mat',
+  localgym: 'Local gym: free weights, barbells, benches, pull-up bar',
+  fullgym: 'Full gym: cable machines, rowing machine, full machine selection, all free weights',
 };
 
 const GOALS_MAP: Record<Goal, string> = {
@@ -146,16 +146,16 @@ const GOALS_MAP: Record<Goal, string> = {
   weight: 'Lose weight and get leaner',
   endurance: 'Improve cardiovascular endurance',
   general: 'General fitness and health',
+  health: 'Get healthier through regular movement and balanced exercise',
 };
 
 const TRAINING_MAP: Record<TrainingType, string> = {
-  strength: 'Strength training with weights',
-  hiit: 'HIIT and cardio workouts',
-  yoga: 'Yoga and mobility work',
-  mixed: 'Mixed variety training',
-  calisthenics: 'Calisthenics and bodyweight exercises',
-  cardio: 'Cardio and endurance training',
-  pilates: 'Pilates and core work',
+  strength: 'Strength training with weights. Focus on compound lifts, progressive overload, and muscle hypertrophy exercises.',
+  hiit: 'HIIT and functional training. Focus on high-intensity intervals, explosive movements, and minimal rest periods.',
+  yoga: 'Yoga and mobility work. Focus on flexibility, balance poses, breathing exercises, and mind-body connection.',
+  calisthenics: 'Calisthenics and bodyweight exercises. Focus on pull-ups, dips, muscle-ups, levers, and progressive skill work.',
+  cardio: 'Cardio and endurance training. Focus on sustained heart rate elevation, VO2 max improvement, and aerobic capacity.',
+  pilates: 'Pilates and core work. Focus on core stabilization, controlled movements, posture alignment, and deep muscle engagement.',
 };
 
 const TRACKER_MAP: Record<Tracker, string> = {
@@ -251,18 +251,25 @@ https://workout-timer.app/timer?w=eyJuYW1l...
 export function generateInstructions(answers: PollAnswers, timerUrl: string): string {
   const lang = 'en'; // Force English for instructions
   const equipment = (Array.isArray(answers.equipment) ? answers.equipment[0] : answers.equipment) as Equipment || 'home';
-  const goal = (Array.isArray(answers.goals) ? answers.goals[0] : answers.goals) as Goal || 'general';
-  const training = (answers.trainingType as TrainingType) || 'strength';
+  const goalRaw = Array.isArray(answers.goals) ? answers.goals[0] : answers.goals;
+  const trainingRaw = answers.trainingType || '';
   const tracker = (answers.tracker as Tracker) || 'none';
   const coachingStyle = (answers.coachingStyle as CoachingStyleId) || 'friendly';
 
   // Handle custom values for "other" options
-  const customEquipment = answers.customEquipment || '';
   const customTracker = answers.customTracker || '';
 
-  const equipmentText = equipment === 'custom' && customEquipment
-    ? customEquipment
-    : EQUIPMENT_MAP[equipment] || equipment;
+  const equipmentText = EQUIPMENT_MAP[equipment] || equipment;
+
+  // Handle custom training type (check raw value before casting)
+  const trainingText = trainingRaw === 'other' && answers.customTrainingType
+    ? answers.customTrainingType
+    : TRAINING_MAP[trainingRaw as TrainingType] || trainingRaw || 'strength';
+
+  // Handle custom goals (check raw value before casting)
+  const goalsText = goalRaw === 'other' && answers.customGoals
+    ? answers.customGoals
+    : GOALS_MAP[goalRaw as Goal] || goalRaw || 'general';
 
   const hasTracker = tracker !== 'none';
   const trackerText = tracker === 'other' && customTracker
@@ -306,8 +313,8 @@ Start with LIGHTER weights and note "increase if too easy" in workout.`
     LANGUAGE_NAME: 'English', // Always English
     LANGUAGE_CODE: lang,
     EQUIPMENT: equipmentText,
-    GOALS: GOALS_MAP[goal] || goal,
-    TRAINING_TYPE: TRAINING_MAP[training] || training,
+    GOALS: goalsText,
+    TRAINING_TYPE: trainingText,
     LIMITATIONS: answers.limitations || 'None specified',
     TRACKER: hasTracker ? trackerText : 'None',
     TRACKER_CODE: trackerText,

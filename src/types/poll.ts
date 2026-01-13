@@ -39,6 +39,8 @@ export type PollStepId = 'language' | 'aiPlatform' | 'trainingType' | 'equipment
 export interface PollOption {
   id: string;
   allowCustom?: boolean; // Show custom input when selected
+  logo?: string; // Path to logo image (e.g., '/logos/chatgpt.png')
+  logoInvert?: boolean; // Invert logo for dark-on-light display
 }
 
 export interface PollStep {

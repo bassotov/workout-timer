@@ -1,9 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { HugeiconsIcon } from '@hugeicons/react';
-import { Link04Icon } from '@hugeicons/core-free-icons';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, Button } from '@/components/ui';
 import { CopyablePrompt } from '@/components/ui/copyable-prompt';
 import { useTranslations, detectBrowserLanguage } from '@/i18n';
 import type { UrlCorruptionType } from '@/types';
@@ -12,92 +10,50 @@ interface ErrorScreenProps {
   errorType?: UrlCorruptionType;
 }
 
+const ERROR_EMOJIS: Record<UrlCorruptionType, string> = {
+  truncated: '✂️',
+  invalid_base64: '🔗',
+  malformed_json: '📝',
+  schema_mismatch: '📋',
+  invalid_utf8: '🔤',
+  control_characters: '👻',
+  unknown: '❓',
+};
+
 export function ErrorScreen({ errorType }: ErrorScreenProps) {
   const lang = detectBrowserLanguage();
   const t = useTranslations(lang);
 
   const errorKey = errorType ?? 'unknown';
   const specificError = t.error.specific[errorKey];
-
-  // Choose emoji based on error type
-  const emoji = errorType === 'truncated' ? '✂️' : '😕';
+  const emoji = ERROR_EMOJIS[errorKey];
 
   return (
     <div className="min-h-dvh bg-background flex flex-col items-center justify-center p-6 safe-area-inset text-foreground">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center mb-4">
+        <div className="text-center mb-6">
           <div className="text-5xl mb-3">{emoji}</div>
           <h1 className="text-2xl font-bold">{specificError.title}</h1>
         </div>
 
-        {/* Why this happened */}
-        <Card className="mb-5">
+        {/* Error info + prompt */}
+        <Card className="mb-6">
           <CardContent className="py-0">
-            <h3 className="font-medium text-sm mb-0.5 text-muted-foreground">
-              {t.error.whyTitle}
-            </h3>
-            <p className="text-sm leading-relaxed">{specificError.why}</p>
+            <p className="font-medium text-primary mb-2">
+              {t.error.copyPromptToFix}
+            </p>
+            <p className="text-sm mb-4">{specificError.why}</p>
+            <CopyablePrompt text={specificError.prompt} />
           </CardContent>
         </Card>
 
-        {/* Fix Steps Title */}
-        <h3 className="font-semibold text-sm mb-4">
-          🔧 {t.error.fixSteps.title}
-        </h3>
-
-        {/* Fix Steps */}
-        <div className="space-y-5">
-          {/* Step 1: Check setup */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-                1
-              </span>
-              <span className="text-sm font-medium">{t.error.fixSteps.step1Title}</span>
-            </div>
-            <Link
-              href="/instructions/chatgpt"
-              className="flex items-center gap-2 w-full rounded-lg border border-border/50 bg-muted/30 px-3 py-2.5 text-sm text-primary hover:bg-muted/50 hover:border-border transition-colors"
-            >
-              <HugeiconsIcon icon={Link04Icon} className="h-4 w-4 shrink-0" />
-              <span>{t.error.fixSteps.step1Link}</span>
-            </Link>
-          </div>
-
-          {/* Step 2: Regenerate with prompt */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-                2
-              </span>
-              <span className="text-sm font-medium">{t.error.fixSteps.step2Title}</span>
-            </div>
-            <CopyablePrompt text={specificError.prompt} />
-          </div>
-
-          {/* Step 3: Use advanced model */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-                3
-              </span>
-              <span className="text-sm font-medium">{t.error.fixSteps.step3Title}</span>
-            </div>
-            <CopyablePrompt text={t.error.fixSteps.step3Prompt} />
-          </div>
-
-          {/* Step 4: Translate to English */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-                4
-              </span>
-              <span className="text-sm font-medium">{t.error.fixSteps.step4Title}</span>
-            </div>
-            <CopyablePrompt text={t.error.fixSteps.step4Prompt} />
-          </div>
-        </div>
+        {/* Troubleshooting link */}
+        <Button asChild size="lg" className="w-full">
+          <Link href="/getting-started/troubleshooting">
+            {t.error.troubleshootingGuide}
+          </Link>
+        </Button>
       </div>
     </div>
   );

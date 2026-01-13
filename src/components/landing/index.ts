@@ -14,3 +14,4 @@ export { Pricing } from './Pricing';
 export { SocialProof } from './SocialProof';
 export { SuccessContent } from './SuccessContent';
 export { Testimonials } from './Testimonials';
+export { FAQ } from './FAQ';

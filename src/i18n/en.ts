@@ -6,6 +6,7 @@ export const en = {
     pricing: 'Pricing',
     guide: 'Guide',
     restore: 'Restore',
+    troubleshooting: 'Troubleshooting',
   },
 
   // Footer
@@ -50,6 +51,9 @@ export const en = {
     whyTitle: 'Why this happened?',
     whyGeneric: 'AI sometimes generates links with encoding errors. There are several ways to fix this.',
     generalTab: 'General',
+    linkErrorsTab: 'Link Errors',
+    copyPromptToFix: 'Give prompt below to LLM to fix the error',
+    troubleshootingGuide: 'Troubleshooting Guide',
     fixSteps: {
       title: "Let's troubleshoot in this order:",
       step1Title: "Make sure you've set up Workout Timer correctly",
@@ -63,39 +67,39 @@ export const en = {
     },
     specific: {
       control_characters: {
-        title: 'Corrupted Link Data',
-        why: 'The AI inserted invisible control characters into the link data. This commonly happens with Gemini.',
-        prompt: 'Please regenerate the workout timer link using clean text encoding. Do not include any special or control characters. Return full link, not markdown.',
+        title: 'Corrupted Data',
+        why: 'Invisible characters in the link.',
+        prompt: 'Regenerate without control characters. Return full link, not markdown.',
       },
       invalid_utf8: {
-        title: 'Encoding Error',
-        why: 'Russian or special characters were not encoded correctly. Some AI models struggle with non-Latin text.',
-        prompt: 'Please regenerate the workout timer link with proper UTF-8 encoding for all text. Return full link, not markdown.',
+        title: 'Character Error',
+        why: "Non-Latin characters weren't encoded properly.",
+        prompt: 'Regenerate with proper UTF-8 encoding. Return full link, not markdown.',
       },
       malformed_json: {
-        title: 'Malformed Data',
-        why: 'The workout data structure got corrupted during generation. The AI may have made a syntax error.',
-        prompt: 'Please regenerate the workout timer link. Make sure the JSON is valid and properly formatted. Return full link, not markdown.',
+        title: 'Invalid Data',
+        why: 'Data structure has syntax errors.',
+        prompt: 'Regenerate with valid JSON. Return full link, not markdown.',
       },
       invalid_base64: {
-        title: 'Invalid Link Format',
-        why: 'The link encoding is broken. This can happen when the AI uses the wrong encoding method.',
-        prompt: 'Please regenerate the workout timer link using proper URL-safe base64 encoding. Return full link, not markdown.',
+        title: 'Invalid Encoding',
+        why: 'Link encoding is broken.',
+        prompt: 'Regenerate with URL-safe base64 encoding. Return full link, not markdown.',
       },
       schema_mismatch: {
-        title: 'Missing Workout Fields',
-        why: 'The workout data is missing required fields. The AI may not have followed the schema correctly.',
-        prompt: 'Please regenerate the link. Double-check the required schema: name, rounds, exercises with duration. Return full link, not markdown.',
+        title: 'Missing Fields',
+        why: 'Required workout fields are missing.',
+        prompt: 'Regenerate with: name, rounds, exercises (each with duration). Return full link, not markdown.',
       },
       truncated: {
         title: 'Incomplete Link',
-        why: 'The link was cut off, likely due to message length limits or copy-paste issues.',
-        prompt: 'Please regenerate the workout timer link. Return it as a complete, uncut string, not markdown.',
+        why: 'Link was cut off during generation or copy-paste.',
+        prompt: 'Regenerate the full workout link. Return complete URL, not markdown.',
       },
       unknown: {
         title: 'Unknown Error',
-        why: 'Something went wrong with the link generation. The exact cause is unclear.',
-        prompt: 'Please regenerate the workout timer link using proper encoding. Return full link, not markdown.',
+        why: 'Something went wrong.',
+        prompt: 'Regenerate the workout link. Return full link, not markdown.',
       },
     },
   },
@@ -196,41 +200,42 @@ export const en = {
           chatgpt: 'ChatGPT',
           claude: 'Claude',
           gemini: 'Gemini',
-          other: 'Other / Multiple',
+          grok: 'Grok',
+          perplexity: 'Perplexity',
+          other: 'Other',
         },
       },
       trainingType: {
         title: 'What type of training do you prefer?',
         options: {
-          strength: 'Strength / Weights',
-          hiit: 'HIIT / Cardio',
-          yoga: 'Yoga / Mobility',
-          mixed: 'Mixed / Variety',
-          calisthenics: 'Calisthenics',
-          cardio: 'Cardio / Running',
-          pilates: 'Pilates',
-          other: 'Other / Let me specify',
+          strength: 'Strength.Weights, heavylifting',
+          hiit: 'HIIT.Intensive, functional',
+          yoga: 'Yoga.Mobility, flexibility',
+          calisthenics: 'Calisthenics.Power, control',
+          cardio: 'Cardio.Endurance, VO2',
+          pilates: 'Pilates.Fortification, core',
+          other: 'Other.Something special?',
         },
       },
       equipment: {
         title: 'What equipment do you have?',
         options: {
-          bodyweight: 'None (bodyweight only)',
-          home: 'Home gym (dumbbells, bands)',
-          fullgym: 'Full gym access',
-          custom: 'Let me specify...',
+          bodyweight: 'None.Bodyweight only',
+          home: 'Essentials.Bands, dumbbells, mat',
+          localgym: 'Local gym.Weights, bars, bench',
+          fullgym: 'Big gym.Cable station, rowing',
         },
       },
       weightPreference: {
-        title: 'What weight for dumbbell bicep curls?',
-        subtitle: 'Helps AI suggest appropriate weights for all exercises',
+        title: 'What weight for a bicep curl?',
+        subtitle: "It'll help calibrate weights for your workouts",
         options: {
-          light: '2kg / 4lb',
-          moderate: '7kg / 15lb',
-          medium: '12kg / 25lb',
-          heavy: '15kg / 35lb',
-          veryHeavy: '20kg+ / 45lb+',
-          unknown: "I don't know yet",
+          light: '2 kg.4 lb',
+          moderate: '7 kg.15 lb',
+          medium: '12 kg.25 lb',
+          heavy: '15 kg.35 lb',
+          veryHeavy: '20+ kg.45+ lb',
+          unknown: "Not sure.I'll figure it out",
         },
       },
       goals: {
@@ -240,7 +245,8 @@ export const en = {
           weight: 'Lose weight',
           endurance: 'Improve endurance',
           general: 'General fitness',
-          other: 'Other / Let me specify',
+          health: 'Get healthier',
+          other: 'Other',
         },
       },
       tracker: {
@@ -257,10 +263,10 @@ export const en = {
       coachingStyle: {
         title: 'How should your coach talk to you?',
         options: {
-          motivator: 'Motivator',
-          drill: 'Drill Sergeant',
-          friendly: 'Friendly Coach',
-          analytical: 'Data-Driven',
+          motivator: 'Motivator.Ambitious, inspiring',
+          drill: 'Drill Sergeant.Demanding, no BS',
+          friendly: 'Friendly Coach.Gentle, caring',
+          analytical: 'Data-Driven.Methodical, rational',
         },
       },
     },
@@ -339,6 +345,59 @@ export const en = {
     testimonials: {
       title: 'What Users Say',
     },
+    faq: {
+      title: 'Frequently Asked Questions',
+      items: {
+        whatGetting: {
+          question: 'What am I actually getting?',
+          answer:
+            "We craft a markdown file with instructions for your LLM. It contains personalized guidelines based on your poll responses and teaches your AI to create custom workout timer links.",
+        },
+        howWorks: {
+          question: 'How does this custom timer work?',
+          answer:
+            "Your LLM creates workouts for you. Our instructions explain how to encode your workout into a link. When you click the link, we decode it and show you a personalized timer.",
+        },
+        multipleLLMs: {
+          question: 'Can I use it in multiple LLMs?',
+          answer:
+            "Yes! It's your file. You can use it, hack it, change it. Use it in several LLMs at once. No limits.",
+        },
+        workoutLimitations: {
+          question: 'Any limitations on types of workouts?',
+          answer:
+            'The timer works as "X sets" of "Y exercises" — basically a circuit workout. But you can get creative and make tabata, supersets, or even AMRAP by customizing exercise durations and rest periods.',
+        },
+        shareLinks: {
+          question: 'Can I share or re-use a workout link?',
+          answer:
+            "Yes! Once created, workout links can be used endlessly. Save your favorites. Want to share with a friend or partner? Just send the link.",
+        },
+        mobileSupport: {
+          question: 'Does the timer work on mobile?',
+          answer: 'Yes. All devices. All operating systems.',
+        },
+        updates: {
+          question: 'Will I get updates to my instructions?',
+          answer:
+            "Yes. When we evolve the timer with new features, we'll send you updated instructions too.",
+        },
+        aiAssistants: {
+          question: 'Which AI assistants does it work with?',
+          answer:
+            "All of them. Some work more stable, some less. We've tested and have installation guides for Claude, ChatGPT, Gemini, Grok, and Perplexity. You can test with different LLMs to see what works best — it's compatible with free plans.",
+        },
+        refundPolicy: {
+          question: 'Is there a refund policy?',
+          answer: 'Yes. Not happy? Get your money back, no questions asked.',
+        },
+        whyPay: {
+          question: 'Why pay when I can just ask AI for workouts?',
+          answer:
+            "We instruct your LLM to create a magic link to a custom timer for your workout. It's a different experience than getting a workout in bullet points. Plus, we save you the time of setting up proper instructions.",
+        },
+      },
+    },
     finalCTA: {
       title: 'This is your year.',
       subtitle: 'Change the way you gym.',
@@ -402,9 +461,9 @@ export const en = {
     securePolar: 'Secure payment via Polar',
     tags: {
       bodyweight: 'Bodyweight',
-      home: 'Home Gym',
-      fullgym: 'Full Gym',
-      custom: 'Custom',
+      home: 'Essentials',
+      localgym: 'Local Gym',
+      fullgym: 'Big Gym',
       strength: 'Strength',
       hiit: 'HIIT',
       yoga: 'Yoga',
@@ -434,12 +493,16 @@ export const en = {
       chatgpt: 'GPT-5.2 works well. If you experience encoding issues, try the thinking or pro model.',
       claude: 'Sonnet or Opus recommended. Projects feature works best for persistent context.',
       gemini: 'Select the thinking model for more reliable link generation.',
+      grok: 'Grok is fast but sloppy. Use "Thinking" model for more stable links.',
+      perplexity: 'Research mode returns better results than Search mode.',
       other: 'Use the most capable model available. Thinking models produce better formatted links.',
     },
     platformSteps: {
       chatgpt: ['Open chatgpt.com and sign in', 'Create a new Project', 'Upload file to Project Knowledge', 'Add instructions to ALWAYS follow instructions in the file'],
-      claude: ['Open claude.ai and sign in', 'Create a new Project', 'In Project Instructions, write to ALWAYS follow instructions in the attached file'],
-      gemini: ['Open Gemini and sign in with Google', 'Create a new Gem', 'In Gem instructions, write to ALWAYS follow instructions in the attached file'],
+      claude: ['Open claude.ai and sign in', 'Open "Projects"', 'Create new project', 'Add instruction "ALWAYS follow the instructions in the file" and drag your file to "Files"'],
+      gemini: ['Open sidemenu in Gemini', 'Create a new Gem', 'Add instructions and your file to your Gem', 'Ask for a workout. Use "Thinking" model if issues.'],
+      grok: ['Open Grok, create Project', 'Name project, add instructions', 'Add your file to the project', 'Ask for a workout'],
+      perplexity: ['Open Perplexity, create a Space', 'Name Space, add your file', 'Add instructions to ALWAYS follow the file', 'Ask for a workout'],
       other: ['Open your AI assistant', 'Start a new chat', 'Paste file contents as your first message'],
     },
     restoreNote: 'Lost your file? You can re-download it anytime using your email.',
@@ -476,18 +539,16 @@ export const en = {
     // Discarded data states
     discarded: {
       title: 'Data Not Saved',
-      message: 'You chose not to save your data at checkout.',
-      localAvailable: 'Good news: Your local copy is still available!',
-      timeRemaining: 'Time remaining: ',
-      downloadLocal: 'Download from local storage',
-      expired: 'Your local storage has expired and file cannot be restored.',
-      contactSupport: 'Contact support@workout-timer.app for a discount on repurchase.',
+      message: '',
+      cannotRestore: 'You chose not to save your data at checkout',
+      contactSupport: 'File restoration is not available. Contact support@workout-timer.app for a discount on repurchase.',
     },
   },
 
   // Getting started page (linked from Polar benefit)
   gettingStarted: {
     title: 'Welcome to Workout Timer',
+    quickLinks: 'Quick Links',
     whatYouGot: {
       title: 'Make sure to store the file safely',
       description: 'You will use this file to supercharge your AI chats to generate personalised workouts and create interactive timers.',
@@ -512,8 +573,8 @@ export const en = {
     setup: {
       title: 'Quick Setup by Platform',
       detailedGuide: 'Learn more',
-      otherTitle: 'Other AI Assistants',
-      otherHint: 'Follow instructions in file',
+      otherTitle: 'Other LLMs',
+      otherHint: 'Let us know if needed',
       chatgpt: [
         'Open chatgpt.com and sign in',
         'Create a new Project',
@@ -523,15 +584,35 @@ export const en = {
       ],
       claude: [
         'Open claude.ai and sign in',
-        'Create a new Project',
-        'In Project Instructions, write to ALWAYS follow instructions in the attached file',
+        'Open "Projects"',
+        'Create new project',
+        'Add instruction "ALWAYS follow the instructions in the file" and drag your file to "Files"',
         'Ask for a workout!',
+        'Click the link to open a timer',
       ],
       gemini: [
-        'Open Gemini and sign in with Google',
+        'Open sidemenu in Gemini',
         'Create a new Gem',
-        'In Gem instructions, write to ALWAYS follow instructions in the attached file',
-        'Ask for a workout!',
+        'Add instructions and your file to your Gem',
+        'Ask for a workout. Consider using "Thinking" model if any issues.',
+        'Gemini should return the full link. If not – ask it to return the full link. Copy this link.',
+        'Paste the link into a new browser window to open the timer.',
+      ],
+      grok: [
+        'Open Grok, create Project',
+        'Name a Project, add instructions. Ask it to be vigilant – Grok is fast but sloppy.',
+        'Add your instructions file to the project',
+        'Ask for a workout naturally',
+        'Click on a workout link to open the timer',
+        'Grok on "Fast" will likely break the link. Prompt it to fix/review. Or switch to "Thinking" model.',
+      ],
+      perplexity: [
+        'Open Perplexity, create a Space',
+        'Name a Space, add your instruction file',
+        'Open Space instructions',
+        'Ask it to ALWAYS follow the instructions in the file. Turn off web search. Save.',
+        'Ask for a workout naturally. Search mode works okay, Research mode returns better results.',
+        'Click on the link to open the timer',
       ],
       other: [
         'Open your AI assistant',
@@ -543,10 +624,10 @@ export const en = {
     tips: {
       title: 'Pro Tips',
       items: [
-        'Use a thinking/reasoning model for best results (GPT-4o, Claude Sonnet, Gemini Pro)',
-        'Be specific: "Give me a 20-minute upper body workout with dumbbells"',
-        'The AI will generate a clickable timer link - just tap it to start!',
-        'Save your file somewhere safe, or use the restore link anytime',
+        'Make sure to add both the file AND instructions to follow the file\'s guidelines',
+        'Thinking models generate better timer-links (less errors)',
+        'Link returned an error? Ask LLM to fix it. Usually it fixes mistakes on the first re-try',
+        'In the project instruction add your own. Like "keep rest time low at 10 sec" or "never give me bulgarian lunges"',
       ],
     },
     cta: 'Restore My File',
@@ -561,28 +642,25 @@ export const en = {
     howToUse: 'How to use with',
     modelRecommendation: 'Recommended Model',
     troubleshooting: {
-      title: 'Troubleshooting',
-      tips: [
-        'Make sure you copied the entire link',
-        'Ask AI to regenerate with proper base64 encoding',
-        'Switch to a thinking/reasoning model',
-        'If errors persist, ask AI to translate workout to English',
-      ],
-    },
-    commonIssues: {
-      title: 'Common Issues',
-      encoding: {
-        title: 'Encoding Problems',
-        description: 'If links contain broken characters or don\'t work, ask AI to use URL-safe base64 encoding.',
+      title: 'Why Workout Timer links can be broken?',
+      linkErrorsTitle: 'Prompts to fix errors',
+      block1: {
+        title: 'AI can mess up the link',
+        tips: [
+          'Ask AI to regenerate the link or use our troubleshooting guide; it often helps on the first retry',
+          'Some models, or faster models, make many typos while generating a link. Switching to a thinking but slower model tends to help',
+          'Faster models like to invent their own approach. Including an instruction to always follow the file\'s guidelines tends to help',
+        ],
       },
-      truncation: {
-        title: 'Truncated Links',
-        description: 'Long workout links may get cut off. Ask AI to shorten exercise names or reduce exercises.',
+      block2: {
+        title: 'Your custom settings trigger errors',
+        tips: [
+          'If you instruct it to work in a non-Latin alphabet (Russian, Mandarin, Japanese), it might generate links with coding errors',
+          'If you experiment with exercise formats that aren\'t standard, it might cause errors',
+        ],
       },
-      cyrillic: {
-        title: 'Cyrillic Text Issues',
-        description: 'Russian text needs special handling. Use thinking models or ask for English exercise names.',
-      },
+      needHelp: 'Need more help? Contact us at',
+      supportEmail: 'support@workout-timer.app',
     },
     screenshotAlt: 'Setup step screenshot',
     setupOnMobile: 'Setup on Mobile',
@@ -603,12 +681,14 @@ export const en = {
       },
     },
     claude: {
-      subtitle: 'Log in. Create project. Add file. Ask for a workout.',
+      subtitle: 'Log in. Open Projects. Add file. Ask for a workout.',
       steps: [
         'Open claude.ai and sign in',
-        'Create a new Project',
-        'In Project Instructions, write to ALWAYS follow instructions in the attached file',
+        'Open "Projects"',
+        'Create new project',
+        'Add instruction "ALWAYS follow the instructions in the file" and drag your file to "Files"',
         'Ask for a workout!',
+        'Click the link to open a timer',
       ],
       modelTip: {
         title: 'Works best with Sonnet 4.5 or Opus 4.5',
@@ -616,16 +696,48 @@ export const en = {
       },
     },
     gemini: {
-      subtitle: 'Log in. Create Gem. Add file. Ask for a workout.',
+      subtitle: 'Open sidemenu. Create Gem. Add file. Ask for a workout.',
       steps: [
-        'Open Gemini and sign in with Google',
+        'Open sidemenu in Gemini',
         'Create a new Gem',
-        'In Gem instructions, write to ALWAYS follow instructions in the attached file',
-        'Ask for a workout!',
+        'Add instructions and your file to your Gem',
+        'Ask for a workout. Consider using "Thinking" model if any issues.',
+        'Gemini should return the full link. If not – ask it to return the full link. Copy this link.',
+        'Paste the link into a new browser window to open the timer.',
       ],
       modelTip: {
         title: 'Works best with Thinking model',
-        subtitle: 'Flash 3.0 or "Fast" mode makes mistakes often.',
+        subtitle: 'Flash 3.0 or "Fast" mode makes mistakes sometimes.',
+      },
+    },
+    grok: {
+      subtitle: 'Create Project. Add file. Ask for a workout.',
+      steps: [
+        'Open Grok, create Project',
+        'Name a Project, add instructions. Ask it to be vigilant – Grok is fast but sloppy.',
+        'Add your instructions file to the project',
+        'Ask for a workout naturally',
+        'Click on a workout link to open the timer',
+        'Grok on "Fast" will likely break the link. Prompt it to fix/review. Or switch to "Thinking" model.',
+      ],
+      modelTip: {
+        title: 'Use "Thinking" model for stability',
+        subtitle: '"Fast" mode is quick but often breaks links. Ask Grok to fix or switch models.',
+      },
+    },
+    perplexity: {
+      subtitle: 'Create Space. Add file. Configure instructions. Ask for a workout.',
+      steps: [
+        'Open Perplexity, create a Space',
+        'Name a Space, add your instruction file',
+        'Open Space instructions',
+        'Ask it to ALWAYS follow the instructions in the file. Turn off web search. Save.',
+        'Ask for a workout naturally. Search mode works okay, Research mode returns better results.',
+        'Click on the link to open the timer',
+      ],
+      modelTip: {
+        title: 'Research mode works best',
+        subtitle: 'Search mode is okay, but Research mode returns better workout results.',
       },
     },
   },

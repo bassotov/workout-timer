@@ -13,19 +13,24 @@ interface PaymentSummaryProps {
   answers: PollAnswers;
   onBack: () => void;
   onPayment: () => void;
-  onDevSkip?: () => void;
+}
+
+/** Extracts title from "Title.Subtitle" format, returns just the title */
+function extractTitle(text: string): string {
+  const dotIndex = text.indexOf('.');
+  return dotIndex === -1 ? text : text.substring(0, dotIndex);
 }
 
 /** Truncates text to maxLength characters with ellipsis */
 function truncateText(text: string, maxLength = 16): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength - 1).trim() + '…';
+  const title = extractTitle(text);
+  if (title.length <= maxLength) return title;
+  return title.slice(0, maxLength - 1).trim() + '…';
 }
 
 type SummaryItem = { label: string };
 
-export function PaymentSummary({ answers, onBack, onPayment, onDevSkip }: PaymentSummaryProps) {
-  const isDev = process.env.NODE_ENV === 'development';
+export function PaymentSummary({ answers, onBack, onPayment }: PaymentSummaryProps) {
   const { language, t } = useLanguage();
 
   // Build summary items for all 8 poll selections
@@ -50,12 +55,10 @@ export function PaymentSummary({ answers, onBack, onPayment, onDevSkip }: Paymen
       : pollOptions.trainingType?.options[training] || training;
     items.push({ label: trainingLabel });
 
-    // 4. Equipment (check for custom)
+    // 4. Equipment
     const equipment = Array.isArray(answers.equipment) ? answers.equipment[0] : answers.equipment;
     const equipmentValue = equipment || 'home';
-    const equipmentLabel = equipmentValue === 'custom' && answers.customEquipment
-      ? answers.customEquipment
-      : pollOptions.equipment?.options[equipmentValue] || equipmentValue;
+    const equipmentLabel = pollOptions.equipment?.options[equipmentValue] || equipmentValue;
     items.push({ label: equipmentLabel });
 
     // 5. Weight Preference (may be empty if conditional step was skipped)
@@ -173,7 +176,7 @@ export function PaymentSummary({ answers, onBack, onPayment, onDevSkip }: Paymen
         <div className="text-center mb-6">
           <p className="text-lg">
             <span className="text-muted-foreground line-through">$25</span>{' '}
-            <span className="text-2xl font-bold text-primary">$10</span>
+            <span className="text-4xl font-bold text-primary">$10</span>
           </p>
           <p className="text-sm text-muted-foreground">
             {t.payment.lifetimeNoSub}
@@ -185,15 +188,6 @@ export function PaymentSummary({ answers, onBack, onPayment, onDevSkip }: Paymen
         <p className="text-muted-foreground text-sm text-center">
           {t.payment.securePolar}
         </p>
-        {isDev && onDevSkip && (
-          <Button
-            variant="outline"
-            onClick={onDevSkip}
-            className="mt-4 w-full border-dashed border-yellow-500 text-yellow-500 hover:bg-yellow-500/10"
-          >
-            [DEV] Skip Payment
-          </Button>
-        )}
       </div>
     </div>
   );

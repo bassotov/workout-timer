@@ -82,9 +82,10 @@ export async function POST(request: NextRequest) {
         customGuidelines: answers.customGuidelines || '',
 
         // Custom "other" values
-        customEquipment: answers.customEquipment || '',
         customAiPlatform: answers.customAiPlatform || '',
         customTracker: answers.customTracker || '',
+        customTrainingType: answers.customTrainingType || '',
+        customGoals: answers.customGoals || '',
       };
     }
 

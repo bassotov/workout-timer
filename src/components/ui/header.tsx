@@ -30,6 +30,7 @@ const LANDING_NAV_ITEMS = [
 const INTERNAL_NAV_ITEMS = [
   { labelKey: 'guide', href: '/getting-started' },
   { labelKey: 'restore', href: '/restore' },
+  { labelKey: 'troubleshooting', href: '/getting-started/troubleshooting' },
 ] as const;
 
 export function Header({
@@ -80,6 +81,7 @@ export function Header({
     pricing: t.nav?.pricing ?? 'Pricing',
     guide: t.nav?.guide ?? 'Guide',
     restore: t.nav?.restore ?? 'Restore',
+    troubleshooting: t.nav?.troubleshooting ?? 'Troubleshooting',
   };
 
   return (

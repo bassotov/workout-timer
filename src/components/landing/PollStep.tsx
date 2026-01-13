@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { SquareLock01Icon } from '@hugeicons/core-free-icons';
 import { Button } from '@/components/ui/button';
@@ -128,6 +129,18 @@ export function PollStep({
     return label;
   };
 
+  // Parse label with "." separator into title and subtitle
+  const parseLabel = (label: string): { title: string; subtitle?: string } => {
+    const dotIndex = label.indexOf('.');
+    if (dotIndex === -1) {
+      return { title: label };
+    }
+    return {
+      title: label.substring(0, dotIndex),
+      subtitle: label.substring(dotIndex + 1),
+    };
+  };
+
   return (
     <div className="min-h-dvh bg-background text-foreground flex flex-col items-center p-6">
       {/* Fixed-position header area - stays at consistent height from top */}
@@ -163,13 +176,32 @@ export function PollStep({
                   key={option.id}
                   variant="outline"
                   onClick={() => handleOptionClick(option.id)}
-                  className={`p-4 h-auto text-left justify-start whitespace-normal transition-colors ${
+                  className={`group p-4 h-auto text-left justify-start whitespace-normal transition-colors ${
                     isSelected
                       ? 'bg-primary text-primary-foreground border-primary'
                       : 'hover:bg-primary hover:text-primary-foreground hover:border-primary'
                   }`}
                 >
-                  {getOptionLabel(option.id)}
+                  {option.logo && (
+                    <Image
+                      src={option.logo}
+                      alt=""
+                      width={20}
+                      height={20}
+                      className={`mr-0 shrink-0 ${option.logoInvert ? (isSelected ? 'brightness-0' : 'brightness-0 invert') : ''}`}
+                    />
+                  )}
+                  {(() => {
+                    const { title, subtitle } = parseLabel(getOptionLabel(option.id));
+                    return subtitle ? (
+                      <span className="flex flex-col">
+                        <span>{title}</span>
+                        <span className={`${isSelected ? 'text-primary-foreground/70' : 'text-muted-foreground group-hover:text-primary-foreground/70'}`}>{subtitle}</span>
+                      </span>
+                    ) : (
+                      title
+                    );
+                  })()}
                 </Button>
               );
             })}

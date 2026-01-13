@@ -30,3 +30,6 @@ export type { AIConfigKey } from './ai-instructions';
 
 export { TESTIMONIALS } from './testimonials';
 export type { Testimonial } from './testimonials';
+
+export { FAQ_ITEMS } from './faq';
+export type { FAQItem } from './faq';

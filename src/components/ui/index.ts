@@ -15,3 +15,4 @@ export * from './language-switcher';
 export * from './copyable-prompt';
 export * from './ai-logo-flipper';
 export * from './wavy-underline';
+export * from './accordion';

@@ -19,6 +19,7 @@ import {
   ForWhom,
   Pricing,
   Testimonials,
+  FAQ,
   FinalCTA,
   PollStep,
   PersonalDetailsForm,
@@ -144,9 +145,7 @@ export default function LandingPage() {
     const field = currentStepConfig.id;
 
     // Store custom value in appropriate field
-    if (field === 'equipment') {
-      setAnswer('customEquipment', customValue);
-    } else if (field === 'aiPlatform') {
+    if (field === 'aiPlatform') {
       setAnswer('customAiPlatform', customValue);
     } else if (field === 'tracker') {
       setAnswer('customTracker', customValue);
@@ -183,7 +182,6 @@ export default function LandingPage() {
           answers={answers}
           onBack={goToDetails}
           onPayment={handlePayment}
-          onDevSkip={goToSuccess}
         />
       </main>
     );
@@ -205,7 +203,6 @@ export default function LandingPage() {
   if (page === 'poll') {
     // Get custom value for current step if applicable
     const customValueMap: Record<string, string | undefined> = {
-      equipment: answers.customEquipment,
       aiPlatform: answers.customAiPlatform,
       tracker: answers.customTracker,
       trainingType: answers.customTrainingType,
@@ -239,6 +236,7 @@ export default function LandingPage() {
         <ForWhom />
         <Pricing onStart={goToPoll} />
         <Testimonials />
+        <FAQ />
         <FinalCTA onStart={goToPoll} />
       </div>
       <Footer />

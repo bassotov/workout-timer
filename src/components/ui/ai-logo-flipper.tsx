@@ -9,8 +9,8 @@ const AI_LOGOS = [
   { src: '/logos/chatgpt.png', name: 'ChatGPT' },
   { src: '/logos/claude.png', name: 'Claude' },
   { src: '/logos/gemini.png', name: 'Gemini' },
-  { src: '/logos/copilot.png', name: 'Copilot' },
   { src: '/logos/grok.png', name: 'Grok' },
+  { src: '/logos/perplexity.png', name: 'Perplexity' },
 ] as const;
 
 const CYCLE_INTERVAL = 2000;

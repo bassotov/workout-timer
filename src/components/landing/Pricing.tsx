@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Check, Gem } from 'lucide-react';
 import { Card, CardContent, Button, WavyUnderline } from '@/components/ui';
@@ -25,19 +25,21 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
 
 export function Pricing({ onStart }: PricingProps) {
   const { t } = useLanguage();
+  const [mounted, setMounted] = useState(false);
+  const [pricing, setPricing] = useState<PricingInfo | null>(null);
 
-  // Calculate pricing on client only (lazy initializer for SSR safety)
-  const [pricing] = useState<PricingInfo | null>(() => {
-    if (typeof window === 'undefined') return null;
-    return getPricingInfo();
-  });
+  // Calculate pricing on client only after mount
+  useEffect(() => {
+    setPricing(getPricingInfo());
+    setMounted(true);
+  }, []);
 
   // Use pricing date or a far-future fallback (avoids Date.now() during render)
   const countdownDate = pricing?.nextIncreaseDate ?? new Date('2099-01-01');
   const countdown = useCountdown(countdownDate);
 
-  // Don't show countdown until pricing is loaded (prevents hydration mismatch)
-  const showCountdown = pricing && !countdown.isExpired;
+  // Don't show countdown until mounted and pricing is loaded (prevents hydration mismatch)
+  const showCountdown = mounted && pricing && !countdown.isExpired;
 
   return (
     <section id="pricing" className="px-6 py-16">
