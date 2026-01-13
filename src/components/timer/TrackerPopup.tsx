@@ -16,6 +16,7 @@ interface TrackerPopupTranslations {
   trackerWhoop: string;
   trackerApple: string;
   trackerGarmin: string;
+  trackerOura: string;
   trackerCustom: string; // Template with {name} placeholder
   reset: string;
 }
@@ -37,6 +38,9 @@ function getTrackerMessage(tracker: string | undefined, t: TrackerPopupTranslati
       return t.trackerApple;
     case 'garmin':
       return t.trackerGarmin;
+    case 'oura':
+    case 'oura ring':
+      return t.trackerOura;
     case 'none':
     case undefined:
       return '';
@@ -55,19 +59,19 @@ export function TrackerPopup({
 }: TrackerPopupProps) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent showCloseButton={false}>
+      <DialogContent showCloseButton={false} className="max-w-xs sm:max-w-sm">
         <DialogHeader>
-          <div className="text-4xl text-center mb-2">⌚</div>
-          <DialogTitle className="text-center">{t.trackerTitle}</DialogTitle>
-          <DialogDescription className="text-center">
+          <div className="text-5xl text-center mb-2">⌚</div>
+          <DialogTitle className="text-center text-xl">{t.trackerTitle}</DialogTitle>
+          <DialogDescription className="text-center text-base">
             {getTrackerMessage(tracker, t)}
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="flex-col gap-2 sm:flex-col">
-          <Button onClick={onStart} className="w-full">
+        <DialogFooter className="flex-col gap-3 sm:flex-col mt-2">
+          <Button onClick={onStart} size="lg" className="w-full text-lg py-6">
             {t.trackerReady}
           </Button>
-          <Button variant="outline" onClick={onClose} className="w-full">
+          <Button variant="outline" onClick={onClose} size="lg" className="w-full text-base py-5">
             ← {t.reset}
           </Button>
         </DialogFooter>

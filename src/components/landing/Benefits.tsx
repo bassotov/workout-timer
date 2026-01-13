@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import {
   UserCircle2,
   Smartphone,
@@ -91,7 +92,7 @@ function DemoVideo({ className }: { className?: string }) {
     <div className={`relative ${className ?? ''}`}>
       <div className="absolute -top-12 inset-x-0 flex justify-center z-10">
         <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm text-muted-foreground">
-          Works in <img src="/logos/chatgpt.png" alt="ChatGPT" className="size-4 mx-1.5 invert" /> ChatGPT
+          Works in <Image src="/logos/chatgpt.png" alt="ChatGPT" width={16} height={16} className="size-4 mx-1.5 invert" /> ChatGPT
         </span>
       </div>
       <video

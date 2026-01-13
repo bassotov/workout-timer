@@ -43,7 +43,15 @@ export default function LandingPage() {
     currentStepConfig,
   } = usePoll();
 
-  const [isPurchaseVerified, setIsPurchaseVerified] = useState(false);
+  // Compute initial purchase verification state (lazy initializer for SSR safety)
+  const [isPurchaseVerified] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const verification = getStoredValue<{ timestamp: number; checkoutId: string } | null>(
+      STORAGE_KEYS.PURCHASE_VERIFIED,
+      null
+    );
+    return !!(verification && Date.now() - verification.timestamp < 60 * 60 * 1000);
+  });
 
   useEffect(() => {
     validateEnv();
@@ -73,16 +81,6 @@ export default function LandingPage() {
 
     // Check for success redirect from Polar
     if (urlParams.get('success') === 'true') {
-      // Check if purchase was verified (set by /success page with checkout_id)
-      const verification = getStoredValue<{ timestamp: number; checkoutId: string } | null>(
-        STORAGE_KEYS.PURCHASE_VERIFIED,
-        null
-      );
-
-      // Verification is valid if it exists and was set within the last hour
-      const isValid = verification && Date.now() - verification.timestamp < 60 * 60 * 1000;
-      setIsPurchaseVerified(!!isValid);
-
       goToSuccess();
     }
   }, [goToSuccess, goToPoll]);

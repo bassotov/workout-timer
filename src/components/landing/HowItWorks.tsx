@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { WavyUnderline } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 
@@ -72,7 +73,7 @@ function DemoVideo({ className }: { className?: string }) {
     <div className={`relative ${className ?? ''}`}>
       <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
         <span className="inline-flex items-center justify-center gap-1.5 px-6 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm text-muted-foreground whitespace-nowrap">
-          Works in <img src="/logos/claude.png" alt="Claude" className="size-4" /> Claude
+          Works in <Image src="/logos/claude.png" alt="Claude" width={16} height={16} className="size-4" /> Claude
         </span>
       </div>
       <video

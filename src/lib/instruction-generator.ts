@@ -68,7 +68,7 @@ tracker: {{TRACKER}}
 - exercises[].reps: Rep count "x12" or duration "30 sec"
 - exercises[].duration: Seconds for timer (how long exercise runs)
 - exercises[].weight: Optional, for weighted exercises
-- exercises[].equipment: Optional, what's needed
+- exercises[].equipment: ALWAYS for weights; else optional
 
 CRITICAL - EVERY EXERCISE MUST HAVE EXACTLY THESE 3 FIELDS:
   "name": "...",
@@ -131,8 +131,8 @@ See <link_format> for how to present the link.
 
 type Equipment = 'bodyweight' | 'home' | 'fullgym' | 'custom';
 type Goal = 'muscle' | 'weight' | 'endurance' | 'general';
-type TrainingType = 'strength' | 'hiit' | 'yoga' | 'mixed';
-type Tracker = 'whoop' | 'apple' | 'garmin' | 'other' | 'none';
+type TrainingType = 'strength' | 'hiit' | 'yoga' | 'mixed' | 'calisthenics' | 'cardio' | 'pilates';
+type Tracker = 'whoop' | 'apple' | 'garmin' | 'oura' | 'other' | 'none';
 
 const EQUIPMENT_MAP: Record<Equipment, string> = {
   bodyweight: 'Bodyweight only (no equipment)',
@@ -153,12 +153,16 @@ const TRAINING_MAP: Record<TrainingType, string> = {
   hiit: 'HIIT and cardio workouts',
   yoga: 'Yoga and mobility work',
   mixed: 'Mixed variety training',
+  calisthenics: 'Calisthenics and bodyweight exercises',
+  cardio: 'Cardio and endurance training',
+  pilates: 'Pilates and core work',
 };
 
 const TRACKER_MAP: Record<Tracker, string> = {
   whoop: 'WHOOP',
   apple: 'Apple Watch',
   garmin: 'Garmin',
+  oura: 'Oura Ring',
   other: 'Fitness tracker',
   none: '',
 };

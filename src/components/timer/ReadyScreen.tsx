@@ -1,7 +1,9 @@
 'use client';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { extractSmartEquipment } from '@/lib';
 import type { Workout } from '@/types';
 
 interface ReadyScreenTranslations {
@@ -39,14 +41,30 @@ function cleanReps(reps: string): string {
 }
 
 export function ReadyScreen({ workout, totalDuration, onStart, translations: t }: ReadyScreenProps) {
+  const equipment = extractSmartEquipment(workout.exercises);
+
   return (
     <div className="min-h-dvh bg-background flex flex-col items-center justify-center p-6 safe-area-inset text-foreground">
       <h1 className="text-2xl font-bold mb-2">{workout.name}</h1>
-      <p className="text-muted-foreground mb-4">
+      <p className="text-muted-foreground mb-2">
         {workout.rounds} {t.rounds} • ~{totalDuration} {t.min}
         {workout.cooldown && ` • + ${t.cooldown.toLowerCase()}`}
       </p>
-      <Card className="mb-6 w-full max-w-md">
+      {equipment.length > 0 && (
+        <div className="flex flex-wrap gap-2 justify-center mb-4">
+          {equipment.map((item, i) => (
+            <Badge key={item.weight || item.equipment || i} variant="secondary" className="text-sm px-3 py-1">
+              {item.weight
+                ? item.equipment
+                  ? `${item.weight} ${item.equipment}${item.quantity && item.quantity > 1 ? ` ×${item.quantity}` : ''}`
+                  : item.quantity && item.quantity > 1 ? `${item.weight} ×${item.quantity}` : item.weight
+                : item.equipment
+              }
+            </Badge>
+          ))}
+        </div>
+      )}
+      <Card className={`mb-6 w-full max-w-md ${equipment.length === 0 ? 'mt-2' : ''}`}>
         <CardContent className="pt-6">
           {workout.exercises.map((ex, i) => {
             const videoUrl = ex.video || `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name)}`;
@@ -58,8 +76,9 @@ export function ReadyScreen({ workout, totalDuration, onStart, translations: t }
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 hover:opacity-70 transition-opacity group"
                 >
-                  <YouTubeIcon className="w-4 h-4 opacity-50 group-hover:opacity-70" />
-                  <span className="underline decoration-foreground/30 underline-offset-2">{truncateName(ex.name)}</span>
+                  <YouTubeIcon className="w-4 h-4 opacity-50 group-hover:opacity-70 flex-shrink-0" />
+                  <span className="underline decoration-foreground/30 underline-offset-2 md:hidden">{truncateName(ex.name)}</span>
+                  <span className="underline decoration-foreground/30 underline-offset-2 hidden md:inline">{ex.name}</span>
                 </a>
                 <span className="text-muted-foreground">
                   {ex.weight && ex.weight !== '—' && `${truncateWeight(ex.weight)} • `}{cleanReps(ex.reps)}

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import Image from 'next/image';
 import { Check, Gem } from 'lucide-react';
 import { Card, CardContent, Button, WavyUnderline } from '@/components/ui';
 import { useLanguage } from '@/i18n';
@@ -25,15 +26,14 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
 export function Pricing({ onStart }: PricingProps) {
   const { t } = useLanguage();
 
-  // Calculate pricing on client only to avoid hydration mismatch
-  const [pricing, setPricing] = useState<PricingInfo | null>(null);
+  // Calculate pricing on client only (lazy initializer for SSR safety)
+  const [pricing] = useState<PricingInfo | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return getPricingInfo();
+  });
 
-  useEffect(() => {
-    setPricing(getPricingInfo());
-  }, []);
-
-  // Use a far-future date initially to prevent countdown from showing during SSR
-  const countdownDate = pricing?.nextIncreaseDate ?? new Date(Date.now() + 86400000);
+  // Use pricing date or a far-future fallback (avoids Date.now() during render)
+  const countdownDate = pricing?.nextIncreaseDate ?? new Date('2099-01-01');
   const countdown = useCountdown(countdownDate);
 
   // Don't show countdown until pricing is loaded (prevents hydration mismatch)
@@ -59,9 +59,11 @@ export function Pricing({ onStart }: PricingProps) {
                 </span>
               </div>
               {/* Curved arrow */}
-              <img
+              <Image
                 src="/misc/arrow.png"
                 alt=""
+                width={40}
+                height={40}
                 className="w-10 h-10 absolute top-10 left-19 md:top-8 md:left-8 opacity-70"
               />
             </div>

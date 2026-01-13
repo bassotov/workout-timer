@@ -44,19 +44,18 @@ export function ExerciseInfo({
       <div className="text-center">
         {/* Prominent rest message */}
         <h1 className="text-5xl font-bold mb-8">
-          {translations.restGetReady || 'Rest. Get ready!'}
+          {translations.restGetReady || 'Rest. Next:'}
         </h1>
 
-        {/* Muted next exercise info */}
-        <div className="opacity-40">
-          <p className="text-lg mb-2">{translations.next}</p>
+        {/* Next exercise info */}
+        <div className="opacity-75">
           <a
             href={videoUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:opacity-80 transition-opacity"
           >
-            <span className="text-3xl font-semibold underline decoration-white/30 underline-offset-4">
+            <span className="text-4xl font-semibold underline decoration-white/30 underline-offset-4">
               <YouTubeIcon className="inline-block w-6 h-6 opacity-60 mr-1.5" style={{ verticalAlign: 'baseline', marginBottom: '-0.1em' }} />
               {exercise.name}
             </span>

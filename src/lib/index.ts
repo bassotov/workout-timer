@@ -63,3 +63,6 @@ export { downloadOrShareFile } from './share';
 
 // Pricing utilities
 export { getPricingInfo, formatPrice, type PricingInfo } from './pricing';
+
+// Workout utilities
+export { extractUniqueWeights, extractSmartEquipment, type EquipmentItem } from './workout-utils';

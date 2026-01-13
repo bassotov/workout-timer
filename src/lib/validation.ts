@@ -56,7 +56,9 @@ export function isValidWorkout(data: unknown): data is Workout {
   }
   if (
     workout.tracker !== undefined &&
-    !['whoop', 'apple', 'garmin', 'none'].includes(workout.tracker as string)
+    !['whoop', 'apple', 'garmin', 'oura', 'other', 'none'].includes(
+      (workout.tracker as string).toLowerCase()
+    )
   ) {
     return false;
   }

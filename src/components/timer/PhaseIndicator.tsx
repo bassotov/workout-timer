@@ -12,6 +12,7 @@ interface Translations {
 interface PhaseIndicatorProps {
   phase: TimerPhase;
   translations: Translations;
+  compactMode?: boolean;
 }
 
 const PHASE_EMOJIS: Record<string, string> = {
@@ -40,7 +41,7 @@ const phaseToTranslationKey: Record<string, keyof Translations | null> = {
  * Displays the current phase name with emoji.
  * Shows GET READY, WORK, REST, COOLDOWN, or COMPLETE with contextual emoji.
  */
-export function PhaseIndicator({ phase, translations }: PhaseIndicatorProps) {
+export function PhaseIndicator({ phase, translations, compactMode = false }: PhaseIndicatorProps) {
   const translationKey = phaseToTranslationKey[phase];
 
   if (!translationKey) {
@@ -53,7 +54,9 @@ export function PhaseIndicator({ phase, translations }: PhaseIndicatorProps) {
   return (
     <div className="flex items-center gap-2 text-white">
       <span className="text-2xl">{emoji}</span>
-      <span className="text-xl font-bold tracking-wide">{phaseLabel}</span>
+      {!compactMode && (
+        <span className="text-xl font-bold tracking-wide">{phaseLabel}</span>
+      )}
     </div>
   );
 }

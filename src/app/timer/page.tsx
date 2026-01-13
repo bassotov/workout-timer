@@ -84,7 +84,7 @@ function TimerContent() {
   // Show demo screen if no workout URL provided
   if (!workout) return <DemoScreen onLoadDemo={() => setDemoWorkout(getDemoWorkout(langParam || detectBrowserLanguage()))} lang={langParam || undefined} />;
 
-  const trackerTranslations = { trackerTitle: t.tracker.title, trackerReady: t.tracker.ready, trackerWhoop: t.tracker.whoop, trackerApple: t.tracker.apple, trackerGarmin: t.tracker.garmin, trackerCustom: t.tracker.custom, reset: t.controls.reset };
+  const trackerTranslations = { trackerTitle: t.tracker.title, trackerReady: t.tracker.ready, trackerWhoop: t.tracker.whoop, trackerApple: t.tracker.apple, trackerGarmin: t.tracker.garmin, trackerOura: t.tracker.oura, trackerCustom: t.tracker.custom, reset: t.controls.reset };
 
   if (timer.state.phase === 'complete') {
     return <CompletionScreen workoutName={workout.name} onStartAgain={timer.actions.reset} onNewWorkout={() => { setDemoWorkout(null); timer.actions.reset(); }} translations={{ greatWork: t.workout.greatWork, workoutComplete: t.workout.workoutComplete, startAgain: t.controls.startAgain, newWorkout: t.controls.newWorkout }} />;
@@ -105,11 +105,12 @@ function TimerContent() {
   const { phase, currentRound, exerciseIndex, cooldownIndex, isPaused, timeLeft } = timer.state;
   const phaseColor = PHASE_COLORS[phase as TimerPhase] || PHASE_COLORS.idle;
   const nextExercise = workout.exercises[exerciseIndex + 1] || null;
+  const compactPhaseIndicator = workout.rounds > 3 || workout.exercises.length > 5;
 
   return (
     <main className={`min-h-dvh ${phaseColor} flex flex-col text-white transition-colors duration-500`}>
       <div className="flex justify-between items-center p-4 safe-top bg-black/20">
-        <PhaseIndicator phase={phase} translations={t.timer} />
+        <PhaseIndicator phase={phase} translations={t.timer} compactMode={compactPhaseIndicator} />
         <div className="flex items-center gap-4">
           <RoundProgress currentRound={currentRound} totalRounds={workout.rounds} />
           <div className="w-px h-6 bg-white/30" />

@@ -53,6 +53,9 @@ function normalizeWorkout(data: unknown): unknown {
 
   return {
     ...workout,
+    // Normalize tracker to lowercase (LLMs sometimes generate "WHOOP" instead of "whoop")
+    tracker:
+      typeof workout.tracker === 'string' ? workout.tracker.toLowerCase() : workout.tracker,
     exercises: workout.exercises.map((ex) =>
       typeof ex === 'object' && ex !== null ? normalizeExercise(ex as Record<string, unknown>) : ex
     ),

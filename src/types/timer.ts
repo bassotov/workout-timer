@@ -27,7 +27,7 @@ export interface CooldownStretch {
 
 export type Lang = 'en' | 'ru';
 export type Platform = 'chatgpt' | 'claude' | 'gemini' | 'other';
-export type TrainingType = 'strength' | 'hiit' | 'yoga' | 'mixed';
+export type TrainingType = 'strength' | 'hiit' | 'yoga' | 'mixed' | 'calisthenics' | 'cardio' | 'pilates';
 export type Equipment = 'bodyweight' | 'home' | 'fullgym' | 'custom';
 export type Goal = 'muscle' | 'weight' | 'endurance' | 'general';
-export type Tracker = 'whoop' | 'apple' | 'garmin' | 'other' | 'none';
+export type Tracker = 'whoop' | 'apple' | 'garmin' | 'oura' | 'other' | 'none';
