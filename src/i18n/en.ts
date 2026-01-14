@@ -487,16 +487,8 @@ export const en = {
     nextSteps: 'Next steps:',
     askWorkout: 'Ask for a workout!',
     openTimer: 'Open timer',
-    detailedInstructions: 'Detailed instructions',
-    modelTip: 'Pro tip',
-    modelRecommendations: {
-      chatgpt: 'GPT-5.2 works well. If you experience encoding issues, try the thinking or pro model.',
-      claude: 'Sonnet or Opus recommended. Projects feature works best for persistent context.',
-      gemini: 'Select the thinking model for more reliable link generation.',
-      grok: 'Grok is fast but sloppy. Use "Thinking" model for more stable links.',
-      perplexity: 'Research mode returns better results than Search mode.',
-      other: 'Use the most capable model available. Thinking models produce better formatted links.',
-    },
+    installGuide: 'Open install guide',
+    contactHelp: 'Need help? Contact',
     platformSteps: {
       chatgpt: ['Open chatgpt.com and sign in', 'Create a new Project', 'Upload file to Project Knowledge', 'Add instructions to ALWAYS follow instructions in the file'],
       claude: ['Open claude.ai and sign in', 'Open "Projects"', 'Create new project', 'Add instruction "ALWAYS follow the instructions in the file" and drag your file to "Files"'],

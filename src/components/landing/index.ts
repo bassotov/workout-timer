@@ -5,7 +5,6 @@ export { FinalCTA } from './FinalCTA';
 export { ForWhom } from './ForWhom';
 export { Hero } from './Hero';
 export { HowItWorks } from './HowItWorks';
-export { ModelRecommendations } from './ModelRecommendations';
 export { PaymentSummary } from './PaymentSummary';
 export { PersonalDetailsForm } from './PersonalDetailsForm';
 export { PollProgress } from './PollProgress';

@@ -6,7 +6,6 @@ import Image from 'next/image';
 import confetti from 'canvas-confetti';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ModelRecommendations } from '@/components/landing';
 import { useLanguage } from '@/i18n';
 import { generateInstructions } from '@/lib/instruction-generator';
 import { downloadOrShareFile, setStoredValue, STORAGE_KEYS } from '@/lib';
@@ -146,36 +145,41 @@ export function SuccessContent({ answers, verified, onStartPoll }: SuccessConten
       <div className="w-full max-w-md text-center">
         <div className="text-6xl mb-4">🎉</div>
         <h2 className="text-2xl font-bold mb-4">{t.success.allSet}</h2>
-        <p className="text-muted-foreground mb-8">
-          {t.success.downloadReady}
-        </p>
-        <Button onClick={downloadInstructions} className="w-full text-lg py-6 h-auto mb-4">
-          📥 {t.success.downloadFile}
-        </Button>
         {answers.dataConsent === 'discard' && (
-          <div className="mb-4 p-3 bg-amber-500/15 border border-amber-500/30 rounded-lg text-sm">
+          <div className="mb-6 p-3 bg-amber-500/15 border border-amber-500/30 rounded-lg text-sm">
             <p className="text-amber-600 dark:text-amber-400 font-medium">
               ⚠️ {t.success.discardWarning}
             </p>
           </div>
         )}
-        <ModelRecommendations platform={platform as 'chatgpt' | 'claude' | 'gemini' | 'other'} />
-        <Card className="text-left">
-          <CardHeader>
+        <Button onClick={downloadInstructions} className="w-full text-lg py-6 h-auto mb-3">
+          📥 {t.success.downloadFile}
+        </Button>
+        <Button variant="secondary" asChild className="w-full text-lg py-6 h-auto mb-6">
+          <Link href="/getting-started">
+            {t.success.installGuide}
+          </Link>
+        </Button>
+        <Card className="text-left mb-6">
+          <CardHeader className="-mb-5">
             <CardTitle className="text-base">{t.success.nextSteps}</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0">
             <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside">
               {steps.map((step, i) => <li key={i}>{step}</li>)}
               <li>{t.success.askWorkout}</li>
             </ol>
           </CardContent>
         </Card>
-        <Button variant="secondary" asChild className="w-full mt-4">
-          <Link href="/getting-started">
-            {t.success.detailedInstructions}
-          </Link>
-        </Button>
+        <p className="text-sm text-muted-foreground">
+          {t.success.contactHelp}{' '}
+          <a
+            href="mailto:support@workout-timer.app"
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            support@workout-timer.app
+          </a>
+        </p>
       </div>
     </div>
   );
