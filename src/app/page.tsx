@@ -51,7 +51,7 @@ export default function LandingPage() {
       STORAGE_KEYS.PURCHASE_VERIFIED,
       null
     );
-    return !!(verification && Date.now() - verification.timestamp < 60 * 60 * 1000);
+    return !!(verification && Date.now() - verification.timestamp < STORAGE_TTL.DOWNLOAD_GRACE_PERIOD);
   });
 
   useEffect(() => {

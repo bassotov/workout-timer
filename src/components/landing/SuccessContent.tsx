@@ -20,6 +20,12 @@ interface SuccessContentProps {
   onStartPoll?: () => void;
 }
 
+// Check if answers contain personalized data (not just defaults)
+function hasPersonalizedData(answers: PollAnswers): boolean {
+  // At minimum, user should have name and aiPlatform from the poll flow
+  return !!(answers.name && answers.aiPlatform);
+}
+
 export function SuccessContent({ answers, verified, onStartPoll }: SuccessContentProps) {
   const { t } = useLanguage();
   const platform = answers.aiPlatform || 'chatgpt';
@@ -43,6 +49,13 @@ export function SuccessContent({ answers, verified, onStartPoll }: SuccessConten
   }, [verified]);
 
   const downloadInstructions = async () => {
+    // Defensive check: ensure we have personalized data before downloading
+    if (!hasPersonalizedData(answers)) {
+      // Data is missing - redirect to restore flow
+      window.location.href = '/restore';
+      return;
+    }
+
     const content = generateInstructions(answers, TIMER_BASE_URL);
     const safeName = answers.name?.replace(/[<>:"/\\|?*]/g, '_').trim() || 'USER';
     const filename = `${safeName}_WORKOUT_INSTRUCTIONS.md`;
@@ -50,7 +63,7 @@ export function SuccessContent({ answers, verified, onStartPoll }: SuccessConten
     const result = await downloadOrShareFile(content, filename);
 
     // Mark download as completed - poll answers will be cleared after grace period
-    // This allows users to refresh and re-download within 1 hour
+    // This allows users to refresh and re-download within 48 hours
     if (result.success) {
       setStoredValue(STORAGE_KEYS.DOWNLOAD_COMPLETED, { timestamp: Date.now() });
     }
