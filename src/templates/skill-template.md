@@ -60,7 +60,7 @@ tracker: {{TRACKER}}
 - restRound: 60-120 (seconds rest between rounds)
 - cooldown: true/false (include stretching at end)
 - lang: ALWAYS use "{{LANGUAGE_CODE}}"
-- tracker: ALWAYS use "{{TRACKER_CODE}}" (or omit if "none")
+- tracker: ALWAYS use "{{TRACKER_CODE}}" (valid values: "whoop", "apple", "garmin", "oura", "other", "none")
 - exercises[].name: Exercise name
 - exercises[].reps: Rep count "x12" or duration "30 sec"
 - exercises[].duration: Seconds for timer (how long exercise runs)

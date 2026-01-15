@@ -3,7 +3,7 @@
  */
 
 import type { Workout, DecodeResult, UrlCorruptionType } from '@/types';
-import { isValidWorkout } from './validation';
+import { isValidWorkout, normalizeTracker } from './validation';
 
 /**
  * Common field name typos/alternatives that LLMs generate
@@ -53,9 +53,11 @@ function normalizeWorkout(data: unknown): unknown {
 
   return {
     ...workout,
-    // Normalize tracker to lowercase (LLMs sometimes generate "WHOOP" instead of "whoop")
+    // Normalize tracker (handles aliases like "Apple Watch" → "apple")
     tracker:
-      typeof workout.tracker === 'string' ? workout.tracker.toLowerCase() : workout.tracker,
+      typeof workout.tracker === 'string'
+        ? (normalizeTracker(workout.tracker) ?? workout.tracker)
+        : workout.tracker,
     exercises: workout.exercises.map((ex) =>
       typeof ex === 'object' && ex !== null ? normalizeExercise(ex as Record<string, unknown>) : ex
     ),

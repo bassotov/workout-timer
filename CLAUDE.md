@@ -2,6 +2,13 @@
 
 This file provides guidance to Claude Code when working with this repository.
 
+## Important Skills
+
+Always use these skills when working on React/Next.js code or UI:
+
+- **`vercel-react-best-practices`** - React and Next.js performance optimization guidelines from Vercel Engineering. Use when writing, reviewing, or refactoring React/Next.js code.
+- **`web-design-guidelines`** - Review UI code for Web Interface Guidelines compliance. Use when building, reviewing, or auditing UI components.
+
 ## Commands
 
 ```bash

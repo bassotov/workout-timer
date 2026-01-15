@@ -5,6 +5,46 @@
 import type { Workout, Exercise } from '@/types';
 
 /**
+ * Valid tracker values
+ */
+const VALID_TRACKERS = ['whoop', 'apple', 'garmin', 'oura', 'other', 'none'] as const;
+export type TrackerValue = (typeof VALID_TRACKERS)[number];
+
+/**
+ * Mapping of legacy/alternate tracker names to valid values
+ */
+const TRACKER_ALIASES: Record<string, TrackerValue> = {
+  'apple watch': 'apple',
+  'applewatch': 'apple',
+  'garmin watch': 'garmin',
+  'oura ring': 'oura',
+  'whoop band': 'whoop',
+  'whoop strap': 'whoop',
+};
+
+/**
+ * Normalizes a tracker value to a valid TrackerValue
+ * Supports legacy values like "Apple Watch" → "apple"
+ * @param tracker - The tracker value to normalize
+ * @returns Normalized tracker value or null if invalid
+ */
+export function normalizeTracker(tracker: string): TrackerValue | null {
+  const lower = tracker.toLowerCase().trim();
+
+  // Direct match
+  if (VALID_TRACKERS.includes(lower as TrackerValue)) {
+    return lower as TrackerValue;
+  }
+
+  // Check aliases
+  if (lower in TRACKER_ALIASES) {
+    return TRACKER_ALIASES[lower];
+  }
+
+  return null;
+}
+
+/**
  * Validates an email address format
  * @param email - The email address to validate
  * @returns true if the email format is valid
@@ -54,13 +94,9 @@ export function isValidWorkout(data: unknown): data is Workout {
   if (workout.lang !== undefined && workout.lang !== 'en' && workout.lang !== 'ru') {
     return false;
   }
-  if (
-    workout.tracker !== undefined &&
-    !['whoop', 'apple', 'garmin', 'oura', 'other', 'none'].includes(
-      (workout.tracker as string).toLowerCase()
-    )
-  ) {
-    return false;
+  if (workout.tracker !== undefined) {
+    const normalized = normalizeTracker(workout.tracker as string);
+    if (!normalized) return false;
   }
 
   return true;
