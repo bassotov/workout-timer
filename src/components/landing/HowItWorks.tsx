@@ -1,6 +1,5 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { WavyUnderline } from '@/components/ui';
 import { useLanguage } from '@/i18n';
@@ -70,27 +69,6 @@ function StepItem({
 }
 
 function DemoVideo({ className }: { className?: string }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  // Lazy load video - only play when visible in viewport
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play();
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.25 }
-    );
-
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div className={`relative ${className ?? ''}`}>
       <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
@@ -99,11 +77,10 @@ function DemoVideo({ className }: { className?: string }) {
         </span>
       </div>
       <video
-        ref={videoRef}
+        autoPlay
         loop
         muted
         playsInline
-        preload="metadata"
         className="w-full rounded-2xl"
       >
         <source src="/demo/how-it-works.mp4" type="video/mp4" />
