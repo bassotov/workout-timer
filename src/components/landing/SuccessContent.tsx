@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import confetti from 'canvas-confetti';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/i18n';
@@ -30,20 +29,23 @@ export function SuccessContent({ answers, verified, onStartPoll }: SuccessConten
   const platform = answers.aiPlatform || 'chatgpt';
 
   // Confetti burst on mount (only for verified purchases)
+  // Dynamic import to save ~20KB from initial bundle
   useEffect(() => {
     if (!verified) return;
 
-    // Left burst
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { x: 0, y: 0.6 },
-    });
-    // Right burst
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { x: 1, y: 0.6 },
+    import('canvas-confetti').then(({ default: confetti }) => {
+      // Left burst
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: 0, y: 0.6 },
+      });
+      // Right burst
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: 1, y: 0.6 },
+      });
     });
   }, [verified]);
 
