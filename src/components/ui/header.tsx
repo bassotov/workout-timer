@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { LanguageSwitcher } from './language-switcher';
 import { Button } from './button';
@@ -94,8 +95,9 @@ export function Header({
         {/* Logo */}
         <Link
           href="/"
-          className="font-bold text-sm hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2 font-bold text-sm hover:opacity-80 transition-opacity"
         >
+          <Image src="/logo.svg" alt="" width={24} height={24} />
           Workout Timer
         </Link>
 
