@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Workout Timer',
+    title: 'Workout Timer | Transforms your workouts in Claude/ChatGPT/Gemini into timer',
     description: 'Teach your ChatGPT, Claude, Gemini, Perplexity or Grok to create personalised workouts and turn them into interactive timers.',
     images: ['/socials/og-image.png'],
   },
