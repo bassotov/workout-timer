@@ -15,7 +15,7 @@ export function SocialProof() {
   const { t } = useLanguage();
 
   return (
-    <div className="flex items-center justify-center gap-3 mt-8">
+    <div className="flex items-center justify-center lg:justify-start gap-3 mt-8">
       <div className="flex -space-x-5">
         {USER_IMAGES.map((src, i) => (
           <Image
