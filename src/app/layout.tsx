@@ -10,8 +10,24 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Workout Timer | AI-Powered Personal Trainer",
-  description: "Custom workouts in one click. Works with ChatGPT, Claude, Gemini. No subscription. No app to install.",
+  metadataBase: new URL('https://workout-timer.app'),
+  title: "Workout Timer",
+  description: "Teach your ChatGPT, Claude, Gemini, Perplexity or Grok to create personalised workouts and turn them into interactive timers.",
+  openGraph: {
+    title: 'Workout Timer',
+    description: 'Teach your ChatGPT, Claude, Gemini, Perplexity or Grok to create personalised workouts and turn them into interactive timers.',
+    url: 'https://workout-timer.app',
+    siteName: 'Workout Timer',
+    images: [{ url: '/socials/og-image.png', width: 1200, height: 631 }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Workout Timer',
+    description: 'Teach your ChatGPT, Claude, Gemini, Perplexity or Grok to create personalised workouts and turn them into interactive timers.',
+    images: ['/socials/og-image.png'],
+  },
 };
 
 export const viewport: Viewport = {
