@@ -1,4 +1,4 @@
-export type TimerPhase = 'idle' | 'tracker' | 'countdown' | 'work' | 'rest' | 'roundRest' | 'cooldown' | 'complete';
+export type TimerPhase = 'idle' | 'tracker' | 'countdown' | 'work' | 'rest' | 'roundRest' | 'cooldownCountdown' | 'cooldown' | 'complete';
 
 export interface TimerState {
   phase: TimerPhase;

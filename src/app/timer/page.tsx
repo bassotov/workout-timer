@@ -112,7 +112,7 @@ function TimerContent() {
       <div className="flex justify-between items-center p-4 safe-top bg-black/20">
         <PhaseIndicator phase={phase} translations={t.timer} compactMode={compactPhaseIndicator} />
         <div className="flex items-center gap-4">
-          <RoundProgress currentRound={currentRound} totalRounds={workout.rounds} />
+          <RoundProgress currentRound={currentRound} totalRounds={workout.rounds} phase={phase} />
           <div className="w-px h-6 bg-white/30" />
           <ExerciseProgress exerciseIndex={phase === 'cooldown' ? cooldownIndex : exerciseIndex} totalExercises={phase === 'cooldown' ? cooldownStretches.length : workout.exercises.length} />
         </div>
@@ -120,6 +120,7 @@ function TimerContent() {
 
       <div className="flex-1 flex flex-col items-center justify-center p-6">
         {phase === 'countdown' && <h1 className="text-5xl font-bold mb-6 text-center">{t.workout.prepareRound} {currentRound}</h1>}
+        {phase === 'cooldownCountdown' && <h1 className="text-5xl font-bold mb-6 text-center">{t.workout.prepareStretching}</h1>}
         {phase === 'work' && <ExerciseInfo exercise={timer.derived.currentExercise} translations={{ video: t.workout.video, next: t.workout.next }} />}
         {phase === 'rest' && <ExerciseInfo exercise={nextExercise} translations={{ video: t.workout.video, next: t.workout.next, restGetReady: t.workout.restGetReady }} showAsNext showEquipment />}
         {phase === 'roundRest' && (

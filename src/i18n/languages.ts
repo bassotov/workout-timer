@@ -18,8 +18,5 @@ export function isValidLanguage(lang: string): lang is Language {
 }
 
 export function detectBrowserLanguage(): Language {
-  if (typeof navigator === 'undefined') return 'en';
-
-  const browserLang = navigator.language.split('-')[0];
-  return isValidLanguage(browserLang) ? browserLang : 'en';
+  return 'en';
 }

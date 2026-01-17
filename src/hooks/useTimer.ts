@@ -77,7 +77,7 @@ function createReducer(workout: Workout | null) {
             return { ...state, phase: 'roundRest', timeLeft: workout.restRound };
           }
           if (workout.cooldown) {
-            return { ...state, phase: 'cooldown', cooldownIndex: 0, timeLeft: cooldownStretches[0].duration };
+            return { ...state, phase: 'cooldownCountdown', timeLeft: COUNTDOWN_DURATION };
           }
           return { ...state, phase: 'complete', isPaused: true };
         }
@@ -97,6 +97,11 @@ function createReducer(workout: Workout | null) {
             exerciseIndex: 0,
             timeLeft: exercises[0].duration,
           };
+        }
+
+        // cooldownCountdown -> cooldown
+        if (phase === 'cooldownCountdown') {
+          return { ...state, phase: 'cooldown', cooldownIndex: 0, timeLeft: cooldownStretches[0].duration };
         }
 
         // cooldown -> next stretch or complete

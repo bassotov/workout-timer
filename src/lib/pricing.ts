@@ -9,6 +9,7 @@ const LAUNCH_DATE = new Date('2026-01-12T00:00:00Z');
 
 // Pricing constants
 const BASE_PRICE = 10; // Starting price in dollars
+const ORIGINAL_PRICE = 25; // Crossed-out "compare at" price (always static)
 const PRICE_INCREMENT = 2; // Increase per period in dollars
 const PERIOD_DAYS = 14; // Days between price increases
 const PERIOD_MS = PERIOD_DAYS * 24 * 60 * 60 * 1000;
@@ -31,7 +32,7 @@ export function getPricingInfo(now: Date = new Date()): PricingInfo {
 
   // Current price = base + (periods * increment)
   const currentPrice = BASE_PRICE + periodsElapsed * PRICE_INCREMENT;
-  const nextPrice = currentPrice + PRICE_INCREMENT;
+  const nextPrice = ORIGINAL_PRICE; // Static "compare at" price
 
   // Next increase date = launch + (periods + 1) * period duration
   const nextIncreaseDate = new Date(LAUNCH_DATE.getTime() + (periodsElapsed + 1) * PERIOD_MS);

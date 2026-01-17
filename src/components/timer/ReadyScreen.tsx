@@ -45,7 +45,7 @@ export function ReadyScreen({ workout, totalDuration, onStart, translations: t }
 
   return (
     <div className="min-h-dvh bg-background flex flex-col items-center justify-center p-6 safe-area-inset text-foreground">
-      <h1 className="text-2xl font-bold mb-2">{workout.name}</h1>
+      <h1 className="text-2xl font-bold mb-2 text-center">{workout.name}</h1>
       <p className="text-muted-foreground mb-2">
         {workout.rounds} {t.rounds} • ~{totalDuration} {t.min}
         {workout.cooldown && ` • + ${t.cooldown.toLowerCase()}`}

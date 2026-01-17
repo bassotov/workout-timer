@@ -7,6 +7,7 @@ export const PHASE_COLORS: Record<TimerPhase, string> = {
   work: 'bg-emerald-600',
   rest: 'bg-amber-500',
   roundRest: 'bg-blue-600',
+  cooldownCountdown: 'bg-indigo-500',
   cooldown: 'bg-indigo-500',
   complete: 'bg-purple-600',
 };
