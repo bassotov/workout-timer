@@ -11,10 +11,10 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://workout-timer.app'),
-  title: "Workout Timer",
+  title: "Workout Timer | Transforms your workouts in Claude/ChatGPT/Gemini into timer",
   description: "Teach your ChatGPT, Claude, Gemini, Perplexity or Grok to create personalised workouts and turn them into interactive timers.",
   openGraph: {
-    title: 'Workout Timer',
+    title: 'Workout Timer | Transforms your workouts in Claude/ChatGPT/Gemini into timer',
     description: 'Teach your ChatGPT, Claude, Gemini, Perplexity or Grok to create personalised workouts and turn them into interactive timers.',
     url: 'https://workout-timer.app',
     siteName: 'Workout Timer',
