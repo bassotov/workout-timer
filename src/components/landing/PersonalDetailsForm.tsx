@@ -107,8 +107,8 @@ export function PersonalDetailsForm({
 
   return (
     <div className="min-h-dvh bg-background text-foreground">
-      {/* Scrollable content area - with padding at bottom for fixed footer */}
-      <div className="px-6 pt-14 pb-60 max-w-md mx-auto">
+      {/* Scrollable content area - extra padding on desktop for fixed footer */}
+      <div className="px-6 pt-14 pb-6 md:pb-65 max-w-md mx-auto">
         <BackButton onClick={onBack} className="mb-6" />
         <h2 className="text-2xl font-bold mb-2">{t.details.title}</h2>
         <p className="text-muted-foreground mb-4">{t.details.subtitle}</p>
@@ -281,16 +281,30 @@ export function PersonalDetailsForm({
           </div>
           )}
         </div>
-      </div>
 
-      {/* Fixed footer - always visible at bottom */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border px-6 safe-bottom">
-        <div className="max-w-md mx-auto pt-4">
+        {/* Data consent and continue - inline on mobile, fixed on desktop */}
+        <div className="mt-6 pt-6 border-t border-border md:hidden">
           <DataConsentSelector
             value={answers.dataConsent}
             onChange={(value) => setAnswer('dataConsent', value)}
           />
+          <Button
+            onClick={onContinue}
+            disabled={!isValid}
+            className="w-full mt-4 py-6 text-lg"
+          >
+            {t.poll.continue}
+          </Button>
+        </div>
+      </div>
 
+      {/* Fixed footer on desktop only */}
+      <div className="hidden md:block fixed bottom-0 left-0 right-0 bg-background pb-8 px-6 py-4">
+        <div className="max-w-md mx-auto border-t border-border pt-4">
+          <DataConsentSelector
+            value={answers.dataConsent}
+            onChange={(value) => setAnswer('dataConsent', value)}
+          />
           <Button
             onClick={onContinue}
             disabled={!isValid}
