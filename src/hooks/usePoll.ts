@@ -41,15 +41,6 @@ const DEFAULT_ANSWERS: PollAnswers = {
   dataConsent: undefined,
 };
 
-// Initialize answers from localStorage (called lazily)
-function getInitialAnswers(): PollAnswers {
-  if (typeof window === 'undefined') return DEFAULT_ANSWERS;
-  const saved = getStoredValueWithTTL<PollAnswers>(STORAGE_KEYS.POLL_ANSWERS, DEFAULT_ANSWERS);
-  if (!saved) return DEFAULT_ANSWERS;
-
-  return { ...DEFAULT_ANSWERS, ...saved };
-}
-
 // Find the first valid step (one that passes conditional check)
 function getFirstValidStep(answers: PollAnswers): number {
   for (let i = 0; i < POLL_STEPS.length; i++) {
@@ -63,8 +54,21 @@ function getFirstValidStep(answers: PollAnswers): number {
 
 export function usePoll() {
   const [page, setPage] = useState<Page>('landing');
-  const [answers, setAnswers] = useState<PollAnswers>(getInitialAnswers);
-  const [pollStep, setPollStep] = useState(() => getFirstValidStep(getInitialAnswers()));
+  // Initialize with defaults for SSR consistency - hydrate from localStorage in useEffect
+  const [answers, setAnswers] = useState<PollAnswers>(DEFAULT_ANSWERS);
+  const [pollStep, setPollStep] = useState(0);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Hydrate state from localStorage after mount (fixes SSR/hydration mismatch)
+  useEffect(() => {
+    const saved = getStoredValueWithTTL<PollAnswers>(STORAGE_KEYS.POLL_ANSWERS, DEFAULT_ANSWERS);
+    if (saved) {
+      const hydrated = { ...DEFAULT_ANSWERS, ...saved };
+      setAnswers(hydrated);
+      setPollStep(getFirstValidStep(hydrated));
+    }
+    setIsHydrated(true);
+  }, []);
 
   // Persist answers to localStorage whenever they change
   useEffect(() => {
@@ -131,6 +135,7 @@ export function usePoll() {
     pollStep,
     answers,
     isFirstStep,
+    isHydrated,
     goToLanding,
     goToPoll,
     goToDetails,

@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, type KeyboardEvent } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowDown01Icon, SparklesIcon } from '@hugeicons/core-free-icons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -79,6 +81,7 @@ export function PersonalDetailsForm({
   const { t } = useLanguage();
   const [weightUnit, setWeightUnit] = useState<'kg' | 'lbs'>('kg');
   const [heightUnit, setHeightUnit] = useState<'cm' | 'in'>('cm');
+  const [showOptionalFields, setShowOptionalFields] = useState(false);
 
   const isValid = answers.name.trim().length > 0 && isValidEmail(answers.email) && answers.dataConsent !== undefined;
 
@@ -103,13 +106,14 @@ export function PersonalDetailsForm({
   const heightValue = answers.height?.replace(/[^\d.]/g, '') || '';
 
   return (
-    <div className="min-h-dvh bg-background text-foreground flex flex-col items-center p-6">
-      <div className="flex-1 flex flex-col max-w-md w-full pt-8">
+    <div className="min-h-dvh bg-background text-foreground">
+      {/* Scrollable content area - with padding at bottom for fixed footer */}
+      <div className="px-6 pt-14 pb-60 max-w-md mx-auto">
         <BackButton onClick={onBack} className="mb-6" />
         <h2 className="text-2xl font-bold mb-2">{t.details.title}</h2>
         <p className="text-muted-foreground mb-4">{t.details.subtitle}</p>
 
-        <div className="space-y-5 flex-1">
+        <div className="space-y-5">
           {/* Required: Name */}
           <div>
             <Label htmlFor="name" className="text-sm font-medium">
@@ -138,18 +142,32 @@ export function PersonalDetailsForm({
             </div>
           </div>
 
-          {/* Divider - Personalize experience (optional) */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border" />
+          {/* Expandable personalization section */}
+          <button
+            type="button"
+            onClick={() => setShowOptionalFields(!showOptionalFields)}
+            className="w-full flex items-center gap-3 py-3 px-4 rounded-lg border border-border hover:border-primary/30 transition-colors"
+          >
+            <HugeiconsIcon
+              icon={SparklesIcon}
+              size={24}
+              className="shrink-0 text-primary"
+            />
+            <div className="text-left flex-1">
+              <p className="font-medium text-sm text-primary">{t.details.personalizeSection.title}</p>
+              <p className="text-xs text-muted-foreground">{t.details.personalizeSection.subtitle}</p>
             </div>
-            <div className="relative flex justify-center">
-              <span className="bg-background px-3 text-xs text-muted-foreground">
-                {t.details.personalizeOptional}
-              </span>
-            </div>
-          </div>
+            <HugeiconsIcon
+              icon={ArrowDown01Icon}
+              size={20}
+              className={`shrink-0 text-muted-foreground transition-transform ${
+                showOptionalFields ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
 
+          {showOptionalFields && (
+          <div className="space-y-5">
           {/* Gender + Birth Year row */}
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -260,23 +278,27 @@ export function PersonalDetailsForm({
               className="mt-1 min-h-[80px]"
             />
           </div>
+          </div>
+          )}
         </div>
+      </div>
 
-        {/* Data consent - required, right above continue */}
-        <div className="mt-6">
+      {/* Fixed footer - always visible at bottom */}
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border px-6 safe-bottom">
+        <div className="max-w-md mx-auto pt-4">
           <DataConsentSelector
             value={answers.dataConsent}
             onChange={(value) => setAnswer('dataConsent', value)}
           />
-        </div>
 
-        <Button
-          onClick={onContinue}
-          disabled={!isValid}
-          className="w-full mt-4 py-6 text-lg"
-        >
-          {t.poll.continue}
-        </Button>
+          <Button
+            onClick={onContinue}
+            disabled={!isValid}
+            className="w-full mt-4 py-6 text-lg"
+          >
+            {t.poll.continue}
+          </Button>
+        </div>
       </div>
     </div>
   );

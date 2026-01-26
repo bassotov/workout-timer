@@ -29,8 +29,6 @@ const BENEFIT_ICONS: LucideIcon[] = [
 export function Benefits() {
   const { t } = useLanguage();
   const items = t.landing.benefits.items;
-  const leftItems = items.slice(0, 4);
-  const rightItems = items.slice(4, 8);
 
   return (
     <section id="benefits" className="max-w-6xl mx-auto px-6 py-16">
@@ -55,10 +53,10 @@ export function Benefits() {
         </div>
       </div>
 
-      {/* Desktop: 3 columns - left benefits, video, right benefits */}
-      <div className="hidden lg:grid lg:grid-cols-[1fr_1.5fr_1fr] gap-6 items-center">
-        <div className="grid grid-rows-4 gap-3">
-          {leftItems.map((item, i) => (
+      {/* Desktop: 2 columns - all benefits on left, sticky video on right */}
+      <div className="hidden lg:grid lg:grid-cols-[1fr_minmax(300px,400px)] gap-8 items-start">
+        <div className="grid grid-cols-2 gap-4">
+          {items.map((item, i) => (
             <BenefitCard
               key={i}
               icon={BENEFIT_ICONS[i]}
@@ -68,19 +66,8 @@ export function Benefits() {
           ))}
         </div>
 
-        <div className="flex justify-center px-4">
+        <div className="sticky top-24">
           <DemoVideo className="w-full" />
-        </div>
-
-        <div className="grid grid-rows-4 gap-3">
-          {rightItems.map((item, i) => (
-            <BenefitCard
-              key={i + 4}
-              icon={BENEFIT_ICONS[i + 4]}
-              title={item.title}
-              description={item.description}
-            />
-          ))}
         </div>
       </div>
     </section>
@@ -89,7 +76,7 @@ export function Benefits() {
 
 function DemoVideo({ className }: { className?: string }) {
   return (
-    <div className={`relative ${className ?? ''}`}>
+    <div className={`top-10 relative ${className ?? ''}`}>
       <div className="absolute -top-12 inset-x-0 flex justify-center z-10">
         <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm text-muted-foreground">
           Works in <Image src="/logos/chatgpt.png" alt="ChatGPT" width={16} height={16} className="size-4 mx-1.5 invert" /> ChatGPT

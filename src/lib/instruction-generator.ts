@@ -170,12 +170,12 @@ const TRACKER_MAP: Record<Tracker, string> = {
 type WeightPreference = 'light' | 'moderate' | 'medium' | 'heavy' | 'veryHeavy' | 'unknown';
 
 const WEIGHT_PREFERENCE_MAP: Record<WeightPreference, string> = {
-  light: '2kg/4lb for bicep curls (start light, can increase)',
-  moderate: '7kg/15lb for bicep curls',
-  medium: '12kg/25lb for bicep curls',
-  heavy: '15kg/35lb for bicep curls',
-  veryHeavy: '20kg+/45lb+ for bicep curls (experienced lifter)',
-  unknown: 'unknown (start with lighter weights, user can request heavier)',
+  light: 'Beginner (under 5 push-ups) - start with lighter weights, longer rest',
+  moderate: 'Novice (5-10 push-ups) - moderate weights',
+  medium: 'Intermediate (10-20 push-ups) - standard weights',
+  heavy: 'Advanced (20-30 push-ups) - can handle heavier weights',
+  veryHeavy: 'Very fit (30+ push-ups) - experienced, heavier weights OK',
+  unknown: 'unknown fitness level (start light, user can request heavier)',
 };
 
 function interpolate(template: string, variables: Record<string, string>): string {
@@ -294,16 +294,17 @@ export function generateInstructions(answers: PollAnswers, timerUrl: string): st
   // Weight scaling guide (only if user has weight preference)
   const weightScalingGuide = hasWeightPref && weightPref !== 'unknown'
     ? `
-WEIGHT SCALING GUIDE (based on user's bicep curl preference):
-- Bicep curls: use user's preference as baseline
-- Goblet squats / lunges: ~1.5x bicep weight
-- Rows: ~1.2x bicep weight
-- Shoulder press: ~0.8x bicep weight
-- Lateral raises: ~0.5x bicep weight`
+INTENSITY GUIDE (based on user's push-up capacity):
+- Use push-up count to gauge overall fitness level
+- Beginner (under 5): lighter weights, more rest, simpler movements
+- Novice (5-10): moderate intensity, standard rest periods
+- Intermediate (10-20): normal workout intensity
+- Advanced (20-30): can handle challenging workouts, shorter rest
+- Very fit (30+): high intensity OK, complex movements, heavier weights`
     : hasWeightPref && weightPref === 'unknown'
     ? `
-WEIGHT GUIDANCE: User is unsure of their weights.
-Start with LIGHTER weights and note "increase if too easy" in workout.`
+FITNESS GUIDANCE: User is unsure of their fitness level.
+Start with LIGHTER intensity and note "increase if too easy" in workout.`
     : '';
 
   const platform = answers.aiPlatform || 'chatgpt';

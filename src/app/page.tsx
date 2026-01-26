@@ -33,6 +33,7 @@ export default function LandingPage() {
     pollStep,
     answers,
     isFirstStep,
+    isHydrated,
     goToLanding,
     goToPoll,
     goToDetails,
@@ -44,15 +45,19 @@ export default function LandingPage() {
     currentStepConfig,
   } = usePoll();
 
-  // Compute initial purchase verification state (lazy initializer for SSR safety)
-  const [isPurchaseVerified] = useState(() => {
-    if (typeof window === 'undefined') return false;
+  // Purchase verification state - hydrate from localStorage after mount
+  const [isPurchaseVerified, setIsPurchaseVerified] = useState(false);
+
+  // Hydrate purchase verification from localStorage (fixes SSR mismatch)
+  useEffect(() => {
     const verification = getStoredValue<{ timestamp: number; checkoutId: string } | null>(
       STORAGE_KEYS.PURCHASE_VERIFIED,
       null
     );
-    return !!(verification && Date.now() - verification.timestamp < STORAGE_TTL.DOWNLOAD_GRACE_PERIOD);
-  });
+    setIsPurchaseVerified(
+      !!(verification && Date.now() - verification.timestamp < STORAGE_TTL.DOWNLOAD_GRACE_PERIOD)
+    );
+  }, []);
 
   useEffect(() => {
     validateEnv();
@@ -165,8 +170,15 @@ export default function LandingPage() {
     }, 200);
   };
 
-  // Success page
+  // Success page - wait for hydration to ensure localStorage data is loaded
   if (page === 'success') {
+    if (!isHydrated) {
+      return (
+        <main className="min-h-dvh bg-background flex items-center justify-center">
+          <div className="animate-pulse text-muted-foreground">Loading...</div>
+        </main>
+      );
+    }
     return (
       <main className="min-h-dvh bg-background">
         <SuccessContent answers={answers} verified={isPurchaseVerified} onStartPoll={goToPoll} />

@@ -39,20 +39,14 @@ export function DataConsentSelector({ value, onChange }: DataConsentSelectorProp
   ];
 
   const handleClick = (optionId: DataConsentChoice) => {
-    // Toggle expand/collapse
-    if (expandedId === optionId) {
-      // If already expanded, select it and collapse
-      onChange(optionId);
+    if (value === optionId && expandedId === optionId) {
+      // Already selected and expanded - collapse it
       setExpandedId(null);
     } else {
-      // Expand this one (and collapse others)
+      // Select and expand
+      onChange(optionId);
       setExpandedId(optionId);
     }
-  };
-
-  const handleSelect = (optionId: DataConsentChoice) => {
-    onChange(optionId);
-    setExpandedId(null);
   };
 
   return (
@@ -117,17 +111,6 @@ export function DataConsentSelector({ value, onChange }: DataConsentSelectorProp
                 <p className={`text-xs mt-2 ${option.subtextColor}`}>
                   {option.subtext}
                 </p>
-                <button
-                  type="button"
-                  onClick={() => handleSelect(option.id)}
-                  className={`mt-3 w-full py-2 rounded-md text-sm font-medium transition-colors ${
-                    option.id === 'save'
-                      ? 'bg-emerald-500 text-white hover:bg-emerald-600'
-                      : 'bg-amber-500 text-white hover:bg-amber-600'
-                  }`}
-                >
-                  {t.details.dataConsent.selectButton}
-                </button>
               </div>
             )}
           </div>

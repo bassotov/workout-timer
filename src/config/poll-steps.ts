@@ -43,14 +43,14 @@ export const POLL_STEPS: PollStep[] = [
   {
     id: 'weightPreference',
     options: [
-      { id: 'light' },      // 2kg / 4lb
-      { id: 'moderate' },   // 7kg / 15lb
-      { id: 'medium' },     // 12kg / 25lb
-      { id: 'heavy' },      // 15kg / 35lb
-      { id: 'veryHeavy' },  // 20kg+ / 45lb+
+      { id: 'light' },      // Under 5 push-ups
+      { id: 'moderate' },   // 5-10 push-ups
+      { id: 'medium' },     // 10-20 push-ups
+      { id: 'heavy' },      // 20-30 push-ups
+      { id: 'veryHeavy' },  // 30+ push-ups
       { id: 'unknown' },    // I don't know
     ],
-    conditional: (answers) => ['home', 'localgym', 'fullgym'].includes(answers.equipment),
+    // Show for all users - helps calibrate workout intensity
   },
   {
     id: 'goals',

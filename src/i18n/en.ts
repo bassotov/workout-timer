@@ -229,15 +229,15 @@ export const en = {
         },
       },
       weightPreference: {
-        title: 'What weight for a bicep curl?',
-        subtitle: "It'll help calibrate weights for your workouts",
+        title: 'How many push-ups can you do?',
+        subtitle: "It'll help calibrate workout intensity",
         options: {
-          light: '2 kg.4 lb',
-          moderate: '7 kg.15 lb',
-          medium: '12 kg.25 lb',
-          heavy: '15 kg.35 lb',
-          veryHeavy: '20+ kg.45+ lb',
-          unknown: "Not sure.I'll figure it out",
+          light: 'Under 5',
+          moderate: '5-10',
+          medium: '10-20',
+          heavy: '20-30',
+          veryHeavy: '30+',
+          unknown: "I don't know",
         },
       },
       goals: {
@@ -277,17 +277,18 @@ export const en = {
   // Landing page translations
   landing: {
     hero: {
-      titlePart1: 'Your',
-      titlePart2: 'workouts',
-      titlePart3: 'could be more than ',
-      titlePart4: 'text',
+      titlePart1: 'Your ',
+      titlePart2: 'workout is text.',
+      titlePart3: '',
+      titlePart4: 'Make it count.',
       subtitle: 'Supercharge your AI chat to create personalised workouts and turn them into interactive timers',
       cta: 'Get Started',
       subtext: 'No login. No subscription. Lifetime.',
       restorePurchase: 'Restore Purchase',
     },
     socialProof: {
-      text: 'users already training',
+      rating: '4.8',
+      text: 'Highly rated by users',
     },
     howItWorks: {
       title: 'How It Works',
@@ -337,11 +338,11 @@ export const en = {
       },
       cta: 'Lock This Price',
       benefits: [
-        'Setup Guide & Support',
+        'Works with any LLM (ChatGPT, Claude, Gemini)',
         'Personalized AI Workouts',
-        'Interactive Workout Timer',
-        'Discounts & Bonuses (coming soon)',
+        'Turn any workout into a timer',
         'Money-Back Guarantee',
+        'Personal support if any issues',
       ],
     },
     testimonials: {
@@ -403,7 +404,7 @@ export const en = {
     finalCTA: {
       title: 'This is your year.',
       subtitle: 'Change the way you gym.',
-      cta: 'Personalise Workouts',
+      cta: 'Make It Count',
     },
   },
 
@@ -413,6 +414,10 @@ export const en = {
     subtitle: 'Tell us a bit about yourself for personalization',
     privacyNotice: "For personalization only. We don't store or process your personal data.",
     personalizeOptional: 'Personalize experience (optional)',
+    personalizeSection: {
+      title: 'Share your personal context',
+      subtitle: 'Recommended for best results',
+    },
     name: 'Name',
     yourName: 'Your name',
     email: 'Email',
@@ -434,14 +439,14 @@ export const en = {
     dataConsent: {
       title: 'What would you like us to do with your data?',
       save: {
-        title: 'Save data (Restore file anytime)',
-        description: 'We store your preferences securely. You can restore your file anytime using your email.',
-        reassurance: 'Only used for file restoration. Never shared or analyzed.',
+        title: 'Save data (Restore purchase anytime)',
+        description: 'We store your preferences securely. You can restore your purchase anytime using your email.',
+        reassurance: 'Only used for purchase restoration. Never shared or analyzed.',
       },
       discard: {
         title: 'Discard data (Secure but no backup)',
         description: "We won't store any personal information. Your data stays completely private.",
-        warning: "If you lose your file, we won't be able to restore it. Make sure to save it somewhere safe.",
+        warning: "If you lose your purchase, we won't be able to restore it. Make sure to save your file somewhere safe.",
       },
       selectButton: 'Select this option',
     },
@@ -453,14 +458,16 @@ export const en = {
     personalizedWorkouts: 'Personalized Workouts',
     interactiveTimer: 'Interactive Workout Timer',
     interactiveTimerDesc: 'Level up your personalized workouts',
-    guidesSupport: 'Guides and Support',
-    guidesDesc: "We'll show you how to supercharge your AI coach",
     andMore: "And that's not all",
     lifetimeFeatures: 'Lifetime access to all new features',
+    installationGuide: 'Installation guide for your AI',
+    customerSupport: 'Customer support if any issues',
     discounts: 'Discounts on other health-tech services',
     lifetimeNoSub: 'Lifetime access. No subscription.',
     checkout: 'Checkout',
+    processing: 'Processing...',
     securePolar: 'Secure payment via Polar',
+    seeDemo: 'See the live demo',
     tags: {
       bodyweight: 'Bodyweight',
       home: 'Essentials',

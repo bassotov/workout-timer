@@ -31,8 +31,8 @@ export function Hero({ onStart }: HeroProps) {
               {t.landing.hero.subtext}
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="inline-flex items-center justify-center lg:justify-start flex-wrap gap-x-3">
+            <h1 className="text-4xl md:text-5xl font-bold mb-10">
+              <span className="inline-flex items-center mb-1.5 justify-center lg:justify-start flex-wrap gap-x-3">
                 <span>{t.landing.hero.titlePart1}</span>
                 <AILogoFlipper />
                 <span className="ml-0.5 md:ml-2">{t.landing.hero.titlePart2}</span>

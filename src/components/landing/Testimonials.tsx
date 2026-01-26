@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import { Quote } from 'lucide-react';
 import { Card, CardContent, WavyUnderline } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 import { TESTIMONIALS } from '@/config';
@@ -15,7 +17,7 @@ export function Testimonials() {
 
     let animationId: number;
     let scrollPos = 0;
-    const scrollSpeed = 0.5; // pixels per frame
+    const scrollSpeed = 1.5; // pixels per frame
 
     const scroll = () => {
       scrollPos += scrollSpeed;
@@ -47,11 +49,30 @@ export function Testimonials() {
         style={{ scrollBehavior: 'auto' }}
       >
         {allTestimonials.map((testimonial, i) => (
-          <Card key={i} className="shrink-0 w-80">
-            <CardContent className="pt-6">
-              <p className="text-sm italic mb-4">&quot;{testimonial.quote}&quot;</p>
-              <p className="text-xs text-muted-foreground">— {testimonial.author}</p>
+          <Card key={i} className="shrink-0 w-80 h-48 relative">
+            <Quote className="absolute top-5 right-5 size-6 text-primary/20" />
+            <CardContent className="p-6 pb-16 h-full flex items-center">
+              <p className="text-sm italic pr-6">&quot;{testimonial.quote}&quot;</p>
             </CardContent>
+            <div className="absolute bottom-5 left-6 right-6 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Image
+                  src={testimonial.image}
+                  alt={testimonial.author}
+                  width={32}
+                  height={32}
+                  className="size-8 rounded-full object-cover"
+                />
+                <p className="text-xs text-muted-foreground">{testimonial.author}</p>
+              </div>
+              <Image
+                src={`/logos/${testimonial.llm}.png`}
+                alt={testimonial.llm}
+                width={32}
+                height={32}
+                className="size-8 opacity-30 brightness-0 invert"
+              />
+            </div>
           </Card>
         ))}
       </div>
