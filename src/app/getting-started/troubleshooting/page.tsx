@@ -88,8 +88,8 @@ export default function TroubleshootingPage() {
             <ul className="space-y-3 ml-5">
               {t.aiInstructions.troubleshooting.block1.tips.map((tip, index) => (
                 <li key={index} className="flex gap-2">
-                  <span>•</span>
-                  <span>
+                  <span className="text-muted-foreground">•</span>
+                  <span className="text-muted-foreground">
                     {highlightKeyPhrases(tip, [
                       'regenerate the link',
                       'перегенерировать ссылку',
@@ -115,8 +115,8 @@ export default function TroubleshootingPage() {
             <ul className="space-y-3 ml-5">
               {t.aiInstructions.troubleshooting.block2.tips.map((tip, index) => (
                 <li key={index} className="flex gap-2">
-                  <span>•</span>
-                  <span>
+                  <span className="text-muted-foreground">•</span>
+                  <span className="text-muted-foreground">
                     {highlightKeyPhrases(tip, [
                       'non-Latin alphabet',
                       'нелатинским алфавитом',

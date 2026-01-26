@@ -151,8 +151,8 @@ export default function GettingStartedPage() {
         <ul className="space-y-2 text-mb mb-8">
           {t.gettingStarted.tips.items.map((tip, i) => (
             <li key={i} className="flex gap-2">
-              <span className="text-primary">•</span>
-              <span>{tip}</span>
+              <span className="text-muted-foreground">•</span>
+              <span className="text-muted-foreground">{tip}</span>
             </li>
           ))}
         </ul>
