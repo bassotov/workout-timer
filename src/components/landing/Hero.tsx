@@ -1,7 +1,8 @@
 'use client';
 
-import Image from 'next/image';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
+import { Volume2, VolumeX, Play } from 'lucide-react';
 import { Button, AILogoFlipper, WavyUnderline } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 import { SocialProof } from './SocialProof';
@@ -12,6 +13,27 @@ interface HeroProps {
 
 export function Hero({ onStart }: HeroProps) {
   const { t } = useLanguage();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
+  const [showMobileVideo, setShowMobileVideo] = useState(false);
+
+  const openMobileVideo = () => {
+    setShowMobileVideo(true);
+    setTimeout(() => { mobileVideoRef.current?.play(); }, 100);
+  };
+
+  const closeMobileVideo = () => {
+    mobileVideoRef.current?.pause();
+    setShowMobileVideo(false);
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !muted;
+      setMuted(!muted);
+    }
+  };
 
   return (
     <div className="relative">
@@ -45,6 +67,17 @@ export function Hero({ onStart }: HeroProps) {
               {t.landing.hero.subtitle}
             </p>
 
+            {/* Mobile: See demo button */}
+            <div className="lg:hidden mb-8">
+              <button
+                onClick={openMobileVideo}
+                className="inline-flex items-center gap-2 text-lg text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Play className="w-5 h-5" />
+                {t.landing.hero.seeDemo}
+              </button>
+            </div>
+
             <Button onClick={onStart} size="lg" className="text-lg px-16 py-6 h-auto">
               {t.landing.hero.cta}
             </Button>
@@ -59,21 +92,70 @@ export function Hero({ onStart }: HeroProps) {
             <SocialProof/>
           </div>
 
-          {/* Right: iPhone mockup */}
+          {/* Right: Demo video (desktop) */}
+          {/* CROPPING GUIDE:
+              - h-[620px] / w-[300px]: visible window size — adjust to match your phone screen
+              - object-[50%_50%]: crop anchor point — move to pan around the video
+                  left/right: decrease/increase first % (e.g. 40% shifts left)
+                  up/down: decrease/increase second % (e.g. 30% shifts up)
+              - scale-[1.0]: zoom level — increase to zoom in (e.g. 1.2 = 120%)
+              - rounded-[44px]: iPhone corner radius
+          */}
           <div className="hidden lg:block relative flex-shrink-0">
-            <div className="relative animate-float">
-              <Image
-                src="/demo/workout-timer-iphone.png"
-                alt="Workout Timer app running on iPhone"
-                width={400}
-                height={800}
-                className="w-auto h-[450px] lg:h-[620px] object-contain drop-shadow-2xl"
-                priority
+            <div
+              className="relative rounded-[52px] overflow-hidden drop-shadow-2xl"
+              style={{ height: 620, width: 300 }}
+            >
+              <video
+                ref={videoRef}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                src="/demo/checkout_demo.mp4"
+                onClick={toggleMute}
+                className="h-full w-full object-cover scale-[1.0] cursor-pointer"
+                style={{ objectPosition: '50% 50%' }}
               />
+              <button
+                onClick={toggleMute}
+                className="absolute bottom-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+                aria-label={muted ? 'Unmute' : 'Mute'}
+              >
+                {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+              </button>
+              <span className="absolute bottom-4 left-4 text-xs text-white/70 bg-black/40 px-2 py-1 rounded">
+                {t.landing.hero.tapToUnmute}
+              </span>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Mobile fullscreen video modal */}
+      {showMobileVideo && (
+        <div
+          className="fixed inset-0 z-50 bg-black flex items-center justify-center"
+          onClick={closeMobileVideo}
+        >
+          <button
+            onClick={closeMobileVideo}
+            className="absolute top-4 right-4 text-white text-2xl font-bold z-10 w-10 h-10 flex items-center justify-center"
+          >
+            ✕
+          </button>
+          <video
+            ref={mobileVideoRef}
+            controls
+            playsInline
+            className="max-h-full max-w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <source src="/demo/checkout_demo.mp4" type="video/mp4" />
+          </video>
+        </div>
+      )}
     </div>
   );
 }

@@ -285,6 +285,8 @@ export const ru: TranslationKeys = {
       cta: 'Начать',
       subtext: 'Без регистрации и СМС',
       restorePurchase: 'Восстановить покупку',
+      seeDemo: 'Смотреть демо',
+      tapToUnmute: 'Нажмите для звука',
     },
     socialProof: {
       rating: '4.8',

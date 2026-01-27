@@ -285,6 +285,8 @@ export const en = {
       cta: 'Get Started',
       subtext: 'No login. No subscription. Lifetime.',
       restorePurchase: 'Restore Purchase',
+      seeDemo: 'See demo',
+      tapToUnmute: 'Tap to unmute',
     },
     socialProof: {
       rating: '4.8',
