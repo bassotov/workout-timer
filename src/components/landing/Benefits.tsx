@@ -12,7 +12,7 @@ import {
   Youtube,
   type LucideIcon,
 } from 'lucide-react';
-import { Card, CardContent, WavyUnderline } from '@/components/ui';
+import { Card, CardContent, WavyUnderline, ScrollReveal } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 
 const BENEFIT_ICONS: LucideIcon[] = [
@@ -32,11 +32,14 @@ export function Benefits() {
 
   return (
     <section id="benefits" className="max-w-6xl mx-auto px-6 py-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-30">
-        <WavyUnderline>{t.landing.benefits.title}</WavyUnderline>
-      </h2>
+      <ScrollReveal>
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-30">
+          <WavyUnderline>{t.landing.benefits.title}</WavyUnderline>
+        </h2>
+      </ScrollReveal>
 
       {/* Mobile: Video first, then benefits */}
+      <ScrollReveal delay={200}>
       <div className="lg:hidden">
         <div className="flex justify-center mb-8">
           <DemoVideo />
@@ -52,8 +55,10 @@ export function Benefits() {
           ))}
         </div>
       </div>
+      </ScrollReveal>
 
       {/* Desktop: 2 columns - all benefits on left, sticky video on right */}
+      <ScrollReveal delay={200}>
       <div className="hidden lg:grid lg:grid-cols-[1fr_minmax(300px,400px)] gap-8 items-start">
         <div className="grid grid-cols-2 gap-4">
           {items.map((item, i) => (
@@ -70,6 +75,7 @@ export function Benefits() {
           <DemoVideo className="w-full" />
         </div>
       </div>
+      </ScrollReveal>
     </section>
   );
 }

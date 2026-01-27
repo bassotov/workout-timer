@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, WavyUnderline } from '@/components/ui';
+import { Button, WavyUnderline, ScrollReveal } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 
 interface FinalCTAProps {
@@ -16,15 +16,19 @@ export function FinalCTA({ onStart }: FinalCTAProps) {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-primary/10 pointer-events-none" />
 
       <div className="relative max-w-2xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12">
-          <WavyUnderline>{t.landing.finalCTA.title}</WavyUnderline>
-        </h2>
-        <p className="text-lg text-muted-foreground mb-8">
-          {t.landing.finalCTA.subtitle}
-        </p>
-        <Button size="lg" onClick={onStart} className="text-lg px-10 py-6 h-auto">
-          {t.landing.finalCTA.cta}
-        </Button>
+        <ScrollReveal>
+          <h2 className="text-3xl md:text-4xl font-bold mb-12">
+            <WavyUnderline>{t.landing.finalCTA.title}</WavyUnderline>
+          </h2>
+        </ScrollReveal>
+        <ScrollReveal delay={200}>
+          <p className="text-lg text-muted-foreground mb-8">
+            {t.landing.finalCTA.subtitle}
+          </p>
+          <Button size="lg" onClick={onStart} className="text-lg px-10 py-6 h-auto">
+            {t.landing.finalCTA.cta}
+          </Button>
+        </ScrollReveal>
       </div>
     </section>
   );

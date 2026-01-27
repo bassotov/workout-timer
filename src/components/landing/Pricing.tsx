@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Check, Gem } from 'lucide-react';
-import { Card, CardContent, Button, WavyUnderline } from '@/components/ui';
+import { Card, CardContent, Button, WavyUnderline, ScrollReveal } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 import { useCountdown, usePricing } from '@/hooks';
 import { formatPrice } from '@/lib';
@@ -32,10 +32,13 @@ export function Pricing({ onStart }: PricingProps) {
 
   return (
     <section id="pricing" className="px-6 py-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 max-w-xl mx-auto">
-        <WavyUnderline>{t.landing.pricing.title}</WavyUnderline>
-      </h2>
+      <ScrollReveal>
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 max-w-xl mx-auto">
+          <WavyUnderline>{t.landing.pricing.title}</WavyUnderline>
+        </h2>
+      </ScrollReveal>
 
+      <ScrollReveal delay={200}>
       <div className="max-w-md mx-auto">
         {/* Countdown Timer - Above the card */}
         {showCountdown && (
@@ -116,6 +119,7 @@ export function Pricing({ onStart }: PricingProps) {
           </Card>
         </div>
       </div>
+      </ScrollReveal>
     </section>
   );
 }

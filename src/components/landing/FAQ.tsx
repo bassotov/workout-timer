@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { WavyUnderline } from '@/components/ui';
+import { WavyUnderline, ScrollReveal } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 import { FAQ_ITEMS } from '@/config';
 
@@ -15,10 +15,13 @@ export function FAQ() {
 
   return (
     <section id="faq" className="max-w-3xl mx-auto px-6 py-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
-        <WavyUnderline>{t.landing.faq.title}</WavyUnderline>
-      </h2>
+      <ScrollReveal>
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
+          <WavyUnderline>{t.landing.faq.title}</WavyUnderline>
+        </h2>
+      </ScrollReveal>
 
+      <ScrollReveal delay={200}>
       <Accordion type="single" collapsible className="w-full">
         {FAQ_ITEMS.map((item) => (
           <AccordionItem key={item.id} value={item.id}>
@@ -31,6 +34,7 @@ export function FAQ() {
           </AccordionItem>
         ))}
       </Accordion>
+      </ScrollReveal>
     </section>
   );
 }

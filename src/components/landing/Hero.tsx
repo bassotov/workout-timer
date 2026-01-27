@@ -49,11 +49,11 @@ export function Hero({ onStart }: HeroProps) {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-6 items-center">
           {/* Left: Text content */}
           <div className="md:ml-15 text-center lg:text-left flex-1 min-w-0 max-w-[700]">
-            <div className="inline-block mb-8 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm text-muted-foreground">
+            <div className="animate-fade-in-up inline-block mb-8 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm text-muted-foreground">
               {t.landing.hero.subtext}
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold mb-10">
+            <h1 className="animate-fade-in-up text-4xl md:text-5xl font-bold mb-10" style={{ animationDelay: '200ms' }}>
               <span className="inline-flex items-center mb-1.5 justify-center lg:justify-start flex-wrap gap-x-3">
                 <span>{t.landing.hero.titlePart1}</span>
                 <AILogoFlipper />
@@ -63,12 +63,12 @@ export function Hero({ onStart }: HeroProps) {
               <span>{t.landing.hero.titlePart3}</span>
               <WavyUnderline>{t.landing.hero.titlePart4}</WavyUnderline>
             </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl lg:max-w-none">
+            <p className="animate-fade-in-up text-xl text-muted-foreground mb-8 max-w-2xl lg:max-w-none" style={{ animationDelay: '400ms' }}>
               {t.landing.hero.subtitle}
             </p>
 
             {/* Mobile: See demo button */}
-            <div className="lg:hidden mb-8">
+            <div className="animate-fade-in-up lg:hidden mb-8" style={{ animationDelay: '500ms' }}>
               <button
                 onClick={openMobileVideo}
                 className="inline-flex items-center gap-2 text-lg text-muted-foreground hover:text-foreground transition-colors"
@@ -78,18 +78,21 @@ export function Hero({ onStart }: HeroProps) {
               </button>
             </div>
 
-            <Button onClick={onStart} size="lg" className="text-lg px-16 py-6 h-auto">
+            <Button onClick={onStart} size="lg" className="animate-fade-in-up text-lg px-16 py-6 h-auto" style={{ animationDelay: '600ms' }}>
               {t.landing.hero.cta}
             </Button>
 
             <Link
               href="/restore"
-              className="block mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
+              className="animate-fade-in-up block mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
+              style={{ animationDelay: '700ms' }}
             >
               {t.landing.hero.restorePurchase}
             </Link>
 
-            <SocialProof/>
+            <div className="animate-fade-in-up" style={{ animationDelay: '800ms' }}>
+              <SocialProof/>
+            </div>
           </div>
 
           {/* Right: Demo video (desktop) */}
@@ -101,7 +104,7 @@ export function Hero({ onStart }: HeroProps) {
               - scale-[1.0]: zoom level — increase to zoom in (e.g. 1.2 = 120%)
               - rounded-[44px]: iPhone corner radius
           */}
-          <div className="hidden lg:block relative flex-shrink-0">
+          <div className="animate-fade-in-up hidden lg:block relative flex-shrink-0" style={{ animationDelay: '900ms' }}>
             <div
               className="relative rounded-[52px] overflow-hidden drop-shadow-2xl"
               style={{ height: 620, width: 300 }}
@@ -112,7 +115,7 @@ export function Hero({ onStart }: HeroProps) {
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="auto"
                 src="/demo/checkout_demo.mp4"
                 onClick={toggleMute}
                 className="h-full w-full object-cover scale-[1.0] cursor-pointer"

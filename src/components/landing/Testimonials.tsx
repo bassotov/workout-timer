@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Quote } from 'lucide-react';
-import { Card, CardContent, WavyUnderline } from '@/components/ui';
+import { Card, CardContent, WavyUnderline, ScrollReveal } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 import { TESTIMONIALS } from '@/config';
 
@@ -39,9 +39,11 @@ export function Testimonials() {
 
   return (
     <section className="py-16 relative">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-30 px-6">
-        <WavyUnderline>{t.landing.testimonials.title}</WavyUnderline>
-      </h2>
+      <ScrollReveal>
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-30 px-6">
+          <WavyUnderline>{t.landing.testimonials.title}</WavyUnderline>
+        </h2>
+      </ScrollReveal>
 
       <div
         ref={containerRef}

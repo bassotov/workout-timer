@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { WavyUnderline } from '@/components/ui';
+import { WavyUnderline, ScrollReveal } from '@/components/ui';
 import { useLanguage } from '@/i18n';
 
 export function HowItWorks() {
@@ -9,10 +9,13 @@ export function HowItWorks() {
 
   return (
     <section id="how-it-works" className="max-w-6xl mx-auto px-6 py-16">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-30">
-        <WavyUnderline>{t.landing.howItWorks.title}</WavyUnderline>
-      </h2>
+      <ScrollReveal>
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-30">
+          <WavyUnderline>{t.landing.howItWorks.title}</WavyUnderline>
+        </h2>
+      </ScrollReveal>
 
+      <ScrollReveal delay={200}>
       <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
         {/* Left: Demo video (desktop) */}
         <div className="hidden md:flex justify-center">
@@ -37,6 +40,7 @@ export function HowItWorks() {
           ))}
         </div>
       </div>
+      </ScrollReveal>
     </section>
   );
 }

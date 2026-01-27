@@ -319,9 +319,9 @@ export const en = {
     forWhom: {
       title: 'Is This For You?',
       items: [
-        { title: 'You already plan your workouts with AI', description: 'Level up the game! Stop checking that table on the phone every time – just run the timer fullscreen and GO!' },
-        { title: 'Tired of YouTube workouts', description: 'Create your personalized ones. Learn from the embedded videos. Tailor the timer to your pace.' },
-        { title: 'Still didn\'t get to "that gym"', description: 'Want to start working out but don\'t know how to start – tell your best AI buddy about it and don\'t skip the leg day.' },
+        { title: 'You already plan your workouts with AI', description: 'Level up the game! Wrap your workouts as timer' },
+        { title: 'Tired of YouTube workouts', description: 'Create your personalized ones. Learn from the embedded videos' },
+        { title: 'You coach people remotely', description: 'Do not send them text. Create a link to a workout timer for them' },
       ],
     },
     pricing: {
