@@ -16,7 +16,7 @@ export function ForWhom() {
         </h2>
       </ScrollReveal>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-3 gap-6 max-w-sm md:max-w-none mx-auto">
         {t.landing.forWhom.items.map((item, i) => (
           <ScrollReveal key={i} delay={i * 150} className="h-full">
           <Card className="h-full bg-gradient-to-br from-card to-muted/50 hover:shadow-lg transition-shadow">

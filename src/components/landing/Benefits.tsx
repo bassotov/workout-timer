@@ -33,7 +33,7 @@ export function Benefits() {
   return (
     <section id="benefits" className="max-w-6xl mx-auto px-6 py-16">
       <ScrollReveal>
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-30">
+        <h2 className="text-2xl md:text-3xl font-bold text-center md:mb-30 mb-20">
           <WavyUnderline>{t.landing.benefits.title}</WavyUnderline>
         </h2>
       </ScrollReveal>
@@ -41,7 +41,7 @@ export function Benefits() {
       {/* Mobile: Video first, then benefits */}
       <ScrollReveal delay={200}>
       <div className="lg:hidden">
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-15">
           <DemoVideo />
         </div>
         <div className="grid grid-cols-2 gap-4">
