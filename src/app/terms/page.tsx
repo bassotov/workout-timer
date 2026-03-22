@@ -1,6 +1,15 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service | Workout Timer',
+  description: 'Terms of service for using Workout Timer. Covers purchase, refund policy, user responsibilities, and liability.',
+  alternates: {
+    canonical: 'https://workout-timer.app/terms',
+  },
+};
 
 export default function TermsOfService() {
   return (

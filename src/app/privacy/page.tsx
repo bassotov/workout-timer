@@ -1,6 +1,15 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Workout Timer',
+  description: 'Learn how Workout Timer handles your data. We collect minimal information and never sell your personal data.',
+  alternates: {
+    canonical: 'https://workout-timer.app/privacy',
+  },
+};
 
 export default function PrivacyPolicy() {
   return (
