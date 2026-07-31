@@ -82,8 +82,7 @@ export function validateServerEnv(): EnvValidationResult {
   };
 }
 
-// Pricing countdown target date (update when setting new promotional periods)
-export const PRICE_INCREASE_DATE = new Date('2026-01-26T00:00:00Z');
+// Pricing lives in src/lib/pricing.ts — see OFFER_END_DATE there.
 
 export const COUNTDOWN_DURATION = 10;
 export const DEFAULT_REST_DURATION = 30;

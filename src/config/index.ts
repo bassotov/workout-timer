@@ -3,7 +3,6 @@ export {
   TIMER_BASE_URL,
   validateEnv,
   validateServerEnv,
-  PRICE_INCREASE_DATE,
   COUNTDOWN_DURATION,
   DEFAULT_REST_DURATION,
   BEEP_THRESHOLD,

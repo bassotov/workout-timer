@@ -250,7 +250,11 @@ export function PaymentSummary({ answers, onBack, onPayment }: PaymentSummaryPro
         <div className="max-w-md mx-auto">
           <div className="text-center mb-6">
             <p className="text-lg">
-              <span className="text-muted-foreground line-through">{formatPrice(pricing.nextPrice)}</span>{' '}
+              {pricing.isOfferActive && (
+                <>
+                  <span className="text-muted-foreground line-through">{formatPrice(pricing.standardPrice)}</span>{' '}
+                </>
+              )}
               <span className="text-4xl font-bold text-primary">{formatPrice(pricing.currentPrice)}</span>
             </p>
             <p className="text-sm text-muted-foreground">

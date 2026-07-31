@@ -330,9 +330,9 @@ export const ru: TranslationKeys = {
       planTitle: 'Пожизненный доступ',
       planSubtitle: 'Без логина. Без подписки.',
       originalPrice: '$25',
-      price: '$10',
+      price: '$19',
       countdown: {
-        title: 'Цена вырастет через:',
+        title: 'Предложение заканчивается через:',
         days: 'дней',
         hours: 'часов',
         minutes: 'мин',

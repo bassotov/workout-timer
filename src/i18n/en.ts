@@ -330,9 +330,9 @@ export const en = {
       planTitle: 'Lifetime Access',
       planSubtitle: 'No login. No subscription.',
       originalPrice: '$25',
-      price: '$10',
+      price: '$19',
       countdown: {
-        title: 'Price increases in:',
+        title: 'Offer ends in:',
         days: 'days',
         hours: 'hours',
         minutes: 'min',

@@ -25,10 +25,10 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
 export function Pricing({ onStart }: PricingProps) {
   const { t } = useLanguage();
   const { pricing, isClient } = usePricing();
-  const countdown = useCountdown(pricing.nextIncreaseDate);
+  const countdown = useCountdown(pricing.offerEndDate);
 
   // Show countdown only on client to prevent hydration mismatch
-  const showCountdown = isClient && !countdown.isExpired;
+  const showCountdown = isClient && pricing.isOfferActive && !countdown.isExpired;
 
   return (
     <section id="pricing" className="px-6 py-16">
@@ -92,9 +92,11 @@ export function Pricing({ onStart }: PricingProps) {
 
                 {/* Price */}
                 <div className="mb-6">
-                  <span className="text-lg text-muted-foreground line-through mr-2">
-                    {formatPrice(pricing.nextPrice)}
-                  </span>
+                  {pricing.isOfferActive && (
+                    <span className="text-lg text-muted-foreground line-through mr-2">
+                      {formatPrice(pricing.standardPrice)}
+                    </span>
+                  )}
                   <span className="text-5xl font-bold">{formatPrice(pricing.currentPrice)}</span>
                 </div>
 

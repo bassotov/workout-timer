@@ -5,13 +5,13 @@ interface PricingSnapshot extends PricingInfo {
   isClient: boolean;
 }
 
-// Cached server snapshot - must be stable reference
-// isClient: false ensures SSR and hydration match
+// Cached server snapshot - must be a stable reference.
+// Resolved once at module load; useSyncExternalStore swaps in the client
+// snapshot on hydration, so a server process that outlives the offer
+// deadline still renders the correct price in the browser.
+// isClient: false lets consumers hold back client-only UI (the countdown).
 const SERVER_SNAPSHOT: PricingSnapshot = {
-  currentPrice: 10,
-  nextPrice: 25, // Static "compare at" price
-  nextIncreaseDate: new Date('2099-01-01'),
-  periodsElapsed: 0,
+  ...getPricingInfo(),
   isClient: false,
 };
 
@@ -32,7 +32,7 @@ function getSnapshot(): PricingSnapshot {
   return clientSnapshot;
 }
 
-// Subscribe to nothing - pricing changes are rare (every 2 weeks)
+// Subscribe to nothing - the price changes once, at the offer deadline
 function subscribe(): () => void {
   return () => {};
 }

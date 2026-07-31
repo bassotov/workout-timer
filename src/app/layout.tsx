@@ -61,7 +61,7 @@ export default function RootLayout({
               operatingSystem: 'Any',
               offers: {
                 '@type': 'Offer',
-                price: '10.00',
+                price: '19.00',
                 priceCurrency: 'USD',
               },
               browserRequirements: 'Requires a modern web browser',

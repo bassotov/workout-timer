@@ -1,52 +1,55 @@
 /**
- * Dynamic pricing utilities
+ * Launch-offer pricing
  *
- * Price increases by $2 every 2 weeks from the launch date.
+ * The product sells for OFFER_PRICE until OFFER_END_DATE, after which it
+ * reverts to STANDARD_PRICE. The landing-page countdown is driven by this
+ * same date, so the "offer ends in" claim stays true by construction.
+ *
+ * >>> WHEN OFFER_END_DATE PASSES, SET THE POLAR PRODUCT TO $25 —
+ * >>> or move the date forward before it expires.
+ *
+ * If the date lapses without Polar being updated, the site quotes the higher
+ * standard price while checkout still charges the offer price. Customers are
+ * never charged more than they were shown, so the failure mode is safe.
  */
 
-// Launch date - the starting point for price calculations
-const LAUNCH_DATE = new Date('2026-01-12T00:00:00Z');
+// Price after the launch offer ends. Also the crossed-out "compare at" price
+// while the offer is running — it is a real future price, not a decoy.
+const STANDARD_PRICE = 25;
 
-// Pricing constants
-const BASE_PRICE = 10; // Starting price in dollars
-const ORIGINAL_PRICE = 25; // Crossed-out "compare at" price (always static)
-const PRICE_INCREMENT = 2; // Increase per period in dollars
-const PERIOD_DAYS = 14; // Days between price increases
-const PERIOD_MS = PERIOD_DAYS * 24 * 60 * 60 * 1000;
+// Price charged while the offer is running. Must match the Polar product.
+const OFFER_PRICE = 19;
+
+// The offer deadline. This must be honoured — see the note above.
+export const OFFER_END_DATE = new Date('2026-08-14T00:00:00Z');
 
 export interface PricingInfo {
+  /** What the buyer pays right now. */
   currentPrice: number;
-  nextPrice: number;
-  nextIncreaseDate: Date;
-  periodsElapsed: number;
+  /** Price once the offer ends. Shown crossed out while the offer is live. */
+  standardPrice: number;
+  /** When the offer ends — drives the countdown. */
+  offerEndDate: Date;
+  /** False once the deadline has passed. */
+  isOfferActive: boolean;
 }
 
 /**
- * Calculates the current pricing info based on elapsed time since launch
+ * Resolves pricing for a given moment.
  */
 export function getPricingInfo(now: Date = new Date()): PricingInfo {
-  const elapsed = now.getTime() - LAUNCH_DATE.getTime();
-
-  // Calculate how many complete periods have passed
-  const periodsElapsed = Math.max(0, Math.floor(elapsed / PERIOD_MS));
-
-  // Current price = base + (periods * increment)
-  const currentPrice = BASE_PRICE + periodsElapsed * PRICE_INCREMENT;
-  const nextPrice = ORIGINAL_PRICE; // Static "compare at" price
-
-  // Next increase date = launch + (periods + 1) * period duration
-  const nextIncreaseDate = new Date(LAUNCH_DATE.getTime() + (periodsElapsed + 1) * PERIOD_MS);
+  const isOfferActive = now.getTime() < OFFER_END_DATE.getTime();
 
   return {
-    currentPrice,
-    nextPrice,
-    nextIncreaseDate,
-    periodsElapsed,
+    currentPrice: isOfferActive ? OFFER_PRICE : STANDARD_PRICE,
+    standardPrice: STANDARD_PRICE,
+    offerEndDate: OFFER_END_DATE,
+    isOfferActive,
   };
 }
 
 /**
- * Formats a price as a string (e.g., "$10", "$12")
+ * Formats a price as a string (e.g., "$19", "$25")
  */
 export function formatPrice(price: number): string {
   return `$${price}`;
