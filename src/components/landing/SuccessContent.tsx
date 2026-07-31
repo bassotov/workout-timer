@@ -6,11 +6,8 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/i18n';
-import { generateInstructions } from '@/lib/instruction-generator';
 import { downloadOrShareFile, setStoredValue, STORAGE_KEYS } from '@/lib';
 import type { PollAnswers } from '@/types';
-
-const TIMER_BASE_URL = 'https://workout-timer.app/timer';
 
 interface SuccessContentProps {
   answers: PollAnswers;
@@ -57,7 +54,22 @@ export function SuccessContent({ answers, verified, onStartPoll }: SuccessConten
       return;
     }
 
-    const content = generateInstructions(answers, TIMER_BASE_URL);
+    // Generated server-side and gated on the purchase cookie — see
+    // /api/instructions. Keeping the generator out of the bundle is what
+    // makes the gate real.
+    const response = await fetch('/api/instructions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answers }),
+    });
+
+    if (!response.ok) {
+      // Fails closed: no verified purchase on this browser.
+      window.location.href = '/restore';
+      return;
+    }
+
+    const content = await response.text();
     const safeName = answers.name?.replace(/[<>:"/\\|?*]/g, '_').trim() || 'USER';
     const filename = `${safeName}_WORKOUT_INSTRUCTIONS.md`;
 

@@ -532,8 +532,15 @@ export const ru: TranslationKeys = {
   // Restore page
   restore: {
     title: 'Восстановить файл',
-    subtitle: 'Введите email для повторного скачивания файла',
+    subtitle: 'Введите email и номер заказа для повторного скачивания файла',
     emailPlaceholder: 'Используйте email, указанный при покупке',
+    orderPlaceholder: 'Номер заказа',
+    orderHint: 'Он указан в письме-чеке от Polar, в деталях заказа.',
+    errors: {
+      emailRequired: 'Введите email',
+      emailInvalid: 'Введите корректный email',
+      orderRequired: 'Введите номер заказа',
+    },
     downloadButton: 'Скачать файл',
     loading: 'Поиск...',
     success: 'Файл успешно скачан!',

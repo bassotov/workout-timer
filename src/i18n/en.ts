@@ -532,8 +532,15 @@ export const en = {
   // Restore page
   restore: {
     title: 'Restore Your File',
-    subtitle: 'Enter your email to re-download your file',
+    subtitle: 'Enter your email and order ID to re-download your file',
     emailPlaceholder: 'Use the email linked to your order',
+    orderPlaceholder: 'Order ID',
+    orderHint: 'Find it in your Polar receipt email, under order details.',
+    errors: {
+      emailRequired: 'Please enter your email address',
+      emailInvalid: 'Please enter a valid email address',
+      orderRequired: 'Please enter your order ID',
+    },
     downloadButton: 'Download File',
     loading: 'Looking up...',
     success: 'File downloaded successfully!',

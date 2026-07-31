@@ -1,19 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateInstructions } from '@/lib';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 import { TIMER_BASE_URL } from '@/config/constants';
 import type { PollAnswers } from '@/types';
 
 /**
  * GET handler for restoring workout instructions from Polar order metadata
- * Looks up the customer by email and returns their most recent order's instructions
- * Usage: /api/restore?email=user@example.com
+ * Usage: /api/restore?email=user@example.com&order=<polar order id>
+ *
+ * The order id is required as proof of purchase. Email alone used to be
+ * enough, which made this endpoint an open lookup for any customer's name,
+ * goals and physical limitations — and an oracle for whether a given address
+ * had bought. Both identifiers must now point at the same order, lookups are
+ * rate limited, and every failure returns the same response so nothing can be
+ * inferred from the difference.
  */
-export async function GET(request: NextRequest) {
-  const email = request.nextUrl.searchParams.get('email');
 
-  if (!email) {
+/** One response for every "no" — never reveal which half was wrong. */
+function notFound() {
+  return NextResponse.json(
+    { error: 'No purchase found for those details. Check your receipt email and try again.' },
+    { status: 404 }
+  );
+}
+
+export async function GET(request: NextRequest) {
+  const limit = rateLimit(`restore:${clientIp(request.headers)}`, 10, 60 * 60_000);
+  if (!limit.allowed) {
     return NextResponse.json(
-      { error: 'Please enter your email address' },
+      { error: 'Too many lookups. Please try again later.' },
+      { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } }
+    );
+  }
+
+  const email = request.nextUrl.searchParams.get('email')?.trim();
+  const orderId = request.nextUrl.searchParams.get('order')?.trim();
+
+  if (!email || !orderId) {
+    return NextResponse.json(
+      { error: 'Please enter both your email address and your order ID.' },
       { status: 400 }
     );
   }
@@ -28,40 +53,10 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Get customer by email
-    const customerResponse = await fetch(
-      `https://api.polar.sh/v1/customers?email=${encodeURIComponent(email)}&limit=1`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        redirect: 'follow',
-      }
-    );
-
-    if (!customerResponse.ok) {
-      const errorText = await customerResponse.text();
-      console.error('Polar customers API error:', customerResponse.status, errorText);
-      return NextResponse.json(
-        { error: `Unable to look up your account (${customerResponse.status}). Please try again later.` },
-        { status: 502 }
-      );
-    }
-
-    const customerData = await customerResponse.json();
-    if (!customerData.items || customerData.items.length === 0) {
-      return NextResponse.json(
-        { error: 'No purchase found for this email. Please check and try again.' },
-        { status: 404 }
-      );
-    }
-
-    const customerId = customerData.items[0].id;
-
-    // Get their most recent order
+    // Fetch the order directly. Anyone can guess an email; the order id is
+    // the part only the buyer has.
     const orderResponse = await fetch(
-      `https://api.polar.sh/v1/orders?customer_id=${customerId}&limit=1&sorting=-created_at`,
+      `https://api.polar.sh/v1/orders/${encodeURIComponent(orderId)}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -70,25 +65,24 @@ export async function GET(request: NextRequest) {
         redirect: 'follow',
       }
     );
+
+    if (orderResponse.status === 404) return notFound();
 
     if (!orderResponse.ok) {
       const errorText = await orderResponse.text();
       console.error('Polar orders API error:', orderResponse.status, errorText);
       return NextResponse.json(
-        { error: `Unable to retrieve your order (${orderResponse.status}). Please try again later.` },
+        { error: 'Unable to retrieve your order. Please try again later.' },
         { status: 502 }
       );
     }
 
-    const orderData = await orderResponse.json();
-    if (!orderData.items || orderData.items.length === 0) {
-      return NextResponse.json(
-        { error: 'No orders found for this account. Please contact support.' },
-        { status: 404 }
-      );
-    }
+    const order = await orderResponse.json();
 
-    const order = orderData.items[0];
+    // The order must belong to the email supplied — otherwise a leaked order
+    // id would expose whoever it actually belongs to.
+    const orderEmail = String(order.customer_email || '').toLowerCase();
+    if (!orderEmail || orderEmail !== email.toLowerCase()) return notFound();
 
     // Validate metadata exists
     if (!order.metadata || Object.keys(order.metadata).length === 0) {

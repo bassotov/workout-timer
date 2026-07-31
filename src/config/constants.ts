@@ -5,6 +5,8 @@ export const TIMER_BASE_URL = process.env.NEXT_PUBLIC_TIMER_BASE_URL || 'https:/
 const SERVER_ENV_VARS = [
   'POLAR_ACCESS_TOKEN',
   'POLAR_SUCCESS_URL',
+  // HMAC key for the purchase cookie — any long random string.
+  'PURCHASE_COOKIE_SECRET',
 ] as const;
 
 interface EnvValidationResult {

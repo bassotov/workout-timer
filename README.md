@@ -72,6 +72,10 @@ NEXT_PUBLIC_POLAR_PRODUCT_ID=your-polar-product-id
 NEXT_PUBLIC_TIMER_BASE_URL=https://your-domain.com/timer
 POLAR_ACCESS_TOKEN=your-polar-access-token
 POLAR_SUCCESS_URL=https://your-domain.com/success?checkout_id={CHECKOUT_ID}
+
+# Signs the purchase cookie that gates /api/instructions.
+# Generate with: openssl rand -base64 32
+PURCHASE_COOKIE_SECRET=
 ```
 
 ## Routes

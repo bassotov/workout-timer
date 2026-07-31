@@ -12,6 +12,7 @@ type Status = 'idle' | 'loading' | 'success' | 'error' | 'discarded';
 export default function RestorePage() {
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
+  const [orderId, setOrderId] = useState('');
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState('');
 
@@ -20,7 +21,8 @@ export default function RestorePage() {
     setError('');
 
     try {
-      const response = await fetch(`/api/restore?email=${encodeURIComponent(email.trim())}`);
+      const query = new URLSearchParams({ email: email.trim(), order: orderId.trim() });
+      const response = await fetch(`/api/restore?${query}`);
 
       if (!response.ok) {
         const data = await response.json();
@@ -61,13 +63,18 @@ export default function RestorePage() {
     e.preventDefault();
 
     if (!email.trim()) {
-      setError('Please enter your email address');
+      setError(t.restore.errors.emailRequired);
       return;
     }
 
     // Basic email validation
     if (!email.includes('@') || !email.includes('.')) {
-      setError('Please enter a valid email address');
+      setError(t.restore.errors.emailInvalid);
+      return;
+    }
+
+    if (!orderId.trim()) {
+      setError(t.restore.errors.orderRequired);
       return;
     }
 
@@ -77,6 +84,7 @@ export default function RestorePage() {
   const resetForm = () => {
     setStatus('idle');
     setEmail('');
+    setOrderId('');
     setError('');
   };
 
@@ -127,7 +135,7 @@ export default function RestorePage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
+                <div className="space-y-3">
                   <Input
                     type="email"
                     value={email}
@@ -136,8 +144,19 @@ export default function RestorePage() {
                     disabled={status === 'loading'}
                     className={error ? 'border-destructive' : ''}
                   />
+                  <div>
+                    <Input
+                      type="text"
+                      value={orderId}
+                      onChange={(e) => setOrderId(e.target.value)}
+                      placeholder={t.restore.orderPlaceholder}
+                      disabled={status === 'loading'}
+                      className={error ? 'border-destructive' : ''}
+                    />
+                    <p className="text-muted-foreground text-xs mt-1.5">{t.restore.orderHint}</p>
+                  </div>
                   {error && (
-                    <p className="text-destructive text-sm mt-1">{error}</p>
+                    <p className="text-destructive text-sm">{error}</p>
                   )}
                 </div>
                 <Button type="submit" className="w-full" disabled={status === 'loading'}>
