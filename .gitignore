@@ -24,6 +24,13 @@
 .DS_Store
 *.pem
 
+# CleanShot bundles embed the full uncropped original alongside the export —
+# commit the .png only
+*.cleanshot
+
+# private planning docs (kept outside the repo)
+docs/product-plan.md
+
 # debug
 npm-debug.log*
 yarn-debug.log*
