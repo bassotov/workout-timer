@@ -57,7 +57,7 @@ export default function GettingStartedPage() {
           </Link>
 
           <a
-            href="mailto:support@workout-timer.app?subject=Feedback%20on%20Workout%20Timer"
+            href="mailto:workout-timer@barbash.in?subject=Feedback%20on%20Workout%20Timer"
             className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-muted font-medium text-sm hover:bg-muted/70 transition-colors"
           >
             <span>💡</span>

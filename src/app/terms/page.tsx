@@ -70,8 +70,8 @@ export default function TermsOfService() {
             <p>
               We&apos;re committed to customer satisfaction. If you experience any issues with your purchase,
               please contact us at{' '}
-              <a href="mailto:support@workout-timer.app" className="text-primary hover:text-primary/80 transition-colors">
-                support@workout-timer.app
+              <a href="mailto:workout-timer@barbash.in" className="text-primary hover:text-primary/80 transition-colors">
+                workout-timer@barbash.in
               </a>{' '}
               and we&apos;ll work to resolve the problem.
             </p>
@@ -135,8 +135,8 @@ export default function TermsOfService() {
             <h2 className="text-xl font-semibold text-foreground mb-4">10. Contact</h2>
             <p>
               For questions about these Terms of Service, please contact us at{' '}
-              <a href="mailto:support@workout-timer.app" className="text-primary hover:text-primary/80 transition-colors">
-                support@workout-timer.app
+              <a href="mailto:workout-timer@barbash.in" className="text-primary hover:text-primary/80 transition-colors">
+                workout-timer@barbash.in
               </a>
             </p>
           </section>

@@ -78,7 +78,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:support@workout-timer.app"
+                  href="mailto:workout-timer@barbash.in"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {t.footer?.getHelp ?? 'Get Help'}

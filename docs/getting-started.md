@@ -6,5 +6,5 @@
 - 🚀 **Need help getting started?** [View the setup guide](https://workout-timer.app/getting-started) for ChatGPT, Claude, and Gemini.
 - ⏱️ **Try the timer** [See it in action](https://workout-timer.app/timer) with a demo workout.
 - 🔧 **Link not working?** Check [common errors](https://workout-timer.app/troubleshooting) and how to fix them.
-- 💬 **Need more help?** Email [support@workout-timer.app](mailto:support@workout-timer.app) — we respond within 24 hours.
+- 💬 **Need more help?** Email [workout-timer@barbash.in](mailto:workout-timer@barbash.in) — we respond within 24 hours.
 - ✅ **Not happy?** Full refund, no questions asked. More in our [terms](https://workout-timer.app/terms).

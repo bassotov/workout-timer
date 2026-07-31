@@ -551,7 +551,7 @@ export const ru: TranslationKeys = {
       title: 'Данные не сохранены',
       message: 'Вы выбрали не сохранять данные при покупке.',
       cannotRestore: 'Восстановление файла невозможно.',
-      contactSupport: 'Напишите на support@workout-timer.app для получения скидки на повторную покупку.',
+      contactSupport: 'Напишите на workout-timer@barbash.in для получения скидки на повторную покупку.',
     },
   },
 
@@ -670,7 +670,7 @@ export const ru: TranslationKeys = {
         ],
       },
       needHelp: 'Нужна помощь? Напишите нам на',
-      supportEmail: 'support@workout-timer.app',
+      supportEmail: 'workout-timer@barbash.in',
     },
     screenshotAlt: 'Скриншот шага настройки',
     setupOnMobile: 'Настройка на телефоне',

@@ -551,7 +551,7 @@ export const en = {
       title: 'Data Not Saved',
       message: '',
       cannotRestore: 'You chose not to save your data at checkout',
-      contactSupport: 'File restoration is not available. Contact support@workout-timer.app for a discount on repurchase.',
+      contactSupport: 'File restoration is not available. Contact workout-timer@barbash.in for a discount on repurchase.',
     },
   },
 
@@ -670,7 +670,7 @@ export const en = {
         ],
       },
       needHelp: 'Need more help? Contact us at',
-      supportEmail: 'support@workout-timer.app',
+      supportEmail: 'workout-timer@barbash.in',
     },
     screenshotAlt: 'Setup step screenshot',
     setupOnMobile: 'Setup on Mobile',

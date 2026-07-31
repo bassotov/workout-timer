@@ -141,10 +141,10 @@ export function SuccessContent({ answers, verified, onStartPoll }: SuccessConten
               <p className="text-sm text-muted-foreground">
                 {t.success.helpText}{' '}
                 <a
-                  href="mailto:support@workout-timer.app"
+                  href="mailto:workout-timer@barbash.in"
                   className="text-primary hover:text-primary/80 transition-colors"
                 >
-                  support@workout-timer.app
+                  workout-timer@barbash.in
                 </a>
               </p>
             </CardContent>
@@ -188,10 +188,10 @@ export function SuccessContent({ answers, verified, onStartPoll }: SuccessConten
         <p className="text-sm text-muted-foreground">
           {t.success.contactHelp}{' '}
           <a
-            href="mailto:support@workout-timer.app"
+            href="mailto:workout-timer@barbash.in"
             className="text-primary hover:text-primary/80 transition-colors"
           >
-            support@workout-timer.app
+            workout-timer@barbash.in
           </a>
         </p>
       </div>
