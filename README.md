@@ -2,6 +2,10 @@
 
 AI-powered workout timer. Users purchase personalized AI instructions (SKILL.md) that teach their AI assistant (ChatGPT, Claude, Gemini) to generate custom workout timer links.
 
+![Workout Timer landing page](docs/hero.png)
+
+Live at [workout-timer.app](https://workout-timer.app).
+
 ## Quick Start
 
 ```bash
