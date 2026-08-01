@@ -10,9 +10,10 @@ Live at [workout-timer.app](https://workout-timer.app).
 
 ```bash
 npm install
-npm run dev      # Start dev server at localhost:3000
-npm run build    # Production build
-npm run lint     # ESLint
+npm run dev        # Start dev server at localhost:3000
+npm run build      # Production build + typecheck
+npm run typecheck  # TypeScript 7 (native compiler)
+npm run lint       # ESLint
 ```
 
 ## Tech Stack
@@ -21,7 +22,8 @@ npm run lint     # ESLint
 - React 19
 - Tailwind CSS 4
 - shadcn/ui components
-- TypeScript
+- TypeScript 7 (native compiler; TypeScript 6 is kept alongside it only because Next.js and
+  editors need the JS API that the native build doesn't ship)
 
 ## Project Structure
 

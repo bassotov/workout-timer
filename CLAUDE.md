@@ -16,17 +16,26 @@ small files) live in the global `~/.claude/CLAUDE.md` — not repeated here.
 ## Commands
 
 ```bash
-npm run dev      # dev server at localhost:3000
-npm run build    # production build (also the real typecheck — there is no typecheck script)
-npm run lint     # ESLint
+npm run dev        # dev server at localhost:3000
+npm run build      # production build, then the typecheck below
+npm run typecheck  # TypeScript 7 (native) — tsc --noEmit, sub-second
+npm run lint       # ESLint
 
 # Generator smoke test — the only test-like check in the repo:
 npx tsx scripts/test-instructions.ts [platform] [--custom]
 #   platform = chatgpt | claude | gemini (default chatgpt); --custom exercises "other" values
 ```
 
-No `npm test` and no `npm run typecheck` exist — do not fabricate them. Verify types with
-`npm run build`; verify instruction generation with the tsx script above.
+No `npm test` exists — do not fabricate it. Verify types with `npm run typecheck`; verify
+instruction generation with the tsx script above.
+
+**Two TypeScript packages, on purpose.** `tsc` is TypeScript 7, the native compiler
+(`typescript7` → `npm:typescript@7`), and it is the only thing that typechecks this repo.
+It ships no `lib/typescript.js`, so Next (`verify-typescript-setup.js`) and editors can't use
+it — they need the JS API, which is why `typescript` is aliased to `@typescript/typescript6`.
+Next's own check is off (`typescript.ignoreBuildErrors` in `next.config.ts`) so it doesn't
+re-run the slow TS 6 path; `npm run build` chains `npm run typecheck` instead. Never point
+`typescript` at 7.x — it breaks Next's build. Drop TS 6 only once Next resolves `tsgo`.
 
 ## Product
 
