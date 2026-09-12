@@ -73,6 +73,20 @@ is required; `NEXT_PUBLIC_TIMER_BASE_URL` has a default; `POLAR_ACCESS_TOKEN` an
 `POLAR_SUCCESS_URL` are server-side for the checkout/restore API routes. Constants surface
 through `config/constants.ts` (`POLAR_PRODUCT_ID`, `TIMER_BASE_URL`, audio constants).
 
+## Polar API version
+
+Every Polar call goes through `lib/polar.ts`, which pins `Polar-Version: 2026-04` —
+`polarClient()` for the SDK (`/api/checkout`) and `polarHeaders()` for the two routes that
+fetch `api.polar.sh` directly (`/api/verify-checkout`, `/api/restore`). Polar ships a new
+dated version each quarter and unpinned requests follow Current, so without the header the
+2026-10 release becomes our contract on 2026-10-01. A renamed field wouldn't throw — it
+reads `undefined`, and `/api/verify-checkout` tells a paying customer their purchase can't
+be verified. `2026-04` is what Current already is, so the pin changes no behaviour.
+
+**`2026-04` is removed at the January 2027 release.** Migrating: read 2026-10's release
+notes, move `POLAR_API_VERSION`, re-check `checkout.status`, `checkout.product_id`,
+`order.customer_email` and `order.metadata`.
+
 ## Mobile
 
 `min-h-dvh` for dynamic viewport height, safe-area utilities in `globals.css`,

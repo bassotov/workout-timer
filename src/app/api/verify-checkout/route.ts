@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { issuePurchaseToken, PURCHASE_COOKIE, PURCHASE_COOKIE_MAX_AGE } from '@/lib/purchase-token';
 import { rateLimit, clientIp } from '@/lib/rate-limit';
+import { polarHeaders } from '@/lib/polar';
 
 /**
  * POST handler that turns a Polar checkout id into a signed purchase cookie.
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
   try {
     const response = await fetch(
       `https://api.polar.sh/v1/checkouts/${encodeURIComponent(checkoutId)}`,
-      { headers: { Authorization: `Bearer ${accessToken}` } }
+      { headers: polarHeaders(accessToken) }
     );
 
     if (!response.ok) {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateInstructions } from '@/lib';
 import { rateLimit, clientIp } from '@/lib/rate-limit';
+import { polarHeaders } from '@/lib/polar';
 import { TIMER_BASE_URL } from '@/config/constants';
 import type { PollAnswers } from '@/types';
 
@@ -59,7 +60,7 @@ export async function GET(request: NextRequest) {
       `https://api.polar.sh/v1/orders/${encodeURIComponent(orderId)}`,
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          ...polarHeaders(accessToken),
           'Content-Type': 'application/json',
         },
         redirect: 'follow',

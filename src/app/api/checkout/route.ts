@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Polar } from "@polar-sh/sdk";
+import { polarClient } from '@/lib/polar';
 import type { PollAnswers } from '@/types';
 import { isValidEmail } from '@/lib';
 
@@ -125,7 +125,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const polar = new Polar({ accessToken });
+  const polar = polarClient(accessToken);
 
   // Parse metadata from query param and filter out empty strings
   // (Polar requires string values to have at least 1 character)
